@@ -26,6 +26,7 @@ const Navbar = ({ setShowLogin }) => {
             <NavLink
               key={i}
               to={menu.path}
+              onClick={()=>setOpen(!open)}
               className="font-medium max-sm:w-full whitespace-nowrap"
             >
               {menu.name}
