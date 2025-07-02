@@ -22,7 +22,7 @@ const Navbar = ({ setShowLogin }) => {
       className={`border-b border-borderColor relative transition-all 
      ${location.pathname === "/" && "bg-light"}`}
     >
-      <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-1 py-4 text-gray-600">
+      <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600">
         <Link to="/">
           <img
             src={assets.logo}
@@ -32,7 +32,7 @@ const Navbar = ({ setShowLogin }) => {
           />
         </Link>
         <div
-          className={`max-sm:fixed right-0 max-sm:top-[40.8px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-50 overflow-hidden ${
+          className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-50 overflow-hidden ${
             location.pathname === "/" ? "max-sm:bg-light" : "max-sm:bg-white"
           }
            ${open ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"}`}
@@ -43,7 +43,7 @@ const Navbar = ({ setShowLogin }) => {
               to={menu.path}
               onClick={() => setOpen(!open)}
               className={({ isActive }) =>
-                `font-medium max-sm:w-full max-sm:px-1 whitespace-nowrap
+                `font-medium max-sm:w-full max-sm:p-2 whitespace-nowrap
      max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
      ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""}`
               }
