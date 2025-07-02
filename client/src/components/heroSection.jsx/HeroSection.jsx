@@ -29,7 +29,7 @@ const HeroSection = () => {
                 </option>
               ))}
             </select>
-            <p className="px-1 text-sm text-gray-500">
+            <p className="text-sm text-gray-800 bg-white border border-gray-300 rounded px-2 py-1">
               {pickupLocation ? pickupLocation : "Please select location"}
             </p>
           </div>
@@ -39,7 +39,7 @@ const HeroSection = () => {
               type="date"
               id="pickup-date"
               min={new Date().toISOString().split("T")[0]}
-              className="text-sm text-gray-500"
+              className="text-sm text-gray-800 bg-white border border-gray-300 rounded px-2 py-1"
               required
             />
           </div>
@@ -49,7 +49,7 @@ const HeroSection = () => {
               type="date"
               id="return-date"
               min={new Date().toISOString().split("T")[0]}
-              className="text-sm text-gray-500"
+              className="text-sm text-gray-800 bg-white border border-gray-300 rounded px-2 py-1"
               required
             />
           </div>
