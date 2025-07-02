@@ -2,7 +2,7 @@ import React from 'react'
 
 const CarDetails = () => {
   return (
-    <div>This is CarDetails Page</div>
+    <div className='container mx-auto'>This is CarDetails Page</div>
   )
 }
 

@@ -1,7 +1,7 @@
 
 const MyBooking = () => {
   return (
-    <div>This is MyBooking Page</div>
+    <div className="container mx-auto">This is MyBooking Page</div>
   )
 }
 

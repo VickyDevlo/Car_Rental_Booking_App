@@ -11,3 +11,6 @@
   --color-light: #f1f5f9;
   --color-borderColor: #c4c7d2;
 }
+::-webkit-scrollbar{
+  display: none;
+}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { assets, menuLinks } from "../../assets/assets";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
@@ -7,18 +7,33 @@ const Navbar = ({ setShowLogin }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    open
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "auto");
+
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [open]);
+
   return (
     <div
       className={`border-b border-borderColor relative transition-all 
      ${location.pathname === "/" && "bg-light"}`}
     >
-      <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 py-4 text-gray-600">
+      <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-1 py-4 text-gray-600">
         <Link to="/">
-          <img src={assets.logo} alt="logo" className="h-8 shrink-0" />
+          <img
+            src={assets.logo}
+            onClick={() => setOpen(false)}
+            alt="logo"
+            className="h-8 shrink-0"
+          />
         </Link>
         <div
-          className={`max-sm:fixed right-0 max-sm:top-[65px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-8 max-sm:p-4 transition-all duration-300 z-50 ${
-            location.pathname === "/" && "max-sm:bg-light"
+          className={`max-sm:fixed right-0 max-sm:top-[40.8px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-50 overflow-hidden ${
+            location.pathname === "/" ? "max-sm:bg-light" : "max-sm:bg-white"
           }
            ${open ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"}`}
         >
@@ -26,8 +41,12 @@ const Navbar = ({ setShowLogin }) => {
             <NavLink
               key={i}
               to={menu.path}
-              onClick={()=>setOpen(!open)}
-              className="font-medium max-sm:w-full whitespace-nowrap"
+              onClick={() => setOpen(!open)}
+              className={({ isActive }) =>
+                `font-medium max-sm:w-full max-sm:px-1 whitespace-nowrap
+     max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
+     ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""}`
+              }
             >
               {menu.name}
             </NavLink>
@@ -41,10 +60,11 @@ const Navbar = ({ setShowLogin }) => {
             />
             <img src={assets.search_icon} alt="serach" />
           </div>
-          <div className="flex max-sm:flex-col items-start sm:items-center gap-4">
+          <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
             <button
               onClick={() => navigate("/owner")}
-              className="text-sm cursor-pointer"
+              className="text-sm cursor-pointer max-sm:p-1 max-sm:text-start w-full
+              max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded"
             >
               Dashboard
             </button>
