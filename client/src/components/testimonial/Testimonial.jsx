@@ -1,5 +1,5 @@
 import { assets } from "../../assets/assets";
-import Title from "../../shared/TItle";
+import { Title } from "../../shared/Title";
 
 const testimonials = [
   {
