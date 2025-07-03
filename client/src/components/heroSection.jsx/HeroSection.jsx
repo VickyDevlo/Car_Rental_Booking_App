@@ -5,7 +5,7 @@ const HeroSection = () => {
   const today = new Date().toISOString().split("T")[0];
 
   const [pickupLocation, setPickupLocation] = useState("");
-  const [pickupDate, setPickDate] = useState("");
+  const [pickupDate, setPickDate] = useState(today);
   const [returnDate, setReturnDate] = useState(today);
 
   const submitHandler = (e) => {
@@ -13,15 +13,15 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center gap-4 md:gap-8 bg-light text-center">
-      <h1 className="text-3xl mt-4 md:text-5xl font-semibold">
+    <div className="h-screen flex flex-col items-center justify-center gap-4 md:gap-8 bg-light text-center">
+      <h1 className="text-3xl mt-4 md:text-5xl text-gray-800 font-semibold">
         Luxury cars on Rent
       </h1>
 
       <form
         onSubmit={submitHandler}
         className="flex flex-col md:flex-row items-start md:items-center 
-      justify-between p-3 rounded-lg md:rounded-full max-w-80 md:max-w-[850px] w-full
+      justify-between p-2.5 rounded-lg md:rounded-full max-w-80 md:max-w-[850px] w-full
       bg-white shadow-[0px_8px_20px_rgba(0,0,0,0.1)] "
       >
         <div className="flex flex-col md:flex-row items-center max-md:gap-7 gap-10 min-md:ml-8 w-full ">

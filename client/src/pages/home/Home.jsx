@@ -1,9 +1,12 @@
-import { HeroSection } from "../../components";
+import { Banner, FeatureSection, HeroSection, Testimonial } from "../../components";
 
 const Home = () => {
   return (
     <>
       <HeroSection />
+      <FeatureSection />
+      <Banner />
+      <Testimonial />
     </>
   );
 };
