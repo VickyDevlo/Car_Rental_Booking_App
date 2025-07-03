@@ -1,5 +1,5 @@
 import { assets, dummyCarData } from "../../assets/assets";
-import Title from "../../shared/TItle";
+import { Title } from "../../shared/Title";
 import { CarCard } from "../../components";
 import { useNavigate } from "react-router-dom";
 
