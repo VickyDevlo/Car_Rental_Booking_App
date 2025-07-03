@@ -1,7 +1,6 @@
 import { assets, dummyCarData } from "../../assets/assets";
-import { CarCard } from "../../components";
+import { CarCard, Title } from "../../components";
 import { useNavigate } from "react-router-dom";
-import {Title} from '../../shared/Title'
 
 const FeatureSection = () => {
   const navigate = useNavigate();
