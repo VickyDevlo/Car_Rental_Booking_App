@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navbar } from "./components";
+import { Footer, Navbar } from "./components";
 import { useLocation } from "react-router-dom";
 import { Router } from "./components/Router";
 
@@ -13,6 +13,7 @@ function App() {
         <Navbar setShowLogin={setShowLogin} />
       }
       <Router />
+      <Footer />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import {
   Banner,
   FeatureSection,
   HeroSection,
+  Newsletter,
   Testimonial,
 } from "../../components";
 
@@ -10,8 +11,9 @@ const Home = () => {
     <>
       <HeroSection />
       <FeatureSection />
-      <Banner />
+      <Banner />  
       <Testimonial />
+      <Newsletter />
     </>
   );
 };
