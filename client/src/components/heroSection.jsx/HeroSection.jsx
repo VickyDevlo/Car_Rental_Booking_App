@@ -13,9 +13,15 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center gap-4 md:gap-8 bg-light text-center">
-      <h1 className="text-3xl mt-4 md:text-5xl text-gray-800 font-semibold">
-        Luxury cars on Rent
+    <div
+      className="h-auto flex flex-col items-center justify-center gap-4 md:gap-8
+    bg-light text-center"
+    >
+      <h1
+        className="text-3xl uppercase mt-5 md:text-5xl
+       text-gray-800 font-semibold"
+      >
+        Luxury cars on rent
       </h1>
 
       <form
