@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const FeatureSection = () => {
   const navigate = useNavigate();
+
   return (
     <div className="flex flex-col items-center py-12 px-6 md:px-16 lg:px-24 xl:px-32">
       <div className="">
