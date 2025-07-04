@@ -7,7 +7,7 @@ const CarCard = ({ car }) => {
 
   const handleNavigation = () => {
     navigate(`/car-details/${car?._id}`);
-    window.scrollTo(0,0)
+    window.scrollTo(0, 0);
   };
 
   return (

@@ -8,6 +8,7 @@ const CarDetails = () => {
 
   const currency = import.meta.env.VITE_CURRENCY;
   const today = new Date().toISOString().split("T")[0];
+  
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -22,7 +23,10 @@ const CarDetails = () => {
   return car ? (
     <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-12">
       <button
-        onClick={() => navigate(-1)}
+        onClick={() => {
+          navigate(-1);
+          scrollTo(0, 0);
+        }}
         className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer"
       >
         <img
