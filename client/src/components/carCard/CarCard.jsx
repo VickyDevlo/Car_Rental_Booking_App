@@ -7,7 +7,6 @@ const CarCard = ({ car }) => {
 
   const handleNavigation = () => {
     navigate(`/car-details/${car?._id}`);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -55,11 +54,7 @@ const CarCard = ({ car }) => {
         {/* Specs Grid */}
         <div className="grid grid-cols-2 gap-2 text-gray-400 text-sm mt-3">
           <div className="flex items-center">
-            <img
-              src={assets.users_icon}
-              alt="Seats"
-              className="h-4 w-4 mr-2"
-            />
+            <img src={assets.users_icon} alt="Seats" className="h-4 w-4 mr-2" />
             <span>{car?.seating_capacity || "N/A"} Seats</span>
           </div>
           <div className="flex items-center">

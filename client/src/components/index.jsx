@@ -6,6 +6,7 @@ import Banner from "./banner/Banner";
 import Testimonial from "./testimonial/Testimonial";
 import Title from "./title/Title";
 import Newsletter from "./newsletter/Newsletter";
+import Loader from "./loader/Loader";
 import Footer from "./footer/Footer";
 
 export {
@@ -17,5 +18,6 @@ export {
   Testimonial,
   Title,
   Newsletter,
+  Loader,
   Footer
 };

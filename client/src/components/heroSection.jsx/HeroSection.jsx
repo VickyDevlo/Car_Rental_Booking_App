@@ -33,6 +33,7 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center max-md:gap-7 gap-10 min-md:ml-8 w-full">
           <div className="flex flex-col items-start max-sm:items-center max-sm:w-full gap-2 md:border-r border-gray-300 px-2">
             <select
+              name="select"
               required
               value={pickupLocation}
               onChange={(e) => setPickupLocation(e.target.value)}
