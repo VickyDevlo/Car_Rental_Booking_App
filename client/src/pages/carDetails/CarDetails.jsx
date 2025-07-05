@@ -4,11 +4,13 @@ import { assets, dummyCarData } from "../../assets/assets";
 import { Loader } from "../../components";
 
 const CarDetails = () => {
+  const today = new Date().toISOString().split("T")[0];
   const [car, setCar] = useState(null);
+  const [pickupDate, setPickupDate] = useState(today);
+  const [returnDate, setReturnDate] = useState(pickupDate);
 
   const currency = import.meta.env.VITE_CURRENCY;
-  const today = new Date().toISOString().split("T")[0];
-  
+
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -127,6 +129,8 @@ const CarDetails = () => {
               type="date"
               id="pickup-date"
               min={today}
+              value={pickupDate}
+              onChange={(e) => setPickupDate(e.target.value)}
               className="px-3 py-2 border border-borderColor rounded-lg w-full focus:outline-none"
               required
             />
@@ -136,6 +140,9 @@ const CarDetails = () => {
             <input
               type="date"
               id="return-date"
+              min={pickupDate}
+              value={returnDate}
+              onChange={(e) => setReturnDate(e.target.value)}
               className="px-3 py-2 border border-borderColor rounded-lg w-full focus:outline-none"
               required
             />

@@ -1,8 +1,14 @@
+import { Title } from "../../components";
 
 const MyBooking = () => {
   return (
-    <div className="container mx-auto">This is MyBooking Page</div>
-  )
-}
+    <div className="mt-8 md:mt-12">
+      <Title
+        title="My Bookings"
+        subTitle="View and manage your all car bookings"
+      />
+    </div>
+  );
+};
 
-export default MyBooking
+export default MyBooking;

@@ -17,8 +17,8 @@ const Cars = () => {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search by make model or features"
-            className="text-gray-600 w-full h-full font-medium focus:outline-none truncate"
+            placeholder="Search by make model or features..."
+            className="text-gray-600 w-full h-full font-medium focus:outline-none max-md:placeholder:text-sm truncate"
           />
           <img
             src={assets.filter_icon}
