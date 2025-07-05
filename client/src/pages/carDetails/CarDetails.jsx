@@ -127,7 +127,7 @@ const CarDetails = () => {
               type="date"
               id="pickup-date"
               min={today}
-              className="px-3 py-2 border border-borderColor rounded-lg focus:outline-none"
+              className="px-3 py-2 border border-borderColor rounded-lg w-full focus:outline-none"
               required
             />
           </div>
@@ -136,7 +136,7 @@ const CarDetails = () => {
             <input
               type="date"
               id="return-date"
-              className="px-3 py-2 border border-borderColor rounded-lg focus:outline-none"
+              className="px-3 py-2 border border-borderColor rounded-lg w-full focus:outline-none"
               required
             />
           </div>

@@ -41,7 +41,7 @@ const Navbar = ({ setShowLogin }) => {
             <NavLink
               key={i}
               to={menu.path}
-              onClick={() => setOpen(!open)}
+              onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `font-medium max-sm:w-full max-sm:p-2 whitespace-nowrap
      max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
