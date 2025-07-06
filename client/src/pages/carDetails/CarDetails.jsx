@@ -75,11 +75,13 @@ const CarDetails = () => {
                 },
               ].map(({ icon, text }) => (
                 <div
-                  className="flex flex-col items-center bg-light p-4 truncate rounded-lg text-gray-500"
+                  className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500"
                   key={text}
                 >
                   <img src={icon} alt={text} className="h-5 mb-2" />
-                  {text}
+                  <span className="truncate w-full text-center text-sm">
+                    {text}
+                  </span>
                 </div>
               ))}
             </div>
@@ -116,7 +118,7 @@ const CarDetails = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="sticky top-16 text-gray-500 p-6 space-y-6 rounded-xl shadow-lg h-max"
+          className="sticky top-10 text-gray-500 p-6 space-y-6 rounded-xl shadow-lg h-max"
         >
           <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
             {currency} {car?.pricePerDay}
@@ -155,7 +157,7 @@ const CarDetails = () => {
           >
             book now
           </button>
-          <p className="text-sm text-center capitalize text-gray-800 font-medium">
+          <p className="text-xs text-center capitalize text-gray-500 font-medium">
             no credit card required to reserve
           </p>
         </form>
