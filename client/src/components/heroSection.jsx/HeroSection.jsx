@@ -18,8 +18,8 @@ const HeroSection = () => {
     bg-light text-center"
     >
       <h1
-        className="text-2xl mt-5 md:text-5xl text-gray-800 font-semibold 
-      uppercase"
+        className="text-2xl mt-5 md:text-5xl text-gray-800 font-extrabold 
+      uppercase tracking-widest"
       >
         Luxury cars on rent
       </h1>

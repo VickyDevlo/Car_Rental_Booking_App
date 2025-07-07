@@ -1,5 +1,15 @@
 import { Route, Routes } from "react-router-dom";
-import { CarDetails, Cars, Home, MyBooking } from "../pages";
+import {
+  AddCar,
+  CarDetails,
+  Cars,
+  Dashboard,
+  Home,
+  ManageBooking,
+  ManageCars,
+  MyBooking,
+} from "../pages";
+import { Layout } from "../pages/owner/Layout";
 
 export const Router = () => {
   return (
@@ -8,6 +18,13 @@ export const Router = () => {
       <Route path="/cars" element={<Cars />} />
       <Route path="/car-details/:id" element={<CarDetails />} />
       <Route path="/my-bookings" element={<MyBooking />} />
+
+      <Route path="/owner" element={<Layout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="add-car" element={<AddCar />} />
+        <Route path="manage-cars" element={<ManageCars />} />
+        <Route path="manage-bookings" element={<ManageBooking />} />
+      </Route>
     </Routes>
   );
 };

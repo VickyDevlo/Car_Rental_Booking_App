@@ -16,13 +16,13 @@ const MyBooking = () => {
   }, []);
 
   return (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-16 text-sm max-w-7xl">
+    <div className="px-6 mx-auto md:px-16 lg:px-24 xl:px-32 2xl:px-48 mt-16 text-sm max-w-7xl">
       <Title
         title="My Bookings"
         subTitle="View and manage your all car bookings"
         align="left"
       />
-      <div className="">
+      <>
         {bookings &&
           bookings.map((booking, i) => (
             <div
@@ -96,12 +96,17 @@ const MyBooking = () => {
                     {currancy}
                     {booking?.price}
                   </h1>
-                  <p>Booking on :<span className="font-semibold ml-2 text-gray-800">{booking.createdAt.split("T")[0]}</span> </p>
+                  <p>
+                    Booking on :
+                    <span className="font-semibold ml-2 text-gray-800">
+                      {booking.createdAt.split("T")[0]}
+                    </span>{" "}
+                  </p>
                 </div>
               </div>
             </div>
           ))}
-      </div>
+      </>
     </div>
   );
 };
