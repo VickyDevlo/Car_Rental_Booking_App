@@ -62,13 +62,13 @@ const AddCar = () => {
               onChange={(e) => setImage(e.target.files[0])}
             />
           </label>
-          <p className="text-sm text-gray-500 font-medium">
+          <p className="hidden md:block text-xs text-gray-500 font-medium">
             Upload a picture of your car
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col w-full truncate">
-            <label>Brand</label>
+            <label className="font-medium">Brand</label>
             <input
               type="text"
               placeholder="e.g. BMW, Mercedes, Audi..."
@@ -80,7 +80,7 @@ const AddCar = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label>Model</label>
+            <label className="font-medium">Model</label>
             <input
               type="text"
               placeholder="e.g. X5, E-Class, M4..."
@@ -93,7 +93,7 @@ const AddCar = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="flex flex-col w-full">
-            <label>Year</label>
+            <label className="font-medium">Year</label>
             <input
               type="number"
               placeholder="2025"
@@ -104,7 +104,7 @@ const AddCar = () => {
             />
           </div>
           <div className="flex flex-col w-full">
-            <label>Daily Price ({currency})</label>
+            <label className="font-medium">Daily Price ({currency})</label>
             <input
               type="number"
               placeholder="0"
@@ -115,7 +115,7 @@ const AddCar = () => {
             />
           </div>
           <div className="flex flex-col w-full">
-            <label>Category</label>
+            <label className="font-medium">Category</label>
             <select
               value={car.category}
               onChange={(e) => setCar({ ...car, category: e.target.value })}
@@ -130,7 +130,7 @@ const AddCar = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="flex flex-col w-full">
-            <label>Transmission</label>
+            <label className="font-medium">Transmission</label>
             <select
               value={car.transmission}
               onChange={(e) => setCar({ ...car, transmission: e.target.value })}
@@ -143,7 +143,7 @@ const AddCar = () => {
             </select>
           </div>
           <div className="flex flex-col w-full">
-            <label>Fuel Type</label>
+            <label className="font-medium">Fuel Type</label>
             <select
               value={car.fuel_type}
               onChange={(e) => setCar({ ...car, fuel_type: e.target.value })}
@@ -158,7 +158,7 @@ const AddCar = () => {
             </select>
           </div>
           <div className="flex flex-col w-full">
-            <label>Seating Capacity</label>
+            <label className="font-medium">Seating Capacity</label>
             <input
               type="number"
               placeholder="4"
@@ -172,7 +172,7 @@ const AddCar = () => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <label>Location</label>
+          <label className="font-medium">Location</label>
           <select
             value={car.location}
             onChange={(e) => setCar({ ...car, location: e.target.value })}
@@ -186,7 +186,7 @@ const AddCar = () => {
           </select>
         </div>
         <div className="flex flex-col w-full">
-          <label htmlFor="description">Description</label>
+          <label htmlFor="description" className="font-medium">Description</label>
           <textarea
             id="description"
             placeholder="e.g, A luxurious SUV with a specious interior and a powerful engine."
@@ -201,7 +201,7 @@ const AddCar = () => {
           disabled={isDisabled}
           className={`flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary
         text-white rounded-md font-medium w-max
-        ${isDisabled ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
+        ${isDisabled ? "opacity-60 md:opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
         >
           <img src={assets.tick_icon} alt="tick" />
           List Your Car
