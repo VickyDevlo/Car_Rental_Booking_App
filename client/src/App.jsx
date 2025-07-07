@@ -8,12 +8,9 @@ function App() {
   const isOwnerPath = useLocation().pathname.startsWith("/owner");
   return (
     <div>
-      {
-        !isOwnerPath &&
-        <Navbar setShowLogin={setShowLogin} />
-      }
+      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} />}
       <Router />
-      <Footer />
+      {!isOwnerPath && <Footer />}
     </div>
   );
 }

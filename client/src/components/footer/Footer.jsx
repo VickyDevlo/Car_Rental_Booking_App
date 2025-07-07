@@ -4,7 +4,7 @@ import { assets, menuLinks } from "../../assets/assets";
 const Footer = () => {
   const navigate = useNavigate();
   return (
-    <footer className="text-gray-500 px-6 md:px-16 lg:px-24 xl:px-32 mt-12 text-sm bg-light">
+    <footer className="text-gray-500 px-6 md:px-16 lg:px-24 xl:px-32 text-sm bg-light">
       <div className="container mx-auto flex flex-wrap justify-between items-start gap-8 md:gap-8 p-6">
         <div className="">
           <img src={assets.logo} alt="logo" className="h-8 md:h-9" />

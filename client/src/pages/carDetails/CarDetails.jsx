@@ -23,7 +23,7 @@ const CarDetails = () => {
   }, [id]);
 
   return car ? (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-12">
+    <div className="px-6 md:px-16 lg:px-24 xl:px-32 my-12">
       <button
         onClick={() => {
           navigate(-1);

@@ -28,7 +28,7 @@ const Cars = () => {
         </div>
       </div>
       {dummyCarData ? (
-        <div className="px-6 md:px-16 lg:px-24 xl:px-32 mt-10">
+        <div className="px-6 md:px-16 lg:px-24 xl:px-32 my-12">
           <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
             Showing {dummyCarData.length} cars
           </p>
