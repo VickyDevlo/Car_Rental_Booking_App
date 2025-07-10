@@ -13,7 +13,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-8 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
+    <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
       <div className="group relative">
         <label htmlFor="image">
           <img
@@ -47,16 +47,18 @@ const SideBar = () => {
           <img src={assets.check_icon} alt="save" width={13} />
         </button>
       )}
-      <p className="mt-2 text-base max-md:hidden">{user?.name}</p>
+      <p className="mt-2 text-sm font-semibold text-gray-600 max-md:hidden">
+        {user?.name}
+      </p>
       <div className="w-full">
         {ownerMenuLinks.map((menu, i) => (
           <NavLink
             key={i}
             to={menu.path}
             className={`relative flex items-center gap-2 w-full 
-              font-semibold py-3 pl-4 first:mt-6 ${
+              font-semibold py-3 pl-4 first:mt-2 my-0.5 hover:bg-primary/10 ${
                 menu.path === location.pathname
-                  ? "bg-primary/10 text-primary"
+                  ? "bg-primary/10 text-primary border-r-5"
                   : "text-gray-600"
               }`}
           >
@@ -70,11 +72,6 @@ const SideBar = () => {
             <span className="max-md:hidden whitespace-nowrap truncate ">
               {menu.name}
             </span>
-            <div
-              className={`${
-                menu.path === location.pathname && "bg-primary"
-              } absolute right-0 w-1.5 h-full`}
-            ></div>
           </NavLink>
         ))}
       </div>

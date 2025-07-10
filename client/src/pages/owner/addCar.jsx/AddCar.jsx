@@ -31,8 +31,7 @@ const AddCar = () => {
     !car.transmission ||
     !car.fuel_type ||
     !car.seatingCapacity ||
-    !car.location ||
-    !car.description;
+    !car.location;
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 flex-1 mb-12">
@@ -68,7 +67,7 @@ const AddCar = () => {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col w-full truncate">
-            <label className="font-medium">Brand</label>
+            <label className="font-medium">Brand *</label>
             <input
               type="text"
               placeholder="e.g. BMW, Mercedes, Audi..."
@@ -80,7 +79,7 @@ const AddCar = () => {
           </div>
 
           <div className="flex flex-col w-full">
-            <label className="font-medium">Model</label>
+            <label className="font-medium">Model *</label>
             <input
               type="text"
               placeholder="e.g. X5, E-Class, M4..."
@@ -93,7 +92,7 @@ const AddCar = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="flex flex-col w-full">
-            <label className="font-medium">Year</label>
+            <label className="font-medium">Year *</label>
             <input
               type="number"
               placeholder="2025"
@@ -104,7 +103,7 @@ const AddCar = () => {
             />
           </div>
           <div className="flex flex-col w-full">
-            <label className="font-medium">Daily Price ({currency})</label>
+            <label className="font-medium">Daily Price ({currency}) *</label>
             <input
               type="number"
               placeholder="0"
@@ -115,13 +114,13 @@ const AddCar = () => {
             />
           </div>
           <div className="flex flex-col w-full">
-            <label className="font-medium">Category</label>
+            <label className="font-medium">Category *</label>
             <select
               value={car.category}
               onChange={(e) => setCar({ ...car, category: e.target.value })}
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none truncate"
             >
-              <option value="">Select a category</option>
+              <option value="">Select a category *</option>
               <option value="sedon">Sedon</option>
               <option value="suv">SUV</option>
               <option value="van">Van</option>
@@ -130,7 +129,7 @@ const AddCar = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           <div className="flex flex-col w-full">
-            <label className="font-medium">Transmission</label>
+            <label className="font-medium">Transmission *</label>
             <select
               value={car.transmission}
               onChange={(e) => setCar({ ...car, transmission: e.target.value })}
@@ -143,13 +142,13 @@ const AddCar = () => {
             </select>
           </div>
           <div className="flex flex-col w-full">
-            <label className="font-medium">Fuel Type</label>
+            <label className="font-medium">Fuel Type *</label>
             <select
               value={car.fuel_type}
               onChange={(e) => setCar({ ...car, fuel_type: e.target.value })}
               className="px-3 py-2 mt-1 border border-borderColor rounded-md outline-none truncate"
             >
-              <option value="">Select a fule type</option>
+              <option value="">Select a fuel type</option>
               <option value="gas">Gas</option>
               <option value="diesel">Diesel</option>
               <option value="petrol">Petrol</option>
@@ -158,7 +157,7 @@ const AddCar = () => {
             </select>
           </div>
           <div className="flex flex-col w-full">
-            <label className="font-medium">Seating Capacity</label>
+            <label className="font-medium">Seating Capacity *</label>
             <input
               type="number"
               placeholder="4"
@@ -172,7 +171,7 @@ const AddCar = () => {
           </div>
         </div>
         <div className="flex flex-col w-full">
-          <label className="font-medium">Location</label>
+          <label className="font-medium">Location *</label>
           <select
             value={car.location}
             onChange={(e) => setCar({ ...car, location: e.target.value })}
@@ -186,7 +185,9 @@ const AddCar = () => {
           </select>
         </div>
         <div className="flex flex-col w-full">
-          <label htmlFor="description" className="font-medium">Description</label>
+          <label htmlFor="description" className="font-medium">
+            Description
+          </label>
           <textarea
             id="description"
             placeholder="e.g, A luxurious SUV with a specious interior and a powerful engine."
@@ -201,7 +202,11 @@ const AddCar = () => {
           disabled={isDisabled}
           className={`flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary
         text-white rounded-md font-medium w-max
-        ${isDisabled ? "opacity-60 md:opacity-70 cursor-not-allowed" : "cursor-pointer"}`}
+        ${
+          isDisabled
+            ? "opacity-60 md:opacity-70 cursor-not-allowed"
+            : "cursor-pointer"
+        }`}
         >
           <img src={assets.tick_icon} alt="tick" />
           List Your Car
