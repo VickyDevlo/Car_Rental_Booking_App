@@ -99,7 +99,7 @@ const HeroSection = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full md:w-auto flex items-center justify-center gap-2 text-white px-6 py-3 mt-2 md:mt-0 cursor-pointer bg-primary hover:bg-primary-dull rounded-full transition-all"
+          className="w-full md:w-auto flex items-center justify-center gap-2 text-white px-6 py-2 mt-2 md:mt-0 cursor-pointer bg-primary hover:bg-primary-dull rounded-full transition-all"
         >
           <img
             src={assets.search_icon}

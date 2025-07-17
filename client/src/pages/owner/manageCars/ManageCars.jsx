@@ -28,8 +28,8 @@ const ManageCars = () => {
               <th className="p-3 font-medium">Car</th>
               <th className="p-3 font-medium max-md:hidden">Category</th>
               <th className="p-3 font-medium">Price</th>
-              <th className="p-3 font-medium max-md:hidden">Status</th>
-              <th className="p-3 font-medium">Actions</th>
+              <th className="p-3 font-medium">Status</th>
+              <th className="p-3 font-medium max-md:hidden">Actions</th>
             </tr>
           </thead>
           <tbody className="">
@@ -39,7 +39,7 @@ const ManageCars = () => {
                   <td className="flex items-center gap-2 p-3">
                     <img
                       src={car?.image}
-                      alt="car_img"
+                      alt="car_image  "
                       className="md:w-12 md:h-12 aspect-square rounded-md object-cover"
                     />
                     <div className="max-md:hidden">
@@ -61,18 +61,18 @@ const ManageCars = () => {
                   <td className="p-3 font-medium">
                     <span
                       className={`px-3 py-1 rounded-full text-xs ${
-                        car?.isAvaliable
+                        car?.isAvailable
                           ? "bg-green-100 text-green-500"
                           : "bg-red-100 text-red-500"
                       }`}
                     >
-                      {car?.isAvaliable ? "Available" : "Unavailable"}
+                      {car?.isAvailable ? "Available" : "Unavailable"}
                     </span>
                   </td>
-                  <td className="flex items-center p-3">
+                  <td className="max-md:hidden flex items-center p-3">
                     <img
                       src={
-                        car?.isAvaliable
+                        car?.isAvailable
                           ? assets.eye_close_icon
                           : assets.eye_icon
                       }

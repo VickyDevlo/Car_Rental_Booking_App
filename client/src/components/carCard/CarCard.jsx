@@ -16,7 +16,9 @@ const CarCard = ({ car }) => {
       role="button"
       tabIndex={0}
       onKeyDown={(e) => e.key === "Enter" && handleNavigation()}
-      className="group rounded-2xl overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow duration-300 bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+      className="group rounded-2xl overflow-hidden cursor-pointer shadow-md 
+      hover:shadow-xl transition-shadow duration-300 bg-white focus:outline-none
+       focus:ring-2 focus:ring-primary"
     >
       {/* Image Section */}
       <div className="relative h-48 sm:h-52 w-full overflow-hidden">
@@ -24,16 +26,23 @@ const CarCard = ({ car }) => {
           src={car?.image || assets.placeholder_car}
           alt={`${car?.brand || "Car"} ${car?.model || ""}`}
           loading="lazy"
-          className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+          className="w-full h-full object-cover transform transition-transform 
+          duration-300 group-hover:scale-105"
         />
 
-        {car?.isAvaliable && (
-          <p className="absolute top-3 left-3 bg-primary/90 text-white text-xs px-3 py-1 rounded-full shadow-sm">
+        {car?.isAvailable && (
+          <p
+            className="absolute top-3 left-3 bg-primary/90 text-white 
+          text-xs px-3 py-1 rounded-full shadow-sm"
+          >
             Available Now
           </p>
         )}
 
-        <div className="absolute bottom-3 right-3 bg-black/80 text-white text-xs px-3 py-1 rounded-full shadow-sm">
+        <div
+          className="absolute bottom-3 right-3 bg-black/80 text-white 
+        text-xs px-3 py-1 rounded-full shadow-sm"
+        >
           <span className="font-semibold">
             {currency} {car?.pricePerDay}
           </span>

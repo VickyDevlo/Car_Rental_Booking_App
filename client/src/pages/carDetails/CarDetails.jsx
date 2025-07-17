@@ -23,7 +23,7 @@ const CarDetails = () => {
   }, [id]);
 
   return car ? (
-    <div className="px-6 md:px-16 lg:px-24 xl:px-32 my-12">
+    <div className="container mx-auto px-6 md:px-12  lg:px-14 xl:px-20 my-12">
       <button
         onClick={() => {
           navigate(-1);
@@ -122,7 +122,8 @@ const CarDetails = () => {
         >
           <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
             {currency} {car?.pricePerDay}
-            <span className="text-base text-gray-400 font-normal">per day</span>
+            <span className="text-base text-gray-400 font-normal capitalize">
+              per day</span>
           </p>
           <hr className="border border-borderColor my-6" />
           <div className="flex flex-col gap-2">
