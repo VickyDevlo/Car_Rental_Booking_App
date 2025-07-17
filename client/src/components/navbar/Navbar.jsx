@@ -61,13 +61,13 @@ const Navbar = ({ setShowLogin }) => {
             <img src={assets.search_icon} alt="search" />
           </div>
           <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
-            <button
-              onClick={() => navigate("/owner")}
-              className="text-sm cursor-pointer max-sm:p-1 max-sm:text-start w-full
-              max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded"
+            <NavLink
+              to={"/owner"}
+              className="text-sm cursor-pointer font-medium max-sm:p-2 max-sm:text-start w-full hover:text-primary transition-all 
+              duration-200 rounded"
             >
               Dashboard
-            </button>
+            </NavLink>
             <button
               onClick={() => {
                 setShowLogin(true);

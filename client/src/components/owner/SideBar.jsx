@@ -15,7 +15,10 @@ const SideBar = () => {
   return (
     <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
       <div className="group relative">
-        <label htmlFor="image">
+        <label
+          htmlFor="image"
+          className="block w-14 h-14 md:w-20 md:h-20 mx-auto"
+        >
           <img
             src={
               image
@@ -23,7 +26,7 @@ const SideBar = () => {
                 : user?.image || assets.user_profile
             }
             alt="user_image"
-            className="w-9 h-9 md:h-14 md:w-14 rounded-full mx-auto"
+            className="md:w-full md:h-full h-10 w-10 rounded-full object-cover aspect-square mx-auto"
           />
           <input
             type="file"
@@ -32,6 +35,7 @@ const SideBar = () => {
             hidden
             onChange={(e) => setImage(e.target.files[0])}
           />
+
           <div className="absolute hidden top-0 right-0 left-0 bottom-0 bg-black/10 rounded-full group-hover:flex items-center justify-center cursor-pointer">
             <img src={assets.edit_icon} alt="edit" />
           </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Login = ({ showLogin, setShowLogin }) => {
   const [state, setState] = useState("login");
@@ -6,13 +6,27 @@ const Login = ({ showLogin, setShowLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const nameRef = useRef();
+  const emailRef = useRef();
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
   };
 
   useEffect(() => {
-    document.body.style.overflow = showLogin ? "hidden" : "auto";
+    if (state === "register") {
+      nameRef.current?.focus();
+    } else {
+      emailRef.current?.focus();
+    }
+  }, [state]);
 
+  useEffect(() => {
+    if (showLogin) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -34,44 +48,50 @@ const Login = ({ showLogin, setShowLogin }) => {
           <span className="text-primary">User</span>{" "}
           {state === "login" ? "Login" : "Sign Up"}
         </p>
+
         {state === "register" && (
           <div className="w-full">
             <p>Name</p>
             <input
+              ref={nameRef}
               onChange={(e) => setName(e.target.value)}
               value={name}
-              placeholder="type here"
+              placeholder="Enter your name"
               className="border border-gray-200 rounded w-full p-2 mt-1 
-              outline-primary"
+              outline-primary/60"
               type="text"
               required
             />
           </div>
         )}
-        <div className="w-full ">
+
+        <div className="w-full">
           <p>Email</p>
           <input
+            ref={emailRef}
             onChange={(e) => setEmail(e.target.value)}
             value={email}
-            placeholder="type here"
+            placeholder="Enter your email"
             className="border border-gray-200 rounded w-full p-2 mt-1
-             outline-primary"
+             outline-primary/60"
             type="email"
             required
           />
         </div>
-        <div className="w-full ">
+
+        <div className="w-full">
           <p>Password</p>
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
-            placeholder="type here"
+            placeholder="Enter your password"
             className="border border-gray-200 rounded w-full p-2 mt-1
-             outline-primary"
+             outline-primary/60"
             type="password"
             required
           />
         </div>
+
         {state === "register" ? (
           <p>
             Already have account?{" "}
@@ -93,8 +113,9 @@ const Login = ({ showLogin, setShowLogin }) => {
             </span>
           </p>
         )}
+
         <button
-          className="bg-primary hover:bg-primary-dull 
+          className="bg-primary hover:bg-primary-dull font-medium tracking-wide 
         transition-all text-white w-full py-2 rounded-md cursor-pointer"
         >
           {state === "register" ? "Create Account" : "Login"}

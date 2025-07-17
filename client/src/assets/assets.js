@@ -35,6 +35,8 @@ import testimonial_image_2 from "./testimonial_image_2.png";
 import main_car from "./main_car.png";
 import banner_car_image from "./banner_car_image.png";
 import user_profile from "./user_profile.png";
+import user_profile1 from "./user_profile1.jpg";
+import user_profile2 from "./user_profile2.jpg";
 import upload_icon from "./upload_icon.svg";
 import car_image1 from "./car_image1.png";
 import car_image2 from "./car_image2.png";
@@ -83,6 +85,8 @@ export const assets = {
   car_image1,
   upload_icon,
   user_profile,
+  user_profile1,
+  user_profile2,
   car_image2,
   car_image3,
   car_image4,
@@ -126,7 +130,7 @@ export const dummyUserData = {
   name: "GreatStack",
   email: "admin@example.com",
   role: "owner",
-  image: user_profile,
+  image: user_profile2,
 };
 
 export const dummyCarData = [
