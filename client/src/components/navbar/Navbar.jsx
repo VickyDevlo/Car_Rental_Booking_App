@@ -32,7 +32,7 @@ const Navbar = ({ setShowLogin }) => {
           />
         </Link>
         <div
-          className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-50 overflow-hidden ${
+          className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-10 overflow-hidden ${
             location.pathname === "/" ? "max-sm:bg-light" : "max-sm:bg-white"
           }
            ${open ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"}`}
@@ -58,7 +58,7 @@ const Navbar = ({ setShowLogin }) => {
               placeholder="Search products"
               className="bg-transparent w-full py-1.5 placeholder-gray-500 outline-none"
             />
-            <img src={assets.search_icon} alt="serach" />
+            <img src={assets.search_icon} alt="search" />
           </div>
           <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
             <button
@@ -69,7 +69,10 @@ const Navbar = ({ setShowLogin }) => {
               Dashboard
             </button>
             <button
-              onClick={() => setShowLogin(true)}
+              onClick={() => {
+                setShowLogin(true);
+                setOpen(false);
+              }}
               className="text-white text-sm font-medium px-6 py-1.5 bg-primary
              hover:bg-primary-dull rounded-lg cursor-pointer transition-all"
             >

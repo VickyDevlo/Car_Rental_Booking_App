@@ -1,4 +1,5 @@
 import Navbar from "./navbar/Navbar";
+import Login from "./login/Login";
 import HeroSection from "./heroSection.jsx/HeroSection";
 import CarCard from "./carCard/CarCard";
 import FeatureSection from "./featureSection/FeatureSection";
@@ -11,6 +12,7 @@ import Footer from "./footer/Footer";
 
 export {
   Navbar,
+  Login,
   HeroSection,
   CarCard,
   FeatureSection,
