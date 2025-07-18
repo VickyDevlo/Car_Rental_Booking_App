@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { assets, menuLinks } from "../../assets/assets";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
-const Navbar = ({ setShowLogin,showLogin }) => {
+const Navbar = ({ setShowLogin, showLogin }) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     showLogin
@@ -24,7 +23,7 @@ const Navbar = ({ setShowLogin,showLogin }) => {
             src={assets.logo}
             onClick={() => setOpen(false)}
             alt="logo"
-            className="h-8 shrink-0"
+            className="h-8 shrink-0 md:ml-1"
           />
         </Link>
         <div
@@ -39,7 +38,7 @@ const Navbar = ({ setShowLogin,showLogin }) => {
               to={menu.path}
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
-                `font-medium max-sm:w-full max-sm:p-2 whitespace-nowrap
+                `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
      max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
      ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""}`
               }
@@ -70,7 +69,7 @@ const Navbar = ({ setShowLogin,showLogin }) => {
                 setOpen(false);
               }}
               className="text-white text-sm font-medium px-6 py-1.5 bg-primary
-             hover:bg-primary-dull rounded-lg cursor-pointer transition-all"
+             hover:bg-primary-dull rounded-lg md:mr-1 cursor-pointer transition-all"
             >
               Login
             </button>
