@@ -21,17 +21,6 @@ const Login = ({ showLogin, setShowLogin }) => {
     }
   }, [state]);
 
-  useEffect(() => {
-    if (showLogin) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [showLogin]);
-
   return (
     <div
       onClick={() => setShowLogin(false)}

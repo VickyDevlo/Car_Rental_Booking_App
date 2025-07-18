@@ -9,7 +9,7 @@ function App() {
   return (
     <div>
       {showLogin && <Login setShowLogin={setShowLogin} showLogin={showLogin}/>}
-      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} />}
+      {!isOwnerPath && <Navbar setShowLogin={setShowLogin} showLogin={showLogin}/>}
 
       <Router />
       {!isOwnerPath && <Footer />}

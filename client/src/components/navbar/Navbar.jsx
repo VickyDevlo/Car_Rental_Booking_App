@@ -2,20 +2,16 @@ import { useEffect, useState } from "react";
 import { assets, menuLinks } from "../../assets/assets";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 
-const Navbar = ({ setShowLogin }) => {
+const Navbar = ({ setShowLogin,showLogin }) => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    open
+    showLogin
       ? (document.body.style.overflow = "hidden")
       : (document.body.style.overflow = "auto");
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [open]);
+  }, [showLogin]);
 
   return (
     <div
