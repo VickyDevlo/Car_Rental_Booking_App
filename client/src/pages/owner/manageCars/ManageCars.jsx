@@ -69,20 +69,20 @@ const ManageCars = () => {
                       {car?.isAvailable ? "Available" : "Unavailable"}
                     </span>
                   </td>
-                  <td className="max-md:hidden flex items-center p-3">
+                  <td className="max-md:hidden flex justify-start items-center gap-2">
                     <img
                       src={
                         car?.isAvailable
                           ? assets.eye_close_icon
                           : assets.eye_icon
                       }
-                      alt=""
-                      className="cursor-pointer"
+                      alt="edit_btn"
+                      className="cursor-pointer bg-primary/15 hover:bg-primary/10 rounded-full transition-all"
                     />
                     <img
                       src={assets.delete_icon}
-                      alt=""
-                      className="cursor-pointer"
+                      alt="delete_btn"
+                      className="cursor-pointer bg-red-200 hover:bg-red-100 rounded-full transition-all"
                     />
                   </td>
                 </tr>
