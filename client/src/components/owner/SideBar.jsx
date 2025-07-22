@@ -1,9 +1,10 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { assets, dummyUserData, ownerMenuLinks } from "../../assets/assets";
 import { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
 
 const SideBar = () => {
-  const user = dummyUserData;
+  const { user } = useAppContext();
   const [image, setImage] = useState("");
 
   const location = useLocation();
@@ -51,7 +52,7 @@ const SideBar = () => {
           <img src={assets.check_icon} alt="save" width={13} />
         </button>
       )}
-      <p className="mt-2 text-sm font-semibold text-gray-600 max-md:hidden">
+      <p className="mt-2 text-sm font-semibold text-gray-600 capitalize max-md:hidden">
         {user?.name}
       </p>
       <div className="w-full">

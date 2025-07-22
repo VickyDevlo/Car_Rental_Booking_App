@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
-const Login = ({ showLogin, setShowLogin }) => {
+const Login = () => {
   const initialState = {
     name: "",
     email: "",
     password: "",
   };
+  const { setShowLogin, axios, token, setToken, navigate } = useAppContext();
   const [formData, setFormData] = useState(initialState);
   const [state, setState] = useState("login");
 
@@ -22,9 +25,40 @@ const Login = ({ showLogin, setShowLogin }) => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    state === "register" && setState("login");
-    console.log(formData);
-    setFormData(initialState);
+
+    // ✅ Only validate password length when registering
+    if (state === "register" && formData.password.trim().length < 8) {
+      toast.error("Password must be at least 8 characters long.");
+      return; // Don't submit or clear the form
+    }
+
+    try {
+      const { data } = await axios.post(`/api/user/${state}`, formData);
+
+      if (data?.success) {
+        if (state === "register") {
+          toast.success("Registration successful! Please log in.");
+          setState("login");
+          setFormData(initialState);
+          return; // Exit before trying to login
+        }
+
+        // ✅ If login is successful
+        toast.success("Login successful!");
+        navigate("/");
+        setToken(data?.token);
+        localStorage.setItem("token", data?.token);
+        setShowLogin(false);
+      } else {
+        toast.error(data?.message);
+        setFormData(initialState);
+        state === "register"
+          ? nameRef.current.focus()
+          : emailRef.current?.focus();
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {

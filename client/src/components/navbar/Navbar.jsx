@@ -1,10 +1,29 @@
 import { useEffect, useState } from "react";
 import { assets, menuLinks } from "../../assets/assets";
 import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
-const Navbar = ({ setShowLogin, showLogin }) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
+
+  const { setShowLogin, showLogin, user, logout, isOwner, setIsOwner, axios, navigate } =
+    useAppContext();
+
+  const changeRole = async () => {
+    try {
+      const { data } = await axios.post("/api/owner/change-role");
+      if (data?.success) {
+        setIsOwner(true);
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
     showLogin
@@ -56,22 +75,25 @@ const Navbar = ({ setShowLogin, showLogin }) => {
             <img src={assets.search_icon} alt="search" />
           </div>
           <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
-            <NavLink
-              to={"/owner"}
+            <button
+              onClick={() => (isOwner ? navigate("/owner") : changeRole())}
               className="text-sm cursor-pointer font-medium max-sm:p-2 max-sm:text-start w-full hover:text-primary transition-all 
               duration-200 rounded"
             >
-              Dashboard
-            </NavLink>
+              {isOwner ? "Dashboard" : "List Cars"}
+            </button>
             <button
               onClick={() => {
-                setShowLogin(true);
+                user ? logout() : setShowLogin(true);
                 setOpen(false);
               }}
-              className="text-white text-sm font-medium px-6 py-1.5 bg-primary
-             hover:bg-primary-dull rounded-lg md:mr-1 cursor-pointer transition-all"
+              className={`text-white text-sm font-medium px-6 py-1.5  ${
+                user
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-primary hover:bg-primary-dull"
+              } rounded-lg md:mr-1 cursor-pointer transition-all`}
             >
-              Login
+              {user ? "Logout" : "Login"}
             </button>
           </div>
         </div>
