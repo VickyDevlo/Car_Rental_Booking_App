@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { assets, menuLinks } from "../../assets/assets";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
-import toast from "react-hot-toast";
 import { motion } from "motion/react";
 
 const Navbar = () => {
@@ -80,7 +79,8 @@ const Navbar = () => {
             >
               {isOwner ? "Dashboard" : "List Cars"}
             </button>
-            <button
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={() => {
                 user ? logout() : setShowLogin(true);
                 setOpen(false);
@@ -89,10 +89,10 @@ const Navbar = () => {
                 user
                   ? "bg-red-500 hover:bg-red-600"
                   : "bg-primary hover:bg-primary-dull"
-              } rounded-lg md:mr-1 cursor-pointer transition-all`}
+              } rounded-sm md:mr-1 cursor-pointer transition-all`}
             >
               {user ? "Logout" : "Login"}
-            </button>
+            </motion.button>
           </div>
         </div>
         <button

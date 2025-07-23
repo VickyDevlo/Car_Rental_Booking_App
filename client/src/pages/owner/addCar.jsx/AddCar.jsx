@@ -5,8 +5,9 @@ import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
 
 const AddCar = () => {
-  const { currency, axios, loading, setLoading } = useAppContext();
+  const { currency, axios} = useAppContext();
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [car, setCar] = useState({
     brand: "",
     model: "",

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 const Login = () => {
   const initialState = {
@@ -198,15 +199,20 @@ const Login = () => {
           </p>
         )}
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.95 }}
           disabled={isDisabled}
           type="submit"
           className={`bg-primary hover:bg-primary-dull font-medium tracking-wide 
-    transition-all text-white w-full py-2 rounded-md
-    ${isDisabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer"}`}
+                      transition-all text-white w-full py-2 rounded-md
+                      ${
+                        isDisabled
+                          ? "opacity-30 cursor-not-allowed"
+                          : "cursor-pointer"
+                      }`}
         >
           {state === "register" ? "Create Account" : "Login"}
-        </button>
+        </motion.button>
       </form>
     </div>
   );

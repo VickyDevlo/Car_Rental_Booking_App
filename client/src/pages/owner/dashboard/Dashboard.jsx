@@ -38,7 +38,6 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       const { data } = await axios.get("/api/owner/dashboard");
-      console.log(data);
       
       if (data?.success) {
         setData(data?.dashboardData);

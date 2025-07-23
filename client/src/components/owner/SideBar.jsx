@@ -39,7 +39,7 @@ const SideBar = () => {
 
   return (
     <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
-      <div className="group relative w-14 h-14 md:w-20 md:h-20 mx-auto">
+      <div className="group relative w-12 h-12 md:w-20 md:h-20 mx-auto">
         <img
           src={previewSrc}
           alt="user_image"

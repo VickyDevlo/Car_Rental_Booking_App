@@ -1,10 +1,15 @@
+import { useEffect } from "react";
 import { assets } from "../../assets/assets";
 import { CarCard, Title } from "../../components";
 import { useAppContext } from "../../context/AppContext";
 import { motion } from "motion/react";
 
 const FeatureSection = () => {
-  const { navigate, cars } = useAppContext();
+  const { navigate, cars, fetchCars, user } = useAppContext();
+
+  useEffect(() => {
+    user && fetchCars();
+  }, [user]);
 
   return (
     <motion.div
@@ -29,7 +34,7 @@ const FeatureSection = () => {
         transition={{ duration: 1, delay: 0.5 }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16"
       >
-        {cars?.slice(0, 3).map((carData) => (
+        {cars?.slice(0, 6).map((carData) => (
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
@@ -43,7 +48,7 @@ const FeatureSection = () => {
       <motion.button
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, delay:0.6 }}
+        transition={{ duration: 0.4, delay: 0.6 }}
         onClick={() => {
           navigate("/cars");
           scrollTo(0, 0);
