@@ -28,7 +28,6 @@ const Banner = () => {
             so you can earn passive income, stress-free.
           </p>
           <motion.button
-            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => (isOwner ? navigate("/owner") : changeRole())}
             className="px-6 py-2 bg-white text-primary rounded-lg text-sm mt-4 cursor-pointer hover:bg-slate-100 transition-all"
