@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Title } from "../../../components/owner/Title";
-import { assets, dummyDashboardData } from "../../../assets/assets";
+import { assets } from "../../../assets/assets";
+import { useAppContext } from "../../../context/AppContext";
+import toast from "react-hot-toast";
 
 const Dashboard = () => {
-  const currency = import.meta.env.VITE_CURRENCY;
+  const { isOwner, currency, axios } = useAppContext();
 
   const [data, setData] = useState({
     totalCars: 0,
@@ -11,7 +13,7 @@ const Dashboard = () => {
     pendingBookings: 0,
     completedBookings: 0,
     recentBookings: [],
-    monthlyRevenue: 0,
+    monthlyRevenue: "",
   });
 
   const dashboardCards = [
@@ -33,9 +35,26 @@ const Dashboard = () => {
     },
   ];
 
+  const fetchDashboardData = async () => {
+    try {
+      const { data } = await axios.get("/api/owner/dashboard");
+      console.log(data);
+      
+      if (data?.success) {
+        setData(data?.dashboardData);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    setData(dummyDashboardData);
-  }, []);
+    if (isOwner) {
+      fetchDashboardData();
+    }
+  }, [isOwner]);
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 flex-1 mb-12">
@@ -118,7 +137,8 @@ const Dashboard = () => {
           <h1 className="text-lg font-semibold">Monthly Revenue</h1>
           <p className="text-gray-500">Revenue for current month</p>
           <p className="text-2xl md:text-3xl mt-6 font-semibold text-primary">
-            {currency}{data.monthlyRevenue}
+            {currency}
+            {data?.monthlyRevenue}
           </p>
         </div>
       </div>

@@ -1,19 +1,66 @@
 import { useEffect, useState } from "react";
 import { Title } from "../../../components/owner/Title";
-import { assets, dummyCarData } from "../../../assets/assets";
+import { assets } from "../../../assets/assets";
+import { useAppContext } from "../../../context/AppContext";
+import toast from "react-hot-toast";
 
 const ManageCars = () => {
-  const currency = import.meta.env.VITE_CURRENCY;
+  const { currency, isOwner, axios } = useAppContext();
 
   const [cars, setCars] = useState([]);
 
   const fetchOwnerCars = async () => {
-    setCars(dummyCarData);
+    try {
+      const { data } = await axios.get("/api/owner/cars");
+      if (data?.success) {
+        setCars(data?.cars);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const toggleAvailability = async (carId) => {
+    try {
+      const { data } = await axios.post("/api/owner/toggle-car", { carId });
+      if (data?.success) {
+        toast.success(data?.message);
+        fetchOwnerCars();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const deleteCar = async (carId) => {
+    try {
+      const confirm = window.confirm(
+        "Are you sure you wont to delete the car?"
+      );
+
+      if (!confirm) {
+        return null;
+      }
+
+      const { data } = await axios.post("/api/owner/delete-car", { carId });
+      if (data?.success) {
+        toast.success(data?.message);
+        fetchOwnerCars();
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchOwnerCars();
-  }, []);
+    isOwner && fetchOwnerCars();
+  }, [isOwner]);
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 w-full">
@@ -47,7 +94,7 @@ const ManageCars = () => {
                         {car?.brand} {car?.model}
                       </p>
                       <p className="font-medium text-xs text-gray-500">
-                        {car?.seating_capacity} • {car?.transmission}
+                        {car?.seatingCapacity} • {car?.transmission}
                       </p>
                     </div>
                   </td>
@@ -71,8 +118,9 @@ const ManageCars = () => {
                   </td>
                   <td className="max-md:hidden flex justify-start items-center gap-2">
                     <img
+                      onClick={() => toggleAvailability(car._id)}
                       src={
-                        car?.isAvailable
+                        car.isAvailable
                           ? assets.eye_close_icon
                           : assets.eye_icon
                       }
@@ -81,6 +129,7 @@ const ManageCars = () => {
                     />
                     <img
                       src={assets.delete_icon}
+                      onClick={() => deleteCar(car._id)}
                       alt="delete_btn"
                       className="cursor-pointer bg-red-200 hover:bg-red-100 rounded-full transition-all"
                     />

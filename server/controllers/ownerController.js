@@ -97,7 +97,7 @@ export const toggleCarAvailability = async (req, res) => {
       });
     }
 
-    car.isAvailable === !car.isAvailable;
+    car.isAvailable = !car.isAvailable;
 
     await car.save();
 
@@ -174,7 +174,7 @@ export const getDashboardData = async (req, res) => {
     // calculate monthly revenue form bookings where status is confirmed
     const monthlyRevenue = bookings
       .slice()
-      .filter((booking) => booking.staus === "confirmed")
+      .filter((booking) => booking.status === "confirmed")
       .reduce((acc, booking) => acc + booking.price, 0);
 
     const dashboardData = {
@@ -200,7 +200,6 @@ export const getDashboardData = async (req, res) => {
 };
 
 // API to update user image
-
 export const updateUserImage = async (req, res) => {
   try {
     const { _id } = req.user;
@@ -225,7 +224,7 @@ export const updateUserImage = async (req, res) => {
     });
 
     const image = optimizedImageURL;
-    await User.findByIdAndDelete(_id, { image });
+    await User.findByIdAndUpdate(_id, { image });
 
     res.json({
       success: true,

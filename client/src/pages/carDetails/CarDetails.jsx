@@ -1,26 +1,53 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { assets, dummyCarData } from "../../assets/assets";
+import { useParams } from "react-router-dom";
+import { assets } from "../../assets/assets";
 import { Loader } from "../../components";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 const CarDetails = () => {
+  const {
+    currency,
+    axios,
+    cars,
+    pickupDate,
+    setPickupDate,
+    returnDate,
+    setReturnDate,
+    navigate,
+  } = useAppContext();
+
   const today = new Date().toISOString().split("T")[0];
   const [car, setCar] = useState(null);
-  const [pickupDate, setPickupDate] = useState(today);
-  const [returnDate, setReturnDate] = useState(pickupDate);
-
-  const currency = import.meta.env.VITE_CURRENCY;
 
   const { id } = useParams();
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/bookings/create", {
+        car: id,
+        pickupDate,
+        returnDate,
+      });
+
+      if (data?.success) {
+        toast.success(data?.message);
+        navigate("/my-bookings");
+        setPickupDate("");
+        setReturnDate("");
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    setCar(dummyCarData.find((car) => car?._id === id));
-  }, [id]);
+    setCar(cars.find((car) => car?._id === id));
+  }, [cars, id]);
 
   return car ? (
     <div className="container mx-auto px-6 md:px-12  lg:px-14 xl:px-20 my-12">
@@ -39,14 +66,27 @@ const CarDetails = () => {
         Back to all cars
       </button>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-        <div className="lg:col-span-2">
-          <img
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-2"
+        >
+          <motion.img
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
             src={car?.image}
             alt={car?.brand}
             className="w-full h-auto md:max-h-96 object-cover rounded-xl mb-6 shadow-md"
           />
-          <div className="space-y-6">
-            <div className="">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="space-y-6"
+          >
+            <div>
               <h1 className="text-xl md:text-3xl text-gray-800 font-bold">
                 {car?.brand} {car?.model}
               </h1>
@@ -59,11 +99,11 @@ const CarDetails = () => {
               {[
                 {
                   icon: assets.users_icon,
-                  text: `${car?.seating_capacity} Seats`,
+                  text: `${car?.seatingCapacity} Seats`,
                 },
                 {
                   icon: assets.fuel_icon,
-                  text: car?.fuel_type,
+                  text: car?.fuelType,
                 },
                 {
                   icon: assets.carIcon,
@@ -74,7 +114,10 @@ const CarDetails = () => {
                   text: car?.location,
                 },
               ].map(({ icon, text }) => (
-                <div
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4 }}
                   className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500"
                   key={text}
                 >
@@ -82,10 +125,10 @@ const CarDetails = () => {
                   <span className="truncate w-full text-center text-sm">
                     {text}
                   </span>
-                </div>
+                </motion.div>
               ))}
             </div>
-            <div className="">
+            <div>
               <h1 className="text-xl font-semibold mb-3">Description</h1>
               <p className="text-gray-500">{car?.description}</p>
             </div>
@@ -113,17 +156,21 @@ const CarDetails = () => {
                 ))}
               </ul>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <form
+        <motion.form
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
           onSubmit={handleSubmit}
           className="sticky top-10 text-gray-500 p-6 space-y-6 rounded-xl shadow-lg h-max"
         >
           <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
             {currency} {car?.pricePerDay}
             <span className="text-base text-gray-400 font-normal capitalize">
-              per day</span>
+              per day
+            </span>
           </p>
           <hr className="border border-borderColor my-6" />
           <div className="flex flex-col gap-2">
@@ -161,7 +208,7 @@ const CarDetails = () => {
           <p className="text-xs text-center capitalize text-gray-500 font-medium">
             no credit card required to reserve
           </p>
-        </form>
+        </motion.form>
       </div>
     </div>
   ) : (

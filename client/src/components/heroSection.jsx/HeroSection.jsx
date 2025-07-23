@@ -1,31 +1,52 @@
 import { useState } from "react";
 import { assets, cityList } from "../../assets/assets";
+import { useAppContext } from "../../context/AppContext";
+import { motion, scale } from "motion/react";
 
 const HeroSection = () => {
   const today = new Date().toISOString().split("T")[0];
 
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [pickupDate, setPickupDate] = useState(today);
-  const [returnDate, setReturnDate] = useState(pickupDate);
+  const { pickupDate, setPickupDate, returnDate, setReturnDate, navigate } =
+    useAppContext();
 
-  const submitHandler = (e) => {
+  const [pickupLocation, setPickupLocation] = useState("");
+  const [] = useState(pickupDate);
+
+  const handleSearch = (e) => {
     e.preventDefault();
+    navigate(
+      "/cars?pickupLocation=" +
+        pickupLocation +
+        "&pickupDate=" +
+        pickupDate +
+        "&returnDate=" +
+        returnDate
+    );
   };
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
       className="h-auto flex flex-col items-center justify-center gap-4 md:gap-8
     bg-light text-center"
     >
-      <h1
+      <motion.h1
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
         className="text-2xl mt-5 md:text-5xl text-gray-800 font-extrabold 
       uppercase tracking-widest"
       >
         Luxury cars on rent
-      </h1>
+      </motion.h1>
 
-      <form
-        onSubmit={submitHandler}
+      <motion.form
+        initial={{ scale: 0.95, opacity: 0, y: 50 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay:1 }}
+        onSubmit={handleSearch}
         className=" flex flex-col md:flex-row items-center md:items-center 
         max-md:gap-7 gap-10 w-full justify-between px-4 py-3 rounded-lg 
         md:rounded-full max-w-80 md:max-w-[850px]
@@ -97,21 +118,27 @@ const HeroSection = () => {
         </div>
 
         {/* Submit Button */}
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           type="submit"
-          className="w-full md:w-auto flex items-center justify-center gap-2 text-white px-6 py-2 mt-2 md:mt-0 cursor-pointer bg-primary hover:bg-primary-dull rounded-full transition-all"
+          className="w-full md:w-auto flex items-center justify-center gap-2 text-white px-6 py-2 max-md:mt-2 cursor-pointer bg-primary hover:bg-primary-dull rounded-full transition-all"
         >
           <img
             src={assets.search_icon}
             alt="search"
-            className="brightness-200 w-5 h-5"
+            className="brightness-200 w-5 h-5 shrink-0"
           />
           Search
-        </button>
-      </form>
+        </motion.button>
+      </motion.form>
 
-      <img src={assets.main_car} alt="car" className="max-h-74" />
-    </div>
+      <motion.img
+       initial={{opacity:0, y:100}}
+        animate={{opacity:1, y:0}}
+        transition={{duration:0.8,delay:1.4}}
+       src={assets.main_car} alt="car" className="max-h-74" />
+    </motion.div>
   );
 };
 

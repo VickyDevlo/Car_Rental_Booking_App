@@ -1,31 +1,50 @@
 import { useEffect, useState } from "react";
 import { Title } from "../../components";
-import { assets, dummyMyBookingsData } from "../../assets/assets";
+import { assets } from "../../assets/assets";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 const MyBooking = () => {
+  const { currency, axios, user } = useAppContext();
   const [bookings, setBookings] = useState([]);
 
-  const currancy = import.meta.env.VITE_CURRENCY;
-
   const fetchMyBookings = async () => {
-    setBookings(dummyMyBookingsData);
+    try {
+      const { data } = await axios.get("/api/bookings/user");
+      if (data?.success) {
+        setBookings(data?.bookings);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   useEffect(() => {
-    fetchMyBookings();
-  }, []);
+    user && fetchMyBookings();
+  }, [user]);
 
   return (
-    <div className="px-6 mx-auto md:px-16 lg:px-24 xl:px-32 2xl:px-48 my-12 text-sm max-w-7xl">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      className="px-6 mx-auto md:px-16 lg:px-24 xl:px-32 2xl:px-48 my-12 text-sm max-w-7xl"
+    >
       <Title
         title="My Bookings"
         subTitle="View and manage your all car bookings"
         align="left"
       />
       <>
-        {bookings &&
+        {bookings.length ? (
           bookings.map((booking, i) => (
-            <div
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.1 }}
               key={booking?._id}
               className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border border-borderColor rounded-lg mt-5 first:mt-12"
             >
@@ -93,7 +112,7 @@ const MyBooking = () => {
                 <div className="text-sm text-gray-500 font-medium text-right">
                   <p>Total Price</p>
                   <h1 className="text-2xl font-semibold text-primary">
-                    {currancy}
+                    {currency}
                     {booking?.price}
                   </h1>
                   <p>
@@ -104,10 +123,22 @@ const MyBooking = () => {
                   </p>
                 </div>
               </div>
-            </div>
-          ))}
+            </motion.div>
+          ))
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="mt-12 px-6 py-16 flex flex-col items-center justify-center text-center border border-borderColor rounded-lg"
+          >
+            <h1 className="text-gray-600 text-xl md:text-3xl font-semibold">
+              No Bookings Available
+            </h1>
+          </motion.div>
+        )}
       </>
-    </div>
+    </motion.div>
   );
 };
 

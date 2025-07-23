@@ -65,7 +65,7 @@ const CarCard = ({ car }) => {
         <div className="grid grid-cols-2 gap-2 text-gray-400 text-sm mt-3">
           <div className="flex items-center">
             <img src={assets.users_icon} alt="Seats" className="h-4 w-4 mr-2" />
-            <span>{car?.seating_capacity || "N/A"} Seats</span>
+            <span>{car?.seatingCapacity || "N/A"} Seats</span>
           </div>
           <div className="flex items-center">
             <img
@@ -73,7 +73,7 @@ const CarCard = ({ car }) => {
               alt="Fuel type"
               className="h-4 w-4 mr-2"
             />
-            <span>{car?.fuel_type || "N/A"}</span>
+            <span>{car?.fuelType || "N/A"}</span>
           </div>
           <div className="flex items-center">
             <img

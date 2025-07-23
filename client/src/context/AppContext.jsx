@@ -8,9 +8,8 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 export const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-
   const currency = import.meta.env.VITE_CURRENCY;
-  const navigate = useNavigate  ();
+  const navigate = useNavigate();
 
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
@@ -18,8 +17,8 @@ export const AppProvider = ({ children }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
+  const [loading, setLoading] = useState(false);
   const [cars, setCars] = useState([]);
-
 
   //function to check if user is logged in
   const fetchUser = async () => {
@@ -89,11 +88,11 @@ export const AppProvider = ({ children }) => {
     fetchUser,
     fetchCars,
     logout,
+    loading,
+    setLoading,
   };
 
-  return <AppContext.Provider value={value}>
-    {children}
-  </AppContext.Provider>;
+  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
 export const useAppContext = () => {

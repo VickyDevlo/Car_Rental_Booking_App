@@ -26,4 +26,4 @@ ownerRouter.post(
 ownerRouter.get("/dashboard", protect, getDashboardData);
 ownerRouter.get("/cars", protect, getOwnerCars);
 
-ownerRouter.delete("/delete-car", protect, deleteCar);
+ownerRouter.post("/delete-car", protect, deleteCar);

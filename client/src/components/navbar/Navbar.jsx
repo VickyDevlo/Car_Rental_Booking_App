@@ -3,13 +3,22 @@ import { assets, menuLinks } from "../../assets/assets";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
+import { motion } from "motion/react";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
 
-  const { setShowLogin, showLogin, user, logout, isOwner, setIsOwner, axios, navigate } =
-    useAppContext();
+  const {
+    setShowLogin,
+    showLogin,
+    user,
+    logout,
+    isOwner,
+    setIsOwner,
+    axios,
+    navigate,
+  } = useAppContext();
 
   const changeRole = async () => {
     try {
@@ -32,13 +41,17 @@ const Navbar = () => {
   }, [showLogin]);
 
   return (
-    <div
+    <motion.div
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.9 }}
       className={`border-b border-borderColor relative transition-all 
      ${location.pathname === "/" && "bg-light"}`}
     >
       <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600">
         <Link to="/">
-          <img
+          <motion.img
+            whileHover={{ scale: 1.05 }}
             src={assets.logo}
             onClick={() => setOpen(false)}
             alt="logo"
@@ -105,7 +118,7 @@ const Navbar = () => {
           <img src={open ? assets.close_icon : assets.menu_icon} alt="menu" />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

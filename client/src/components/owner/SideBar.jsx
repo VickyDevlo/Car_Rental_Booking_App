@@ -1,60 +1,95 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { assets, dummyUserData, ownerMenuLinks } from "../../assets/assets";
-import { useState } from "react";
+import { assets, ownerMenuLinks } from "../../assets/assets";
+import { useState, useMemo } from "react";
 import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 const SideBar = () => {
-  const { user } = useAppContext();
-  const [image, setImage] = useState("");
+  const { user, axios, fetchUser, loading, setLoading } = useAppContext();
+  const [image, setImage] = useState(null);
 
   const location = useLocation();
+
   const updateImage = async () => {
-    user.image = URL.createObjectURL(image);
-    setImage("");
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      const { data } = await axios.post("/api/owner/update-image", formData);
+
+      if (data?.success) {
+        await fetchUser();
+        toast.success(data?.message);
+        setImage(null);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const previewSrc = useMemo(() => {
+    return image
+      ? URL.createObjectURL(image)
+      : user?.image || assets.user_profile;
+  }, [image, user?.image]);
 
   return (
     <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
-      <div className="group relative">
+      <div className="group relative w-14 h-14 md:w-20 md:h-20 mx-auto">
+        <img
+          src={previewSrc}
+          alt="user_image"
+          className="w-full h-full rounded-full object-cover aspect-square"
+          onError={(e) => (e.target.src = assets.user_profile)}
+        />
+
+        <input
+          type="file"
+          id="image"
+          accept="image/*"
+          hidden
+          onChange={(e) => setImage(e.target.files?.[0] || null)}
+          disabled={loading}
+        />
+
+        {/* Hover overlay for editing (disabled if loading) */}
         <label
           htmlFor="image"
-          className="block w-14 h-14 md:w-20 md:h-20 mx-auto"
+          className={`absolute inset-0 rounded-full cursor-pointer bg-black/10 ${
+            loading ? "cursor-not-allowed" : "group-hover:flex hidden"
+          } items-center justify-center`}
         >
-          <img
-            src={
-              image
-                ? URL.createObjectURL(image)
-                : user?.image || assets.user_profile
-            }
-            alt="user_image"
-            className="md:w-full md:h-full h-10 w-10 rounded-full object-cover aspect-square mx-auto"
-          />
-          <input
-            type="file"
-            id="image"
-            accept="image/*"
-            hidden
-            onChange={(e) => setImage(e.target.files[0])}
-          />
-
-          <div className="absolute hidden top-0 right-0 left-0 bottom-0 bg-black/10 rounded-full group-hover:flex items-center justify-center cursor-pointer">
-            <img src={assets.edit_icon} alt="edit" />
-          </div>
+          {!loading && <img src={assets.edit_icon} alt="edit" />}
         </label>
+
+        {/* Loading Spinner Overlay */}
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full">
+            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
       </div>
+
       {image && (
         <button
           className="absolute top-0 left-0 flex gap-1 p-2 text-primary 
-           bg-primary-dull/20 rounded-bl cursor-pointer"
+           bg-primary-dull/20 rounded-bl cursor-pointer disabled:cursor-not-allowed"
           onClick={updateImage}
+          disabled={loading}
         >
           <span className="max-md:hidden">Save</span>
           <img src={assets.check_icon} alt="save" width={13} />
         </button>
       )}
+
       <p className="mt-2 text-sm font-semibold text-gray-600 capitalize max-md:hidden">
         {user?.name}
       </p>
+
       <div className="w-full">
         {ownerMenuLinks.map((menu, i) => (
           <NavLink

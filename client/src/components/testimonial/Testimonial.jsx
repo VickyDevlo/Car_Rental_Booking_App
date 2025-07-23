@@ -1,29 +1,6 @@
-import { assets } from "../../assets/assets";
-import {  Title } from "../../components";
-
-const testimonials = [
-  {
-    name: "Emma Rodriguez",
-    location: "Barcelona, Spain",
-    image: assets.testimonial_image_1,
-    testimonial:
-      "Exceptional service and attention to detail. Everything was handled professionally and efficiently from start to finish. Highly recommended!",
-  },
-  {
-    name: "Liam Johnson",
-    location: "New York, USA",
-    image: assets.testimonial_image_2,
-    testimonial:
-      "I’m truly impressed by the quality and consistency. The entire process was smooth, and the results exceeded all expectations. Thank you!",
-  },
-  {
-    name: "Sophia Lee",
-    location: "Seoul, South Korea",
-    image: assets.testimonial_image_1,
-    testimonial:
-      "Fantastic experience! From start to finish, the team was professional, responsive, and genuinely cared about delivering great results.",
-  },
-];
+import { assets, testimonials } from "../../assets/assets";
+import { Title } from "../../components";
+import { motion } from "motion/react";
 
 const Testimonial = () => {
   return (
@@ -35,7 +12,11 @@ const Testimonial = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
         {testimonials.map((testimonial, i) => (
-          <div
+          <motion.div
+            initial={{ y: 40, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: i * 0.3, ease: "easeOut" }}
+            viewport={{once:true, amount:0.3}}
             key={i}
             className="bg-white p-6 rounded-xl shadow-lg hover:scale-105 transition-all duration-300"
           >
@@ -60,7 +41,7 @@ const Testimonial = () => {
             <p className="text-gray-500 max-w-90 mt-4 font-light">
               "{testimonial.testimonial}"
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

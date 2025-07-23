@@ -125,6 +125,30 @@ export const ownerMenuLinks = [
   },
 ];
 
+export const testimonials = [
+  {
+    name: "Emma Rodriguez",
+    location: "Barcelona, Spain",
+    image: assets.testimonial_image_1,
+    testimonial:
+      "Exceptional service and attention to detail. Everything was handled professionally and efficiently from start to finish. Highly recommended!",
+  },
+  {
+    name: "Liam Johnson",
+    location: "New York, USA",
+    image: assets.testimonial_image_2,
+    testimonial:
+      "I’m truly impressed by the quality and consistency. The entire process was smooth, and the results exceeded all expectations. Thank you!",
+  },
+  {
+    name: "Sophia Lee",
+    location: "Seoul, South Korea",
+    image: assets.testimonial_image_1,
+    testimonial:
+      "Fantastic experience! From start to finish, the team was professional, responsive, and genuinely cared about delivering great results.",
+  },
+];
+
 export const dummyUserData = {
   _id: "6847f7cab3d8daecdb517095",
   name: "GreatStack",
@@ -197,7 +221,7 @@ export const dummyCarData = [
     year: 2022,
     category: "Sedan",
     seating_capacity: 2,
-    fuel_type: "Diesel",
+    fuel_type: "  ",
     transmission: "Semi-Automatic",
     pricePerDay: 209,
     location: "Houston",
