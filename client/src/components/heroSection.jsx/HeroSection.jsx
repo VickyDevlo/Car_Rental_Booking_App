@@ -45,7 +45,7 @@ const HeroSection = () => {
       <motion.form
         initial={{ scale: 0.95, opacity: 0, y: 50 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay:1 }}
+        transition={{ duration: 0.5, delay: 1 }}
         onSubmit={handleSearch}
         className=" flex flex-col md:flex-row items-center md:items-center 
         max-md:gap-7 gap-10 w-full justify-between px-4 py-3 rounded-lg 
@@ -119,7 +119,6 @@ const HeroSection = () => {
 
         {/* Submit Button */}
         <motion.button
-          whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           type="submit"
           className="w-full md:w-auto flex items-center justify-center gap-2 text-white px-6 py-2 max-md:mt-2 cursor-pointer bg-primary hover:bg-primary-dull rounded-full transition-all"
@@ -134,10 +133,13 @@ const HeroSection = () => {
       </motion.form>
 
       <motion.img
-       initial={{opacity:0, y:100}}
-        animate={{opacity:1, y:0}}
-        transition={{duration:0.8,delay:1.4}}
-       src={assets.main_car} alt="car" className="max-h-74" />
+        initial={{ opacity: 0, y: 100 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1.4 }}
+        src={assets.main_car}
+        alt="car"
+        className="max-h-74"
+      />
     </motion.div>
   );
 };

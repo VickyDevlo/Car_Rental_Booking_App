@@ -45,6 +45,20 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const changeRole = async () => {
+    try {
+      const { data } = await axios.post("/api/owner/change-role");
+      if (data?.success) {
+        setIsOwner(true);
+        toast.success(data?.message);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -87,6 +101,7 @@ export const AppProvider = ({ children }) => {
     setReturnDate,
     fetchUser,
     fetchCars,
+    changeRole,
     logout,
     loading,
     setLoading,

@@ -53,7 +53,7 @@ const CarDetails = () => {
     <div className="container mx-auto px-6 md:px-12  lg:px-14 xl:px-20 my-12">
       <button
         onClick={() => {
-          navigate(-1);
+          navigate('/cars');
           scrollTo(0, 0);
         }}
         className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer"

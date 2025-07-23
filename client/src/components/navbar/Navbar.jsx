@@ -13,26 +13,11 @@ const Navbar = () => {
     setShowLogin,
     showLogin,
     user,
+    changeRole,
     logout,
     isOwner,
-    setIsOwner,
-    axios,
     navigate,
   } = useAppContext();
-
-  const changeRole = async () => {
-    try {
-      const { data } = await axios.post("/api/owner/change-role");
-      if (data?.success) {
-        setIsOwner(true);
-        toast.success(data?.message);
-      } else {
-        toast.error(data?.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
 
   useEffect(() => {
     showLogin

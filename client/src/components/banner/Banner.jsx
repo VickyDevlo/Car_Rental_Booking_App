@@ -1,7 +1,10 @@
 import { assets } from "../../assets/assets";
 import { motion } from "motion/react";
+import { useAppContext } from "../../context/AppContext";
 
 const Banner = () => {
+  const { changeRole, isOwner, navigate } = useAppContext();
+
   return (
     <motion.div
       initial={{ y: 50, opacity: 0 }}
@@ -27,15 +30,16 @@ const Banner = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => (isOwner ? navigate("/owner") : changeRole())}
             className="px-6 py-2 bg-white text-primary rounded-lg text-sm mt-4 cursor-pointer hover:bg-slate-100 transition-all"
           >
-            List your car
+            {isOwner ? "Dashboard" : " List your car"}
           </motion.button>
         </div>
         <motion.img
           initial={{ x: 50, opacity: 0 }}
           whileInView={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay:0.4 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
           src={assets.banner_car_image}
           alt="car"
           className="max-h-44 max-md:mt-5"
