@@ -22,6 +22,9 @@ const HeroSection = () => {
         "&returnDate=" +
         returnDate
     );
+    setPickupLocation("");
+    setPickupDate("");
+    setReturnDate("");
   };
 
   return (
@@ -116,8 +119,6 @@ const HeroSection = () => {
             />
           </div>
         </div>
-
-        {/* Submit Button */}
         <motion.button
           whileTap={{ scale: 0.95 }}
           type="submit"
