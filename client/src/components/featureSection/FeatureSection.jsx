@@ -49,6 +49,7 @@ const FeatureSection = () => {
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.4, delay: 0.6 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => {
           navigate("/cars");
           scrollTo(0, 0);

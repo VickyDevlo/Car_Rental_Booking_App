@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
+import Loader from "../loader/Loader";
 
 const Login = () => {
   const initialState = {
@@ -9,7 +10,8 @@ const Login = () => {
     email: "",
     password: "",
   };
-  const { setShowLogin, axios, token, setToken, navigate } = useAppContext();
+  const { setShowLogin, axios, setLoading, loading, setToken, navigate } =
+    useAppContext();
   const [formData, setFormData] = useState(initialState);
   const [state, setState] = useState("login");
 
@@ -27,11 +29,13 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    // ✅ Only validate password length when registering
+    // ✅ Validate password length if registering
     if (state === "register" && formData.password.trim().length < 8) {
       toast.error("Password must be at least 8 characters long.");
-      return; // Don't submit or clear the form
+      return;
     }
+
+    setLoading(true); // Start loading
 
     try {
       const { data } = await axios.post(`/api/user/${state}`, formData);
@@ -41,10 +45,10 @@ const Login = () => {
           toast.success("Registration successful! Please log in.");
           setState("login");
           setFormData(initialState);
-          return; // Exit before trying to login
+          return;
         }
 
-        // ✅ If login is successful
+        // ✅ Login success
         toast.success("Login successful!");
         navigate("/");
         setToken(data?.token);
@@ -59,6 +63,8 @@ const Login = () => {
       }
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false); // Stop loading in both success/failure cases
     }
   };
 
@@ -206,12 +212,18 @@ const Login = () => {
           className={`bg-primary hover:bg-primary-dull font-medium tracking-wide 
                       transition-all text-white w-full py-2 rounded-md
                       ${
-                        isDisabled
+                        isDisabled || loading
                           ? "opacity-30 cursor-not-allowed"
                           : "cursor-pointer"
                       }`}
         >
-          {state === "register" ? "Create Account" : "Login"}
+          {loading ? (
+            <Loader className="h-5 w-5 border-2" />
+          ) : state === "register" ? (
+            "Create Account"
+          ) : (
+            "Login"
+          )}
         </motion.button>
       </form>
     </div>

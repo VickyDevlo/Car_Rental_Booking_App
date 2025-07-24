@@ -1,7 +1,8 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { assets } from "../assets/assets";
 
 axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -19,6 +20,7 @@ export const AppProvider = ({ children }) => {
   const [returnDate, setReturnDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [cars, setCars] = useState([]);
+  const [image, setImage] = useState(null);
 
   //function to check if user is logged in
   const fetchUser = async () => {
@@ -59,6 +61,31 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  const updateImage = async () => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      const { data } = await axios.post("/api/owner/update-image", formData);
+
+      if (data?.success) {
+        await fetchUser();
+        toast.success(data?.message);
+        setImage(null);
+      } else {
+        toast.error(data?.message);
+      }
+    } catch (error) {
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+ const displayImage = useMemo(() => {
+  return user?.image || assets.user_profile;
+}, [user?.image]);
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -66,6 +93,7 @@ export const AppProvider = ({ children }) => {
     setIsOwner(false);
     axios.defaults.headers.common["Authorization"] = "";
     toast.success("You have been logout...");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -89,6 +117,10 @@ export const AppProvider = ({ children }) => {
     setUser,
     token,
     setToken,
+    image,
+    setImage,
+    updateImage,
+    displayImage,
     isOwner,
     setIsOwner,
     showLogin,

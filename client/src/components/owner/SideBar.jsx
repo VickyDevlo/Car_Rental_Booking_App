@@ -1,47 +1,18 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { assets, ownerMenuLinks } from "../../assets/assets";
-import { useState, useMemo } from "react";
 import { useAppContext } from "../../context/AppContext";
-import toast from "react-hot-toast";
 
 const SideBar = () => {
-  const { user, axios, fetchUser, loading, setLoading } = useAppContext();
-  const [image, setImage] = useState(null);
-
+  const { user, image, setImage, updateImage, displayImage, loading } = useAppContext();
   const location = useLocation();
 
-  const updateImage = async () => {
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append("image", image);
-      const { data } = await axios.post("/api/owner/update-image", formData);
-
-      if (data?.success) {
-        await fetchUser();
-        toast.success(data?.message);
-        setImage(null);
-      } else {
-        toast.error(data?.message);
-      }
-    } catch (error) {
-      toast.error(error?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const previewSrc = useMemo(() => {
-    return image
-      ? URL.createObjectURL(image)
-      : user?.image || assets.user_profile;
-  }, [image, user?.image]);
+  const sidebarPreview = image ? URL.createObjectURL(image) : displayImage;
 
   return (
     <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
       <div className="group relative w-12 h-12 md:w-20 md:h-20 mx-auto">
         <img
-          src={previewSrc}
+          src={sidebarPreview}
           alt="user_image"
           className="w-full h-full rounded-full object-cover aspect-square"
           onError={(e) => (e.target.src = assets.user_profile)}
@@ -76,8 +47,7 @@ const SideBar = () => {
 
       {image && (
         <button
-          className="absolute top-0 left-0 flex gap-1 p-2 text-primary 
-           bg-primary-dull/20 rounded-bl cursor-pointer disabled:cursor-not-allowed"
+          className="absolute top-0 left-0 flex gap-1 p-2 text-primary bg-primary-dull/20 rounded-bl cursor-pointer disabled:cursor-not-allowed"
           onClick={updateImage}
           disabled={loading}
         >
@@ -103,13 +73,11 @@ const SideBar = () => {
               }`}
           >
             <img
-              src={
-                menu.path === location.pathname ? menu.coloredIcon : menu.icon
-              }
-              alt="car_icon"
+              src={menu.path === location.pathname ? menu.coloredIcon : menu.icon}
+              alt="menu_icon"
               className="shrink-0"
             />
-            <span className="max-md:hidden whitespace-nowrap truncate ">
+            <span className="max-md:hidden whitespace-nowrap truncate">
               {menu.name}
             </span>
           </NavLink>

@@ -117,7 +117,9 @@ const Cars = () => {
           </div>
         </motion.div>
       ) : (
-        <Loader />
+        <div className="m-12">
+          <Loader className="h-14 w-14 border-4" />
+        </div>
       )}
     </div>
   );

@@ -1,12 +1,12 @@
-import React from 'react'
-
-const Loader = () => {
+const Loader = ({ className }) => {
   return (
-    <div className='flex items-center justify-center h-[80vh]'>
-      <div className="h-14 w-14 border-4 border-gray-300 border-t-primary
-      rounded-full animate-spin"></div>
+    <div className="flex items-center justify-center">
+      <div
+        className={`${className} border-gray-300 border-t-primary
+      rounded-full animate-spin`}
+      ></div>
     </div>
-  )
-}
+  );
+};
 
-export default Loader
+export default Loader;

@@ -16,6 +16,8 @@ const CarDetails = () => {
     returnDate,
     setReturnDate,
     navigate,
+    setLoading,
+    loading,
   } = useAppContext();
 
   const today = new Date().toISOString().split("T")[0];
@@ -25,6 +27,7 @@ const CarDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const { data } = await axios.post("/api/bookings/create", {
         car: id,
@@ -42,6 +45,8 @@ const CarDetails = () => {
       }
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,11 +54,13 @@ const CarDetails = () => {
     setCar(cars.find((car) => car?._id === id));
   }, [cars, id]);
 
+  const isDisabled = !pickupDate || !returnDate;
+
   return car ? (
     <div className="container mx-auto px-6 md:px-12  lg:px-14 xl:px-20 my-12">
       <button
         onClick={() => {
-          navigate('/cars');
+          navigate("/cars");
           scrollTo(0, 0);
         }}
         className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer"
@@ -118,7 +125,7 @@ const CarDetails = () => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
-                  className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500"
+                  className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500 capitalize"
                   key={text}
                 >
                   <img src={icon} alt={text} className="h-5 mb-2" />
@@ -144,7 +151,8 @@ const CarDetails = () => {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="flex items-center text-gray-500 font-medium capitalize"
+                    className="flex items-center text-gray-500 font-medium 
+                    capitalize"
                   >
                     <img
                       src={assets.check_icon}
@@ -199,11 +207,16 @@ const CarDetails = () => {
           </div>
           <button
             type="submit"
-            className="text-white bg-primary w-full py-3 font-medium 
-          rounded-xl capitalize cursor-pointer hover:bg-primary-dull 
-          transition-all"
+            disabled={isDisabled}
+            className={`text-white bg-primary w-full py-3 font-medium 
+          rounded-xl capitalize hover:bg-primary-dull 
+          transition-all ${
+            isDisabled || loading
+              ? "opacity-30 cursor-not-allowed"
+              : "cursor-pointer"
+          }`}
           >
-            book now
+            {loading ? <Loader className="h-5 w-5 border-2" /> : "book now"}
           </button>
           <p className="text-xs text-center capitalize text-gray-500 font-medium">
             no credit card required to reserve
@@ -212,7 +225,9 @@ const CarDetails = () => {
       </div>
     </div>
   ) : (
-    <Loader />
+    <div className="m-12">
+      <Loader className="w-14 h-14 border-4" />
+    </div>
   );
 };
 

@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import { Title } from "../../../components/owner/Title";
 import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
+import Loader from "../../../components/loader/Loader";
 
 const ManageBooking = () => {
   const { currency, axios, isOwner } = useAppContext();
 
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchOwnerBookings = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get("/api/bookings/owner");
       if (data?.success) {
@@ -18,17 +21,26 @@ const ManageBooking = () => {
       }
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
-  const checkBookingStatus = async (bookingId, status) => {
+
+  const checkBookingStatus = async (bookingId, newStatus) => {
     try {
       const { data } = await axios.post("/api/bookings/change-status", {
         bookingId,
-        status,
+         status: newStatus,
       });
       if (data?.success) {
         toast.success(data?.message);
-        fetchOwnerBookings();
+        setBookings((prev) =>
+          prev.map((booking) =>
+            booking._id === bookingId
+              ? { ...booking, status: newStatus }
+              : booking
+          )
+        );
       } else {
         toast.error(data?.message);
       }
@@ -46,29 +58,39 @@ const ManageBooking = () => {
       <Title
         title="Manage Bookings"
         subTitle="Track all customer bookings, approve or cancel requests, and 
-            manage booking statuses."
+        manage booking statuses."
       />
-      <div className="max-w-3xl w-full rounded-md overflow-hidden border border-borderColor mt-6">
-        <table
-          className="w-full border-collapse text-left text-sm
-             text-gray-600"
-        >
-          <thead className="text-gray-500">
-            <tr>
-              <th className="p-3 font-medium">Car</th>
-              <th className="p-3 font-medium max-md:hidden">Date Range</th>
-              <th className="p-3 font-medium">Total</th>
-              <th className="p-3 font-medium max-md:hidden">Payment</th>
-              <th className="p-3 font-medium ">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {bookings &&
-              bookings.map((booking, i) => (
+
+      {loading ? (
+        <div className="m-12 flex justify-center">
+          <Loader className="md:w-14 md:h-14 w-8 h-8 border-4" />
+        </div>
+      ) : !bookings.length ? (
+        <div className="mt-10 md:p-12 text-center md:max-w-xl">
+          <h1 className="text-2xl md:text-4xl font-semibold text-gray-600">
+            No Bookings Available
+          </h1>
+          <p className="text-sm font-medium text-gray-500 mt-2">
+            You have no current bookings to manage.
+          </p>
+        </div>
+      ) : (
+        <div className="max-w-3xl w-full rounded-md overflow-hidden border border-borderColor my-6">
+          <table className="w-full border-collapse text-left text-sm text-gray-600">
+            <thead className="text-gray-500">
+              <tr>
+                <th className="p-3 font-medium">Car</th>
+                <th className="p-3 font-medium max-md:hidden">Date Range</th>
+                <th className="p-3 font-medium">Total</th>
+                <th className="p-3 font-medium max-md:hidden">Payment</th>
+                <th className="p-3 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map((booking, i) => (
                 <tr
                   key={i}
-                  className="border-t border-borderColor 
-                    text-gray-500"
+                  className="border-t border-borderColor text-gray-500"
                 >
                   <td className="p-3 flex items-center gap-3">
                     <img
@@ -108,8 +130,7 @@ const ManageBooking = () => {
                       </select>
                     ) : (
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold capitalize
-                        ${
+                        className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
                           booking?.status === "confirmed"
                             ? "bg-green-100 text-green-500"
                             : "bg-red-100 text-red-500"
@@ -121,9 +142,10 @@ const ManageBooking = () => {
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </table>
-      </div>
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

@@ -6,9 +6,8 @@ import toast from "react-hot-toast";
 import { motion } from "motion/react";
 
 const MyBooking = () => {
-  const { currency, axios, user, loading, setLoading } = useAppContext();
+  const { currency, axios, isOwner, loading, setLoading } = useAppContext();
   const [bookings, setBookings] = useState([]);
-  const [isFetched, setIsFetched] = useState(false); // ✅
 
   const fetchMyBookings = async () => {
     setLoading(true);
@@ -23,15 +22,14 @@ const MyBooking = () => {
       toast.error(error.message);
     } finally {
       setLoading(false);
-      setIsFetched(true); // ✅
     }
   };
 
   useEffect(() => {
-    if (user) {
+    if (isOwner) {
       fetchMyBookings();
     }
-  }, [user]);
+  }, [isOwner]);
 
   return (
     <motion.div
@@ -48,7 +46,7 @@ const MyBooking = () => {
 
       {loading ? (
         <div className="flex justify-center items-center py-20">
-          <Loader />
+          <Loader className="h-14 w-14 border-4" />
         </div>
       ) : bookings.length > 0 ? (
         bookings.map((booking, i) => (
@@ -57,7 +55,7 @@ const MyBooking = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: i * 0.1 }}
             key={booking?._id}
-            className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border border-borderColor rounded-lg mt-5 first:mt-12"
+            className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border border-borderColor rounded-lg mt-5 first:mt-12 capitalize"
           >
             <div className="md:col-span-1">
               <div className="rounded-md overflow-hidden my-3">
@@ -71,8 +69,7 @@ const MyBooking = () => {
                 {booking?.car?.brand} {booking?.car?.model}
               </p>
               <p className="font-medium text-gray-500 uppercase">
-                {booking?.car?.category} • {booking?.car?.year} •{" "}
-                {booking?.car?.location}
+                {booking?.car?.category} • {booking?.car?.year}
               </p>
             </div>
 
@@ -137,18 +134,20 @@ const MyBooking = () => {
             </div>
           </motion.div>
         ))
-      ) : isFetched && !loading ? (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.4 }}
-          className="mt-12 px-6 py-16 flex flex-col items-center justify-center text-center border border-borderColor rounded-lg"
-        >
-          <h1 className="text-gray-600 text-xl md:text-3xl font-semibold">
-            No Bookings Available
-          </h1>
-        </motion.div>
-      ) : null}
+      ) : (
+        !bookings.length && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.4 }}
+            className="mt-12 px-6 py-16 flex flex-col items-center justify-center text-center border border-borderColor rounded-lg"
+          >
+            <h1 className="text-gray-600 text-xl md:text-3xl font-semibold">
+              No Bookings Available
+            </h1>
+          </motion.div>
+        )
+      )}
     </motion.div>
   );
 };
