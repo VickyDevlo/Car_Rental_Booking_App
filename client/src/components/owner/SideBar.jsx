@@ -3,45 +3,54 @@ import { assets, ownerMenuLinks } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 
 const SideBar = () => {
-  const { user, image, setImage, updateImage, displayImage, loading } = useAppContext();
+  const { user, image, setImage, updateImage, displayImage, loading } =
+    useAppContext();
   const location = useLocation();
 
   const sidebarPreview = image ? URL.createObjectURL(image) : displayImage;
+  const isUserReady = user?.name && displayImage;
 
   return (
     <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
       <div className="group relative w-12 h-12 md:w-20 md:h-20 mx-auto">
-        <img
-          src={sidebarPreview}
-          alt="user_image"
-          className="w-full h-full rounded-full object-cover aspect-square"
-          onError={(e) => (e.target.src = assets.user_profile)}
-        />
+        {isUserReady ? (
+          <>
+            <img
+              src={sidebarPreview}
+              alt="user_image"
+              className="w-full h-full rounded-full object-cover aspect-square"
+              onError={(e) => (e.target.src = assets.user_profile)}
+            />
 
-        <input
-          type="file"
-          id="image"
-          accept="image/*"
-          hidden
-          onChange={(e) => setImage(e.target.files?.[0] || null)}
-          disabled={loading}
-        />
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              hidden
+              onChange={(e) => setImage(e.target.files?.[0] || null)}
+              disabled={loading}
+            />
 
-        {/* Hover overlay for editing (disabled if loading) */}
-        <label
-          htmlFor="image"
-          className={`absolute inset-0 rounded-full cursor-pointer bg-black/10 ${
-            loading ? "cursor-not-allowed" : "group-hover:flex hidden"
-          } items-center justify-center`}
-        >
-          {!loading && <img src={assets.edit_icon} alt="edit" />}
-        </label>
+            {/* Hover overlay for editing (disabled if loading) */}
+            <label
+              htmlFor="image"
+              className={`absolute inset-0 rounded-full cursor-pointer bg-black/10 ${
+                loading ? "cursor-not-allowed" : "group-hover:flex hidden"
+              } items-center justify-center`}
+            >
+              {!loading && <img src={assets.edit_icon} alt="edit" />}
+            </label>
 
-        {/* Loading Spinner Overlay */}
-        {loading && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full">
-            <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-          </div>
+            {/* Loading Spinner Overlay */}
+            {loading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded-full">
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              </div>
+            )}
+          </>
+        ) : (
+          // Skeleton circle for loading
+          <div className="w-full h-full rounded-full bg-gray-200 animate-pulse" />
         )}
       </div>
 
@@ -56,9 +65,13 @@ const SideBar = () => {
         </button>
       )}
 
-      <p className="mt-2 text-sm font-semibold text-gray-600 capitalize max-md:hidden">
-        {user?.name}
-      </p>
+      {isUserReady ? (
+        <p className="mt-2 text-sm font-semibold text-gray-600 capitalize max-md:hidden truncate">
+          {user?.name}
+        </p>
+      ) : (
+        <div className="mt-3 h-4 w-20 bg-gray-200 rounded animate-pulse max-md:hidden" />
+      )}
 
       <div className="w-full">
         {ownerMenuLinks.map((menu, i) => (
@@ -73,7 +86,9 @@ const SideBar = () => {
               }`}
           >
             <img
-              src={menu.path === location.pathname ? menu.coloredIcon : menu.icon}
+              src={
+                menu.path === location.pathname ? menu.coloredIcon : menu.icon
+              }
               alt="menu_icon"
               className="shrink-0"
             />

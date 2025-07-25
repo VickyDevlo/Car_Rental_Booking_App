@@ -182,7 +182,7 @@ export const getDashboardData = async (req, res) => {
       totalBookings: bookings.length,
       pendingBookings: pendingBookings.length,
       completedBookings: completedBookings.length,
-      recentBookings: bookings.slice(0, 3),
+      recentBookings: bookings.slice(0, 5),
       monthlyRevenue,
     };
 

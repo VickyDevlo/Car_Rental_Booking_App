@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
-import { CarCard, Loader, Title } from "../../components";
+import { CarCard, Title } from "../../components";
+import { CarCardSkeleton } from "../../components/shared/CardSkeleton";
 import { useSearchParams } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 
 const Cars = () => {
   const [searchParams] = useSearchParams();
@@ -16,13 +17,14 @@ const Cars = () => {
 
   const [searchInput, setSearchInput] = useState("");
   const [filterCars, setFilterCars] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const isSearchData = pickupLocation && pickupDate && returnDate;
 
   const applyFilter = async () => {
     if (searchInput === "") {
       setFilterCars(cars);
-      return null;
+      return;
     }
     const filtered = cars.slice().filter((car) => {
       return (
@@ -48,16 +50,22 @@ const Cars = () => {
       if (data.availableCars.length === 0) {
         toast("No cars available");
       }
-      return null;
     }
+    setLoading(false);
   };
 
   useEffect(() => {
-    isSearchData && searchCarAvailability();
-  }, []);
+    if (isSearchData) {
+      searchCarAvailability();
+    } else {
+      setFilterCars(cars);
+      setLoading(false);
+    }
+  }, [cars]);
+
   useEffect(() => {
-    cars.length >= 0 && !isSearchData && applyFilter();
-  }, [searchInput, cars]);
+    if (!isSearchData) applyFilter();
+  }, [searchInput]);
 
   return (
     <div className="mt-8 md:mt-12">
@@ -92,35 +100,39 @@ const Cars = () => {
           />
         </motion.div>
       </motion.div>
-      {cars ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
-          className="px-6 md:px-16 lg:px-24 xl:px-32 my-12"
-        >
+
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+        className="px-6 md:px-16 lg:px-24 xl:px-32 my-12"
+      >
+        {loading ? (
+          <div className="h-6 bg-gray-200 rounded mb-2 w-44 animate-pulse" />
+        ) : (
           <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
             Showing {filterCars.length}{" "}
-            {filterCars.length <= 1 ? "Car" : "Cars"}
+            {filterCars.length === 1 ? "Car" : "Cars"}
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
-            {filterCars?.map((car, i) => (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 * i }}
-                key={i}
-              >
-                <CarCard car={car} />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      ) : (
-        <div className="m-12">
-          <Loader className="h-14 w-14 border-4" />
+        )}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+          {loading
+            ? Array(cars.length)
+                .fill(0)
+                .map((_, i) => <CarCardSkeleton key={i} />)
+            : filterCars?.map((car, i) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.4, delay: 0.1 * i }}
+                  key={i}
+                >
+                  <CarCard car={car} />
+                </motion.div>
+              ))}
         </div>
-      )}
+      </motion.div>
     </div>
   );
 };

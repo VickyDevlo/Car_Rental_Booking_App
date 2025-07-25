@@ -1,35 +1,45 @@
 import { useEffect, useState } from "react";
-import { Loader, Title } from "../../components";
+import { Title } from "../../components";
 import { assets } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
 
 const MyBooking = () => {
-  const { currency, axios, isOwner, loading, setLoading } = useAppContext();
+  const { currency, axios, isOwner } = useAppContext();
   const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchMyBookings = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get("/api/bookings/user");
       if (data?.success) {
-        setBookings(data.bookings);
+        setBookings(data.bookings || []);
       } else {
-        toast.error(data?.message);
+        toast.error(data?.message || "Failed to fetch bookings");
+        setBookings([]);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error.message || "An error occurred");
+      setBookings([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    if (isOwner === undefined) return;
+
     if (isOwner) {
       fetchMyBookings();
+    } else {
+      setBookings([]);
+      setLoading(false);
     }
   }, [isOwner]);
+
+  const showEmptyState = !loading && bookings.length === 0;
 
   return (
     <motion.div
@@ -44,9 +54,38 @@ const MyBooking = () => {
         align="left"
       />
 
+      {/* Skeleton loading */}
       {loading ? (
-        <div className="flex justify-center items-center py-20">
-          <Loader className="h-14 w-14 border-4" />
+        <div className="space-y-6 mt-12">
+          {Array(3)
+            .fill(0)
+            .map((_, i) => (
+              <div
+                key={i}
+                className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border border-borderColor rounded-lg animate-pulse"
+              >
+                <div className="md:col-span-1 space-y-3">
+                  <div className="aspect-video bg-gray-200 rounded-md" />
+                  <div className="h-5 w-3/4 bg-gray-300 rounded" />
+                  <div className="h-4 w-1/2 bg-gray-200 rounded" />
+                </div>
+                <div className="md:col-span-2 space-y-4">
+                  <div className="flex gap-2">
+                    <div className="h-6 w-24 bg-gray-200 rounded" />
+                    <div className="h-6 w-20 bg-gray-300 rounded" />
+                  </div>
+                  <div className="h-4 w-1/2 bg-gray-200 rounded" />
+                  <div className="h-4 w-2/3 bg-gray-200 rounded" />
+                  <div className="h-4 w-1/3 bg-gray-200 rounded" />
+                  <div className="h-4 w-2/5 bg-gray-200 rounded" />
+                </div>
+                <div className="md:col-span-1 space-y-4 text-right">
+                  <div className="h-4 w-1/2 bg-gray-300 rounded ml-auto" />
+                  <div className="h-6 w-1/3 bg-gray-200 rounded ml-auto" />
+                  <div className="h-4 w-3/5 bg-gray-200 rounded ml-auto" />
+                </div>
+              </div>
+            ))}
         </div>
       ) : bookings.length > 0 ? (
         bookings.map((booking, i) => (
@@ -134,20 +173,24 @@ const MyBooking = () => {
             </div>
           </motion.div>
         ))
-      ) : (
-        !bookings.length && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.4 }}
-            className="mt-12 px-6 py-16 flex flex-col items-center justify-center text-center border border-borderColor rounded-lg"
-          >
-            <h1 className="text-gray-600 text-xl md:text-3xl font-semibold">
-              No Bookings Available
-            </h1>
-          </motion.div>
-        )
-      )}
+      ) : showEmptyState ? (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.4 }}
+          className={`mt-12 px-6 py-16 flex flex-col items-center justify-center text-center border rounded-lg ${
+            isOwner
+              ? "bg-primary/20 border-primary/10 text-primary"
+              : "bg-red-200 border-red-200 text-red-900"
+          }`}
+        >
+          <h1 className="text-xl md:text-3xl font-semibold uppercase">
+            {isOwner
+              ? "No Bookings Available"
+              : "You are not authorized to view bookings."}
+          </h1>
+        </motion.div>
+      ) : null}
     </motion.div>
   );
 };

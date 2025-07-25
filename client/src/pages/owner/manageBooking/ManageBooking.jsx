@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { Title } from "../../../components/owner/Title";
 import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
-import Loader from "../../../components/loader/Loader";
+import { NotAvailableMsg } from "../../../components/shared/NotAvailableMsg";
+import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 
 const ManageBooking = () => {
   const { currency, axios, isOwner } = useAppContext();
 
   const [bookings, setBookings] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
 
   const fetchOwnerBookings = async () => {
     setLoading(true);
@@ -23,6 +25,7 @@ const ManageBooking = () => {
       toast.error(error.message);
     } finally {
       setLoading(false);
+      setHasFetched(true);
     }
   };
 
@@ -30,7 +33,7 @@ const ManageBooking = () => {
     try {
       const { data } = await axios.post("/api/bookings/change-status", {
         bookingId,
-         status: newStatus,
+        status: newStatus,
       });
       if (data?.success) {
         toast.success(data?.message);
@@ -55,26 +58,67 @@ const ManageBooking = () => {
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 w-full">
-      <Title
-        title="Manage Bookings"
-        subTitle="Track all customer bookings, approve or cancel requests, and 
-        manage booking statuses."
-      />
+      {!loading ? (
+        <Title
+          title="Manage Bookings"
+          subTitle="Track all customer bookings, approve or cancel requests, and manage booking statuses."
+        />
+      ) : (
+        <TitleSkeleton />
+      )}
 
       {loading ? (
-        <div className="m-12 flex justify-center">
-          <Loader className="md:w-14 md:h-14 w-8 h-8 border-4" />
+        <div className="max-w-3xl w-full rounded-md overflow-hidden border border-borderColor my-6 animate-pulse">
+          <table className="w-full border-collapse text-left text-sm text-gray-600">
+            <thead className="text-gray-500">
+              <tr>
+                <th className="p-3">
+                  <div className="h-4 w-13 md:w-20 bg-gray-200 rounded" />
+                </th>
+                <th className="p-3 max-md:hidden">
+                  <div className="h-4 w-13 md:w-20 bg-gray-200 rounded" />
+                </th>
+                <th className="p-3">
+                  <div className="h-4 w-13 md:w-20 bg-gray-200 rounded" />
+                </th>
+                <th className="p-3">
+                  <div className="h-4 w-13 md:w-20 bg-gray-200 rounded" />
+                </th>
+                <th className="p-3 max-md:hidden">
+                  <div className="h-4 w-13 md:w-20 bg-gray-200 rounded" />
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {[...Array(3)].map((_, i) => (
+                <tr
+                  key={i}
+                  className="border-t border-borderColor text-gray-500"
+                >
+                  <td className="p-3 flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-md bg-gray-200" />
+                    <div className="w-24 h-4 bg-gray-200 rounded max-md:hidden" />
+                  </td>
+                  <td className="p-3 max-md:hidden">
+                    <div className="w-28 h-4 bg-gray-200 rounded" />
+                  </td>
+                  <td className="p-3">
+                    <div className="w-12 h-4 bg-gray-200 rounded" />
+                  </td>
+                  <td className="p-3 max-md:hidden">
+                    <div className="w-16 h-4 bg-gray-200 rounded" />
+                  </td>
+                  <td className="p-3">
+                    <div className="w-20 h-6 bg-gray-200 rounded" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ) : !bookings.length ? (
-        <div className="mt-10 md:p-12 text-center md:max-w-xl">
-          <h1 className="text-2xl md:text-4xl font-semibold text-gray-600">
-            No Bookings Available
-          </h1>
-          <p className="text-sm font-medium text-gray-500 mt-2">
-            You have no current bookings to manage.
-          </p>
-        </div>
-      ) : (
+      ) : hasFetched && bookings.length === 0 ? (
+        <NotAvailableMsg message="No Bookings Available" />
+      ) : bookings.length > 0 ? (
         <div className="max-w-3xl w-full rounded-md overflow-hidden border border-borderColor my-6">
           <table className="w-full border-collapse text-left text-sm text-gray-600">
             <thead className="text-gray-500">
@@ -145,7 +189,7 @@ const ManageBooking = () => {
             </tbody>
           </table>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };
