@@ -21,6 +21,7 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [cars, setCars] = useState([]);
   const [image, setImage] = useState(null);
+  const [sidebarPreview, setSidebarPreview] = useState(assets.user_profile);
 
   //function to check if user is logged in
   const fetchUser = async () => {
@@ -62,10 +63,15 @@ export const AppProvider = ({ children }) => {
   };
 
   const updateImage = async () => {
+    if (!image) return;
+
+    const previousPreview = sidebarPreview; // cache current preview
     setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append("image", image);
+
       const { data } = await axios.post("/api/owner/update-image", formData);
 
       if (data?.success) {
@@ -73,18 +79,25 @@ export const AppProvider = ({ children }) => {
         toast.success(data?.message);
         setImage(null);
       } else {
-        toast.error(data?.message);
+        toast.error(data?.message || "Something went wrong!");
+        setImage(null); // reset image
       }
     } catch (error) {
-      toast.error(error?.message);
+      // Network or server error
+      toast.error(
+        error?.response?.data?.message || "Network error. Please try again."
+      );
+      setImage(null); // remove selected image
+      // Optionally reset preview if you have control over the preview URL
+      setSidebarPreview(previousPreview);
     } finally {
       setLoading(false);
     }
   };
 
- const displayImage = useMemo(() => {
-  return user?.image || assets.user_profile;
-}, [user?.image]);
+  const displayImage = useMemo(() => {
+    return user?.image || assets.user_profile;
+  }, [user?.image]);
 
   const logout = () => {
     localStorage.removeItem("token");

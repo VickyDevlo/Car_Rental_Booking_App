@@ -1,6 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { assets, ownerMenuLinks } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
+import { useEffect } from "react";
 
 const SideBar = () => {
   const { user, image, setImage, updateImage, displayImage, loading } =
@@ -10,17 +11,31 @@ const SideBar = () => {
   const sidebarPreview = image ? URL.createObjectURL(image) : displayImage;
   const isUserReady = user?.name && displayImage;
 
+  useEffect(() => {
+    image && updateImage();
+  }, [image]);
+
   return (
     <div className="relative h-full w-full md:flex flex-col items-center pt-3 md:pt-5 max-w-14 md:max-w-48 border-r border-borderColor text-sm">
       <div className="group relative w-12 h-12 md:w-20 md:h-20 mx-auto">
         {isUserReady ? (
           <>
-            <img
-              src={sidebarPreview}
-              alt="user_image"
-              className="w-full h-full rounded-full object-cover aspect-square"
-              onError={(e) => (e.target.src = assets.user_profile)}
-            />
+            <label
+              htmlFor="image"
+              className="relative cursor-pointer w-20 h-20 sm:w-24 sm:h-24"
+            >
+              <img
+                src={sidebarPreview}
+                alt="user_image"
+                className="w-full h-full rounded-full object-cover aspect-square"
+                onError={(e) => (e.target.src = assets.user_profile)}
+              />
+
+              {/* Optional overlay for edit icon */}
+              <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 hover:opacity-100 transition sm:flex sm:opacity-0">
+                <span className="text-white text-sm">Change</span>
+              </div>
+            </label>
 
             <input
               type="file"
@@ -53,17 +68,6 @@ const SideBar = () => {
           <div className="w-full h-full rounded-full bg-gray-200 animate-pulse" />
         )}
       </div>
-
-      {image && (
-        <button
-          className="absolute top-0 left-0 flex gap-1 p-2 text-primary bg-primary-dull/20 rounded-bl cursor-pointer disabled:cursor-not-allowed"
-          onClick={updateImage}
-          disabled={loading}
-        >
-          <span className="max-md:hidden">Save</span>
-          <img src={assets.check_icon} alt="save" width={13} />
-        </button>
-      )}
 
       {isUserReady ? (
         <p className="mt-2 text-sm font-semibold text-gray-600 capitalize max-md:hidden truncate">
