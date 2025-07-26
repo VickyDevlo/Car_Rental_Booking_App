@@ -106,13 +106,15 @@ export const AppProvider = ({ children }) => {
   };
 
   // ✅ Fetch user and cars when token is available
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = `${token}`;
-      fetchUser();
-      fetchCars();
-    }
-  }, [token, fetchCars]);
+ useEffect(() => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `${token}`;
+    fetchUser();
+  }
+
+  fetchCars(); // always fetch cars regardless of login status
+}, [token, fetchCars]);
+
 
   const value = {
     navigate,

@@ -6,20 +6,19 @@ import { motion } from "framer-motion";
 import { FeatureSectionSkeleton } from "../shared/FeatureSectionSkeleton";
 
 const FeatureSection = () => {
-  const { navigate, cars, fetchCars, user } = useAppContext();
+  const { navigate, cars, fetchCars } = useAppContext();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadCars = async () => {
-      setLoading(true);
-      await fetchCars();
-      setLoading(false);
-    };
+ useEffect(() => {
+  const loadCars = async () => {
+    setLoading(true);
+    await fetchCars();
+    setLoading(false);
+  };
 
-    if (user) {
-      loadCars();
-    }
-  }, [user, fetchCars]);
+  loadCars();
+}, [fetchCars]);
+
 
   return (
     <motion.div
