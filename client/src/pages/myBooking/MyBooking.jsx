@@ -8,7 +8,7 @@ import { MyBookingSkeleton } from "../../components/shared/MyBookingSkeleton";
 import { TitleSkeleton } from "../../components/shared/TitleSkeleton";
 
 const MyBooking = () => {
-  const { currency, axios, isOwner } = useAppContext();
+  const { currency, axios, user } = useAppContext();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,15 +31,15 @@ const MyBooking = () => {
   };
 
   useEffect(() => {
-    if (isOwner === undefined) return;
+    if (user === undefined) return;
 
-    if (isOwner) {
+    if (user) {
       fetchMyBookings();
     } else {
       setBookings([]);
       setLoading(false);
     }
-  }, [isOwner]);
+  }, [user]);
 
   const showEmptyState = !loading && bookings.length === 0;
 
@@ -150,13 +150,13 @@ const MyBooking = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.4 }}
           className={`mt-12 px-6 py-16 flex flex-col items-center justify-center text-center border rounded-lg ${
-            isOwner
+            user
               ? "bg-primary/20 border-primary/10 text-primary"
               : "bg-red-200 border-red-200 text-red-900"
           }`}
         >
           <h1 className="text-xl md:text-3xl font-semibold uppercase">
-            {isOwner
+            {user
               ? "No Bookings Available"
               : "You are not authorized to view bookings."}
           </h1>

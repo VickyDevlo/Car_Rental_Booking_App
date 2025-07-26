@@ -10,15 +10,10 @@ const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  const {
-    setShowLogin,
-    showLogin,
-    user,
-    changeRole,
-    logout,
-    isOwner,
-    navigate,
-  } = useAppContext();
+  const { setShowLogin, showLogin, user, changeRole, logout, navigate } =
+    useAppContext();
+
+  const isOwner = user?.role === "owner";
 
   useEffect(() => {
     if (user !== undefined) {
@@ -29,6 +24,8 @@ const Navbar = () => {
   useEffect(() => {
     document.body.style.overflow = showLogin ? "hidden" : "auto";
   }, [showLogin]);
+
+  console.log(user && "user", user?.role);
 
   return (
     <>
@@ -88,13 +85,17 @@ const Navbar = () => {
                 <img src={assets.search_icon} alt="search" />
               </div>
               <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
-                <button
-                  onClick={() => (isOwner ? navigate("/owner") : changeRole())}
-                  className="text-sm cursor-pointer font-medium max-sm:p-2 max-sm:text-start w-full hover:text-primary transition-all 
-              duration-200 rounded"
-                >
-                  {isOwner ? "Dashboard" : "List Cars"}
-                </button>
+                {isOwner && (
+                  <button
+                    onClick={() =>
+                      isOwner ? navigate("/owner") : changeRole()
+                    }
+                    className="text-sm cursor-pointer font-medium max-sm:p-2 max-sm:text-start w-full hover:text-primary transition-all 
+                  duration-200 rounded"
+                  >
+                    {isOwner ? "Dashboard" : "List Cars"}
+                  </button>
+                )}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {

@@ -29,7 +29,6 @@ export const AppProvider = ({ children }) => {
       const { data } = await axios.get("/api/user/data");
       if (data.success) {
         setUser(data?.user);
-        setIsOwner(data?.user?.role === "owner");
       } else {
         navigate("/");
       }
@@ -37,6 +36,15 @@ export const AppProvider = ({ children }) => {
       toast.error(error.message);
     }
   };
+
+  // ✅ Sync isOwner when user changes
+  useEffect(() => {
+    if (user?.role === "owner") {
+      setIsOwner(true);
+    } else {
+      setIsOwner(false);
+    }
+  }, [user]);
 
   // ✅ Memoized fetchCars
   const fetchCars = useCallback(async () => {
@@ -52,7 +60,7 @@ export const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.post("/api/owner/change-role");
       if (data?.success) {
-        setIsOwner(true);
+        await fetchUser(); // fetch updated role
         toast.success(data?.message);
       } else {
         toast.error(data?.message);
@@ -101,20 +109,19 @@ export const AppProvider = ({ children }) => {
     setUser(null);
     setIsOwner(false);
     axios.defaults.headers.common["Authorization"] = "";
-    toast.success("You have been logout...");
+    toast.success("You have been logged out.");
     navigate("/");
   };
 
   // ✅ Fetch user and cars when token is available
- useEffect(() => {
-  if (token) {
-    axios.defaults.headers.common["Authorization"] = `${token}`;
-    fetchUser();
-  }
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `${token}`;
+      fetchUser();
+    }
 
-  fetchCars(); // always fetch cars regardless of login status
-}, [token, fetchCars]);
-
+    fetchCars(); // always fetch cars regardless of login status
+  }, [token, fetchCars]);
 
   const value = {
     navigate,
