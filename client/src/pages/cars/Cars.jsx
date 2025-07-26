@@ -9,63 +9,79 @@ import { motion } from "framer-motion";
 
 const Cars = () => {
   const [searchParams] = useSearchParams();
-  const pickupLocation = searchParams.get("pickupLocation");
+  const pickupLocation =
+    searchParams.get("pickupLocation")?.toLowerCase() || "";
   const pickupDate = searchParams.get("pickupDate");
   const returnDate = searchParams.get("returnDate");
 
   const { cars, axios } = useAppContext();
 
   const [searchInput, setSearchInput] = useState("");
-  const [filterCars, setFilterCars] = useState([]);
+  const [filteredCars, setFilteredCars] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const isSearchData = pickupLocation && pickupDate && returnDate;
 
-  const applyFilter = async () => {
-    if (searchInput === "") {
-      setFilterCars(cars);
+  const applyFilter = () => {
+    const input = searchInput.trim().toLowerCase();
+    if (!input) {
+      setFilteredCars(cars);
       return;
     }
-    const filtered = cars.slice().filter((car) => {
-      return (
-        car.brand.toLowerCase().includes(searchInput.toLowerCase()) ||
-        car.model.toLowerCase().includes(searchInput.toLowerCase()) ||
-        car.category.toLowerCase().includes(searchInput.toLowerCase()) ||
-        car.transmission.toLowerCase().includes(searchInput.toLowerCase()) ||
-        car.fuelType.toLowerCase().includes(searchInput.toLowerCase()) ||
-        car.location.toLowerCase().includes(searchInput.toLowerCase())
-      );
+
+    const filtered = cars.filter((car) => {
+      const fields = [
+        car.brand,
+        car.model,
+        car.category,
+        car.transmission,
+        car.fuelType,
+        car.location,
+      ];
+      return fields.some((field) => field.toLowerCase().includes(input));
     });
-    setFilterCars(filtered);
+
+    setFilteredCars(filtered);
   };
 
   const searchCarAvailability = async () => {
-    const { data } = await axios.post("/api/bookings/check-availability", {
-      location: pickupLocation,
-      pickupDate,
-      returnDate,
-    });
-    if (data?.success) {
-      setFilterCars(data?.availableCars);
-      if (data.availableCars.length === 0) {
-        toast("No cars available");
+    try {
+      setLoading(true);
+      const { data } = await axios.post("/api/bookings/check-availability", {
+        location: pickupLocation,
+        pickupDate,
+        returnDate,
+      });
+
+      if (data?.success) {
+        setFilteredCars(data.availableCars);
+        if (data.availableCars.length === 0) {
+          toast("No cars available");
+        }
+      } else {
+        toast.error("Something went wrong");
       }
+    } catch (error) {
+      toast.error(error.message || "Error while searching");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     if (isSearchData) {
       searchCarAvailability();
     } else {
-      setFilterCars(cars);
+      setFilteredCars(cars);
       setLoading(false);
     }
-  }, [cars]);
+  }, [cars, isSearchData]);
 
   useEffect(() => {
-    if (!isSearchData) applyFilter();
-  }, [searchInput]);
+    if (!isSearchData && cars.length > 0) {
+      applyFilter();
+    }
+  }, [searchInput, cars, isSearchData]);
 
   return (
     <div className="mt-8 md:mt-12">
@@ -79,6 +95,7 @@ const Cars = () => {
           title="Available Cars"
           subTitle="Browse our selection of premium vehicles available for your next adventure"
         />
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -90,7 +107,7 @@ const Cars = () => {
             type="text"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search by make model or features..."
+            placeholder="Search by make, model or features..."
             className="text-gray-600 w-full h-full font-medium focus:outline-none max-md:placeholder:text-sm capitalize truncate"
           />
           <img
@@ -111,22 +128,22 @@ const Cars = () => {
           <div className="h-6 bg-gray-200 rounded mb-2 w-44 animate-pulse" />
         ) : (
           <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
-            Showing {filterCars.length}{" "}
-            {filterCars.length === 1 ? "Car" : "Cars"}
+            Showing {filteredCars.length}{" "}
+            {filteredCars.length === 1 ? "Car" : "Cars"}
           </p>
         )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
           {loading
-            ? Array(cars.length)
+            ? Array(6)
                 .fill(0)
                 .map((_, i) => <CarCardSkeleton key={i} />)
-            : filterCars?.map((car, i) => (
+            : filteredCars.map((car, i) => (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 * i }}
-                  key={i}
+                  key={car._id || i}
                 >
                   <CarCard car={car} />
                 </motion.div>

@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import imagekit from "../config/imageKit.js";
-import fs, { rmSync } from "fs";
+import fs from "fs";
 import Car from "../models/Cars.js";
 import Booking from "../models/Booking.js";
 

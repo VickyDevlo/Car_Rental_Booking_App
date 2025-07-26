@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { assets, cityList } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
-import { motion, scale } from "motion/react";
+import { motion } from "motion/react";
 
 const HeroSection = () => {
   const today = new Date().toISOString().split("T")[0];
 
-  const { pickupDate, setPickupDate, returnDate, setReturnDate, navigate } =
+  const { pickupDate, setPickupDate, returnDate, setReturnDate, navigate, } =
     useAppContext();
 
   const [pickupLocation, setPickupLocation] = useState("");
-  const [] = useState(pickupDate);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -25,6 +24,7 @@ const HeroSection = () => {
     setPickupLocation("");
     setPickupDate("");
     setReturnDate("");
+    
   };
 
   return (

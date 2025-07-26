@@ -17,32 +17,30 @@ export const checkAvailabilityOfCar = async (req, res) => {
   try {
     const { location, pickupDate, returnDate } = req.body;
 
-    //fetch all available cars for the given location
-    const cars = await Car.find({
-      location,
-      isAvailable: true,
-    });
+    if (!location || !pickupDate || !returnDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide location, pickupDate, and returnDate",
+      });
+    }
 
-    //check car available for the given date range using promise
+    const cars = await Car.find({ location, isAvailable: true });
+
     const availableCarsPromises = cars.map(async (car) => {
-      const isAvailable = await checkAvailability(
-        car._id,
-        pickupDate,
-        returnDate
-      );
-      return { ...car._doc, isAvailable };
+      const isAvailable = await checkAvailability(car._id, pickupDate, returnDate);
+      return { ...car._doc, isAvailable:isAvailable };
     });
 
     let availableCars = await Promise.all(availableCarsPromises);
-    availableCars = availableCars.filter((car) => car.isAvailable === true);
+    availableCars = availableCars.filter((car) => car.isAvailable);
 
     res.json({
       success: true,
       availableCars,
     });
   } catch (error) {
-    console.log(error.message);
-    res.json({
+    console.log("Error in checkAvailabilityOfCar:", error.message);
+    res.status(500).json({
       success: false,
       message: error.message,
     });

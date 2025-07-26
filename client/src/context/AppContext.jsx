@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
   const currency = import.meta.env.VITE_CURRENCY;
   const navigate = useNavigate();
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
   const [user, setUser] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
@@ -23,7 +23,7 @@ export const AppProvider = ({ children }) => {
   const [image, setImage] = useState(null);
   const [sidebarPreview, setSidebarPreview] = useState(assets.user_profile);
 
-  //function to check if user is logged in
+  // ✅ Fetch user data
   const fetchUser = async () => {
     try {
       const { data } = await axios.get("/api/user/data");
@@ -38,15 +38,15 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  // fetch all cars from server
-  const fetchCars = async () => {
+  // ✅ Memoized fetchCars
+  const fetchCars = useCallback(async () => {
     try {
       const { data } = await axios.get("/api/user/cars");
       data.success ? setCars(data?.cars) : toast.error(data?.message);
     } catch (error) {
       toast.error(error.message);
     }
-  };
+  }, []);
 
   const changeRole = async () => {
     try {
@@ -65,7 +65,7 @@ export const AppProvider = ({ children }) => {
   const updateImage = async () => {
     if (!image) return;
 
-    const previousPreview = sidebarPreview; // cache current preview
+    const previousPreview = sidebarPreview;
     setLoading(true);
 
     try {
@@ -80,15 +80,11 @@ export const AppProvider = ({ children }) => {
         setImage(null);
       } else {
         toast.error(data?.message || "Something went wrong!");
-        setImage(null); // reset image
+        setImage(null);
       }
     } catch (error) {
-      // Network or server error
-      toast.error(
-        error?.response?.data?.message || "Network error. Please try again."
-      );
-      setImage(null); // remove selected image
-      // Optionally reset preview if you have control over the preview URL
+      toast.error(error?.response?.data?.message || "Network error. Please try again.");
+      setImage(null);
       setSidebarPreview(previousPreview);
     } finally {
       setLoading(false);
@@ -109,18 +105,14 @@ export const AppProvider = ({ children }) => {
     navigate("/");
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setToken(token);
-    fetchCars();
-  }, []);
-
+  // ✅ Fetch user and cars when token is available
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common["Authorization"] = `${token}`;
       fetchUser();
+      fetchCars();
     }
-  }, [token]);
+  }, [token, fetchCars]);
 
   const value = {
     navigate,

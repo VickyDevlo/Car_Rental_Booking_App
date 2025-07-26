@@ -4,6 +4,8 @@ import { assets } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
+import { MyBookingSkeleton } from "../../components/shared/MyBookingSkeleton";
+import { TitleSkeleton } from "../../components/shared/TitleSkeleton";
 
 const MyBooking = () => {
   const { currency, axios, isOwner } = useAppContext();
@@ -42,51 +44,20 @@ const MyBooking = () => {
   const showEmptyState = !loading && bookings.length === 0;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className="px-6 mx-auto md:px-16 lg:px-24 xl:px-32 2xl:px-48 my-12 text-sm max-w-7xl"
-    >
-      <Title
-        title="My Bookings"
-        subTitle="View and manage your all car bookings"
-        align="left"
-      />
+    <motion.div className="px-6 mx-auto md:px-16 lg:px-24 xl:px-32 2xl:px-48 my-12 text-sm max-w-7xl">
+      {loading ? (
+        <TitleSkeleton />
+      ) : (
+        <Title
+          title="My Bookings"
+          subTitle="View and manage your all car bookings"
+          align="left"
+        />
+      )}
 
       {/* Skeleton loading */}
       {loading ? (
-        <div className="space-y-6 mt-12">
-          {Array(3)
-            .fill(0)
-            .map((_, i) => (
-              <div
-                key={i}
-                className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6 border border-borderColor rounded-lg animate-pulse"
-              >
-                <div className="md:col-span-1 space-y-3">
-                  <div className="aspect-video bg-gray-200 rounded-md" />
-                  <div className="h-5 w-3/4 bg-gray-300 rounded" />
-                  <div className="h-4 w-1/2 bg-gray-200 rounded" />
-                </div>
-                <div className="md:col-span-2 space-y-4">
-                  <div className="flex gap-2">
-                    <div className="h-6 w-24 bg-gray-200 rounded" />
-                    <div className="h-6 w-20 bg-gray-300 rounded" />
-                  </div>
-                  <div className="h-4 w-1/2 bg-gray-200 rounded" />
-                  <div className="h-4 w-2/3 bg-gray-200 rounded" />
-                  <div className="h-4 w-1/3 bg-gray-200 rounded" />
-                  <div className="h-4 w-2/5 bg-gray-200 rounded" />
-                </div>
-                <div className="md:col-span-1 space-y-4 text-right">
-                  <div className="h-4 w-1/2 bg-gray-300 rounded ml-auto" />
-                  <div className="h-6 w-1/3 bg-gray-200 rounded ml-auto" />
-                  <div className="h-4 w-3/5 bg-gray-200 rounded ml-auto" />
-                </div>
-              </div>
-            ))}
-        </div>
+        <MyBookingSkeleton />
       ) : bookings.length > 0 ? (
         bookings.map((booking, i) => (
           <motion.div

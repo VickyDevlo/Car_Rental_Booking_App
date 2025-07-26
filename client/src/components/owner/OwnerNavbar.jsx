@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { assets } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 import { useEffect, useState } from "react";
+import { OwnerProfileSkeleton } from "../shared/OwnerProfileSkeleton";
 
 const OwnerNavbar = () => {
   const { user, displayImage } = useAppContext();
@@ -21,10 +22,7 @@ const OwnerNavbar = () => {
 
       <div className="flex items-center gap-1.5 md:gap-3">
         {loading ? (
-          <>
-            <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
-            <div className="w-20 h-4 bg-gray-200 rounded animate-pulse" />
-          </>
+          <OwnerProfileSkeleton />
         ) : (
           <>
             <img

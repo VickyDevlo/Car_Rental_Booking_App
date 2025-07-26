@@ -171,7 +171,7 @@ const CarDetails = () => {
               {[car?.seatingCapacity + " Seats", car?.fuelType, car?.transmission, car?.location].map(
                 (text, i) => (
                   <div
-                    key={text}
+                    key={i}
                     className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500 capitalize"
                   >
                     <img
