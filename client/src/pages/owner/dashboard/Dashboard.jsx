@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
 import { Title } from "../../../components/owner/Title";
 import { assets } from "../../../assets/assets";
 import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
-
-const socket = io(import.meta.env.VITE_BASE_URL);
 
 const Dashboard = () => {
   const { isOwner, currency, token, axios } = useAppContext();
@@ -60,34 +57,6 @@ const Dashboard = () => {
     if (token && isOwner) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchDashboardData();
-
-      // ✅ Listen for real-time bookings
-      const handleNewBooking = (payload) => {
-        const { booking } = payload;
-
-        // ✅ Optional: Filter bookings for this owner only
-        if (booking.owner !== token?.userId) return;
-
-        toast.success("New booking received!");
-
-        // ✅ Update dashboard state
-        setData((prev) => ({
-          ...prev,
-          totalBookings: prev.totalBookings + 1,
-          pendingBookings: prev.pendingBookings + 1,
-          recentBookings: [
-            { ...booking, createdAt: new Date().toISOString() },
-            ...prev.recentBookings.slice(0, 4), // keep latest 5
-          ],
-        }));
-      };
-
-      socket.on("newBooking", handleNewBooking);
-
-      // ✅ Cleanup on unmount
-      return () => {
-        socket.off("newBooking", handleNewBooking);
-      };
     }
   }, [token, isOwner]);
 

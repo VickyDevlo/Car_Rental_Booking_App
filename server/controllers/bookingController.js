@@ -78,27 +78,13 @@ export const createBooking = async (req, res) => {
 
     const price = carData.pricePerDay * noOfDays;
 
-    const newBooking = await Booking.create({
+    await Booking.create({
       car,
       owner: carData.owner,
       user: _id,
       pickupDate,
       returnDate,
       price,
-    });
-
-    // Emit event to all connected clients (or just owner)
-    const io = req.app.get("io");
-    io.emit("newBooking", {
-      booking: {
-        _id: newBooking._id,
-        car:carData,
-        pickupDate,
-        returnDate,
-        price,
-        user: _id,
-        owner: carData.owner,
-      },
     });
 
     res.json({
