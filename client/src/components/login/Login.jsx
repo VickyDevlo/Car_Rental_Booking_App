@@ -10,8 +10,15 @@ const Login = () => {
     email: "",
     password: "",
   };
-  const { setShowLogin, axios, setLoading, loading, setToken, fetchUser, navigate } =
-    useAppContext();
+  const {
+    setShowLogin,
+    axios,
+    setLoading,
+    loading,
+    setToken,
+    fetchUser,
+    navigate,
+  } = useAppContext();
   const [formData, setFormData] = useState(initialState);
   const [state, setState] = useState("login");
 
@@ -53,7 +60,7 @@ const Login = () => {
         navigate("/");
         setToken(data?.token);
         localStorage.setItem("token", data?.token);
-          axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
         setShowLogin(false);
         fetchUser();
       } else {

@@ -65,7 +65,9 @@ const CarCard = ({ car }) => {
         <div className="grid grid-cols-2 gap-2 text-gray-400 text-sm mt-3">
           <div className="flex items-center">
             <img src={assets.users_icon} alt="Seats" className="h-4 w-4 mr-2" />
-            <span className="capitalize">{car?.seatingCapacity || "N/A"} Seats</span>
+            <span className="capitalize">
+              {car?.seatingCapacity || "N/A"} Seats
+            </span>
           </div>
           <div className="flex items-center">
             <img
@@ -81,7 +83,9 @@ const CarCard = ({ car }) => {
               alt="Transmission"
               className="h-4 w-4 mr-2"
             />
-            <span className="truncate capitalize">{car?.transmission || "N/A"}</span>
+            <span className="truncate capitalize">
+              {car?.transmission || "N/A"}
+            </span>
           </div>
           <div className="flex items-center">
             <img
@@ -89,7 +93,9 @@ const CarCard = ({ car }) => {
               alt="Location"
               className="h-4 w-4 mr-2"
             />
-            <span className="capitalize truncate">{car?.location || "N/A"}</span>
+            <span className="capitalize truncate">
+              {car?.location || "N/A"}
+            </span>
           </div>
         </div>
       </div>

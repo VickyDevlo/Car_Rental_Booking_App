@@ -55,11 +55,13 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
-    if (isOwner && token) {
+ useEffect(() => {
+    // ✅ Only fetch dashboard when token and isOwner are set
+    if (token && isOwner) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchDashboardData();
     }
-  }, [isOwner]);
+  }, [token, isOwner]); // 🔁 Refetch if either updates
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 flex-1 mb-12">

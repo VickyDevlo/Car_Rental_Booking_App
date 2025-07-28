@@ -44,17 +44,45 @@ const CarDetails = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error("Not Authorized");
     } finally {
       setFormLoading(false);
     }
   };
 
   useEffect(() => {
-    setPageLoading(true);
-    const foundCar = cars.find((car) => car?._id === id);
-    setCar(foundCar);
-    setPageLoading(false);
+    const loadCar = () => {
+      setPageLoading(true);
+
+      // Check if car exists in context
+      const found = cars.find((c) => c._id === id);
+      if (found) {
+        setCar(found);
+        localStorage.setItem("selectedCar", JSON.stringify(found));
+        setPageLoading(false);
+        return;
+      }
+
+      // Check localStorage fallback
+      const stored = localStorage.getItem("selectedCar");
+      try {
+        const parsed = stored ? JSON.parse(stored) : null;
+        if (parsed && parsed._id === id) {
+          setCar(parsed);
+        } else {
+          setCar(null);
+          localStorage.removeItem("selectedCar");
+        }
+      } catch (err) {
+        console.error("Invalid JSON in localStorage:", err);
+        setCar(null);
+        localStorage.removeItem("selectedCar");
+      }
+
+      setPageLoading(false);
+    };
+
+    loadCar();
   }, [cars, id]);
 
   const isDisabled = !pickupDate || !returnDate;
@@ -96,7 +124,10 @@ const CarDetails = () => {
                 {Array(5)
                   .fill(0)
                   .map((_, i) => (
-                    <div key={i} className="h-3 bg-gray-200 rounded w-1/2"></div>
+                    <div
+                      key={i}
+                      className="h-3 bg-gray-200 rounded w-1/2"
+                    ></div>
                   ))}
               </div>
             </div>
@@ -168,26 +199,33 @@ const CarDetails = () => {
             </div>
             <hr className="border border-borderColor my-6" />
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {[car?.seatingCapacity + " Seats", car?.fuelType, car?.transmission, car?.location].map(
-                (text, i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500 capitalize"
-                  >
-                    <img
-                      src={[
+              {[
+                car?.seatingCapacity + " Seats",
+                car?.fuelType,
+                car?.transmission,
+                car?.location,
+              ].map((text, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center bg-light p-4 rounded-lg text-gray-500 capitalize"
+                >
+                  <img
+                    src={
+                      [
                         assets.users_icon,
                         assets.fuel_icon,
                         assets.carIcon,
                         assets.location_icon,
-                      ][i]}
-                      alt={text}
-                      className="h-5 mb-2"
-                    />
-                    <span className="truncate w-full text-center text-sm">{text}</span>
-                  </div>
-                )
-              )}
+                      ][i]
+                    }
+                    alt={text}
+                    className="h-5 mb-2"
+                  />
+                  <span className="truncate w-full text-center text-sm">
+                    {text}
+                  </span>
+                </div>
+              ))}
             </div>
             <div>
               <h1 className="text-xl font-semibold mb-3">Description</h1>
@@ -196,9 +234,22 @@ const CarDetails = () => {
             <div>
               <h1 className="text-xl font-semibold mb-3">Features</h1>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                {["360 Camera", "Bluetooth", "GPS", "Heated Seats", "Rear View Mirror"].map((item) => (
-                  <li key={item} className="flex items-center text-gray-500 font-medium capitalize">
-                    <img src={assets.check_icon} alt="checked" className="h-4 mr-2" />
+                {[
+                  "360 Camera",
+                  "Bluetooth",
+                  "GPS",
+                  "Heated Seats",
+                  "Rear View Mirror",
+                ].map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-center text-gray-500 font-medium capitalize"
+                  >
+                    <img
+                      src={assets.check_icon}
+                      alt="checked"
+                      className="h-4 mr-2"
+                    />
                     {item}
                   </li>
                 ))}

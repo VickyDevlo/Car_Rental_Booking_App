@@ -90,6 +90,7 @@ const Cars = () => {
       applyFilter();
     }
   }, [searchInput, cars, isSearchData]);
+  
 
   return (
     <div className="mt-8 md:mt-12">

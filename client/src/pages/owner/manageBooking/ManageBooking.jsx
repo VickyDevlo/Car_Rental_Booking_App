@@ -6,7 +6,7 @@ import { NotAvailableMsg } from "../../../components/shared/NotAvailableMsg";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 
 const ManageBooking = () => {
-  const { currency, axios, isOwner } = useAppContext();
+  const { currency, axios, token, isOwner } = useAppContext();
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,9 +52,13 @@ const ManageBooking = () => {
     }
   };
 
-  useEffect(() => {
-    isOwner && fetchOwnerBookings();
-  }, [isOwner]);
+   useEffect(() => {
+    // ✅ Only fetch dashboard when token and isOwner are set
+    if (token && isOwner) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      fetchOwnerBookings();
+    }
+  }, [token, isOwner]); // 🔁 Refetch if either updates
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 w-full">
