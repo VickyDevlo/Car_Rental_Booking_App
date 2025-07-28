@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 import { Title } from "../../../components/owner/Title";
 import { assets } from "../../../assets/assets";
 import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 
+const socket = io(import.meta.env.VITE_BASE_URL);
+
 const Dashboard = () => {
   const { isOwner, currency, token, axios } = useAppContext();
 
   const [loading, setLoading] = useState(true);
-
   const [data, setData] = useState({
     totalCars: 0,
     totalBookings: 0,
@@ -21,28 +23,15 @@ const Dashboard = () => {
 
   const dashboardCards = [
     { title: "Total Cars", value: data.totalCars, icon: assets.carIconColored },
-    {
-      title: "Total Bookings",
-      value: data.totalBookings,
-      icon: assets.listIconColored,
-    },
-    {
-      title: "Pending",
-      value: data.pendingBookings,
-      icon: assets.cautionIconColored,
-    },
-    {
-      title: "Confirmed",
-      value: data.completedBookings,
-      icon: assets.listIconColored,
-    },
+    { title: "Total Bookings", value: data.totalBookings, icon: assets.listIconColored },
+    { title: "Pending", value: data.pendingBookings, icon: assets.cautionIconColored },
+    { title: "Confirmed", value: data.completedBookings, icon: assets.listIconColored },
   ];
 
   const fetchDashboardData = async () => {
     setLoading(true);
     try {
       const { data } = await axios.get("/api/owner/dashboard");
-
       if (data?.success) {
         setData(data?.dashboardData);
       } else {
@@ -56,12 +45,40 @@ const Dashboard = () => {
   };
 
  useEffect(() => {
-    // ✅ Only fetch dashboard when token and isOwner are set
-    if (token && isOwner) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      fetchDashboardData();
-    }
-  }, [token, isOwner]); // 🔁 Refetch if either updates
+  if (token && isOwner) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    fetchDashboardData();
+
+    // ✅ Listen for real-time bookings
+    const handleNewBooking = (payload) => {
+      const { booking } = payload;
+
+      // ✅ Optional: Filter bookings for this owner only
+      if (booking.owner !== token?.userId) return;
+
+      toast.success("New booking received!");
+
+      // ✅ Update dashboard state
+      setData((prev) => ({
+        ...prev,
+        totalBookings: prev.totalBookings + 1,
+        pendingBookings: prev.pendingBookings + 1,
+        recentBookings: [
+          { ...booking, createdAt: new Date().toISOString() },
+          ...prev.recentBookings.slice(0, 4), // keep latest 5
+        ],
+      }));
+    };
+
+    socket.on("newBooking", handleNewBooking);
+
+    // ✅ Cleanup on unmount
+    return () => {
+      socket.off("newBooking", handleNewBooking);
+    };
+  }
+}, [token, isOwner]);
+
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 flex-1 mb-12">
