@@ -27,8 +27,12 @@ export const checkAvailabilityOfCar = async (req, res) => {
     const cars = await Car.find({ location, isAvailable: true });
 
     const availableCarsPromises = cars.map(async (car) => {
-      const isAvailable = await checkAvailability(car._id, pickupDate, returnDate);
-      return { ...car._doc, isAvailable:isAvailable };
+      const isAvailable = await checkAvailability(
+        car._id,
+        pickupDate,
+        returnDate
+      );
+      return { ...car._doc, isAvailable: isAvailable };
     });
 
     let availableCars = await Promise.all(availableCarsPromises);
@@ -74,13 +78,27 @@ export const createBooking = async (req, res) => {
 
     const price = carData.pricePerDay * noOfDays;
 
-    await Booking.create({
+    const newBooking = await Booking.create({
       car,
       owner: carData.owner,
       user: _id,
       pickupDate,
       returnDate,
       price,
+    });
+
+    // Emit event to all connected clients (or just owner)
+    const io = req.app.get("io");
+    io.emit("newBooking", {
+      booking: {
+        _id: newBooking._id,
+        car:carData,
+        pickupDate,
+        returnDate,
+        price,
+        user: _id,
+        owner: carData.owner,
+      },
     });
 
     res.json({
