@@ -10,22 +10,25 @@ const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  const { setShowLogin, showLogin, user, changeRole, logout, navigate } =
+  const { setShowLogin, showLogin, user, token, changeRole, logout } =
     useAppContext();
 
   const isOwner = user?.role === "owner";
 
+  // ✅ Show loading until token and user are ready
   useEffect(() => {
-    if (user !== undefined) {
+    if (user !== undefined && token !== undefined) {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, token]);
 
   useEffect(() => {
     document.body.style.overflow = showLogin ? "hidden" : "auto";
   }, [showLogin]);
 
-  console.log(user && "user", user?.role);
+  const filteredMenuLinks = menuLinks.filter(
+    (navLink) => !(isOwner && navLink.name === "My Bookings")
+  );
 
   return (
     <>
@@ -40,10 +43,11 @@ const Navbar = () => {
       ) : (
         <div
           className={`border-b border-borderColor relative transition-all ${
-            location.pathname === "/" && "bg-light"
+            location.pathname === "/" ? "bg-light" : "bg-white"
           }`}
         >
           <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600">
+            {/* Logo */}
             <Link to="/">
               <motion.img
                 whileHover={{ scale: 1.05 }}
@@ -54,6 +58,7 @@ const Navbar = () => {
               />
             </Link>
 
+            {/* Menu Items */}
             <div
               className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-10 overflow-hidden ${
                 location.pathname === "/"
@@ -61,21 +66,44 @@ const Navbar = () => {
                   : "max-sm:bg-white"
               } ${open ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"}`}
             >
-              {menuLinks.map((menu, i) => (
+              {/* Filtered Nav Links */}
+              {filteredMenuLinks.map((menu, i) => (
                 <NavLink
                   key={i}
                   to={menu.path}
                   onClick={() => setOpen(false)}
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
-                max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""}`
+                     max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
+                     ${
+                       isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
+                     }`
                   }
                 >
                   {menu.name}
                 </NavLink>
               ))}
 
+              {/* Dashboard or List Cars */}
+              {isOwner && (
+                <NavLink
+                  to="/owner"
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
+                       max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
+                       ${
+                         isActive
+                           ? "text-primary max-sm:bg-primary-dull/20"
+                           : ""
+                       }`
+                  }
+                >
+                  Dashboard
+                </NavLink>
+              )}
+
+              {/* Search Input */}
               <div className="hidden lg:flex items-center gap-2 text-sm border border-borderColor px-3 rounded-full max-w-56">
                 <input
                   type="text"
@@ -84,25 +112,16 @@ const Navbar = () => {
                 />
                 <img src={assets.search_icon} alt="search" />
               </div>
+
+              {/* Login / Logout Button */}
               <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
-                {isOwner && (
-                  <button
-                    onClick={() =>
-                      isOwner ? navigate("/owner") : changeRole()
-                    }
-                    className="text-sm cursor-pointer font-medium max-sm:p-2 max-sm:text-start w-full hover:text-primary transition-all 
-                  duration-200 rounded"
-                  >
-                    {isOwner ? "Dashboard" : "List Cars"}
-                  </button>
-                )}
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     user ? logout() : setShowLogin(true);
                     setOpen(false);
                   }}
-                  className={`text-white text-sm font-medium px-6 py-1.5  ${
+                  className={`text-white text-sm font-medium px-6 py-1.5 ${
                     user
                       ? "bg-red-500 hover:bg-red-600"
                       : "bg-primary hover:bg-primary-dull"
@@ -113,6 +132,7 @@ const Navbar = () => {
               </div>
             </div>
 
+            {/* Mobile Menu Toggle */}
             <button
               className="sm:hidden cursor-pointer"
               aria-label="Menu"

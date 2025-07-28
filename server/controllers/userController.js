@@ -5,8 +5,7 @@ import Car from "../models/Cars.js";
 
 //Generate JWT Token
 const generateToken = (userId) => {
-  const payload = userId;
-  return jwt.sign(payload, process.env.JWT_SECRET);
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET);
 };
 
 //register user
@@ -19,7 +18,10 @@ export const registerUser = async (req, res) => {
     }
 
     if (password.length < 8) {
-      return res.json({ success: false, message: "Password must be 8 characters" });
+      return res.json({
+        success: false,
+        message: "Password must be 8 characters",
+      });
     }
 
     const userExists = await User.findOne({ email });
@@ -47,7 +49,6 @@ export const registerUser = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-
 
 //login user
 export const loginUser = async (req, res) => {

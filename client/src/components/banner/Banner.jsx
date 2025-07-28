@@ -22,9 +22,10 @@ const Banner = () => {
       initial={{ y: 50, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="px-8 md:px-16"
+      className="px-2 md:px-16"
     >
-      <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 bg-gradient-to-r from-[#0558FE] to-[#A9CFFF] p-12 rounded-2xl max-w-6xl mx-3 md:mx-auto overflow-hidden">
+      <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 bg-gradient-to-r from-[#0558FE] to-[#A9CFFF] 
+      p-6 md:p-12 rounded-2xl max-w-6xl mx-3 md:mx-auto overflow-hidden">
         {/* Text Section */}
         <div className="text-white">
           <h2 className="text-lg md:text-3xl font-bold text-center md:text-left">
@@ -40,7 +41,7 @@ const Banner = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             onClick={handleClick}
-            className="mt-4 px-6 py-2 bg-white text-primary rounded-lg text-sm hover:bg-slate-100 transition-all"
+            className="mt-4 px-6 py-2 max-sm:flex text-center justify-center max-sm:w-full bg-white text-primary rounded-lg text-sm hover:bg-slate-100 transition-all"
           >
             {isOwner ? "Dashboard" : "List your car"}
           </motion.button>

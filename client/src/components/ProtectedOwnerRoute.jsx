@@ -4,7 +4,7 @@ import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
 
 const OwnerRoute = () => {
-  const { user, isOwner } = useAppContext();
+  const { user } = useAppContext();
   const navigate = useNavigate();
   const [authorized, setAuthorized] = useState(null);
 

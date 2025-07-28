@@ -5,7 +5,7 @@ import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext";
 
 function App() {
-  const { showLogin, setShowLogin } = useAppContext();
+  const { showLogin } = useAppContext();
   const isOwnerPath = useLocation().pathname.startsWith("/owner");
 
   return (

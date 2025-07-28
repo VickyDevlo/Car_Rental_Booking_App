@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +20,11 @@ export const AppProvider = ({ children }) => {
   const navigate = useNavigate();
 
   const [token, setToken] = useState(() => localStorage.getItem("token"));
-  const [user, setUser] = useState(null);
-  const [isOwner, setIsOwner] = useState(false);
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  const [isOwner, setIsOwner] = useState(user?.role === "owner");
   const [showLogin, setShowLogin] = useState(false);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -23,34 +33,43 @@ export const AppProvider = ({ children }) => {
   const [image, setImage] = useState(null);
   const [sidebarPreview, setSidebarPreview] = useState(assets.user_profile);
 
-  // ✅ Fetch user data
+  // ✅ Update isOwner when user changes
+  useEffect(() => {
+    setIsOwner(user?.role === "owner");
+  }, [user]);
+
+  // ✅ Fetch current user
   const fetchUser = async () => {
     try {
+      // Set token in header if it exists
+      const token = localStorage.getItem("token");
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      }
+
       const { data } = await axios.get("/api/user/data");
+
       if (data.success) {
-        setUser(data?.user);
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
       } else {
-        navigate("/");
+        logout();
       }
     } catch (error) {
-      toast.error(error.message);
+      console.error("fetchUser error:", error);
+
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please log in again.");
+      }
+      logout();
     }
   };
-
-  // ✅ Sync isOwner when user changes
-  useEffect(() => {
-    if (user?.role === "owner") {
-      setIsOwner(true);
-    } else {
-      setIsOwner(false);
-    }
-  }, [user]);
 
   // ✅ Memoized fetchCars
   const fetchCars = useCallback(async () => {
     try {
       const { data } = await axios.get("/api/user/cars");
-      data.success ? setCars(data?.cars) : toast.error(data?.message);
+      data.success ? setCars(data.cars) : toast.error(data.message);
     } catch (error) {
       toast.error(error.message);
     }
@@ -59,11 +78,11 @@ export const AppProvider = ({ children }) => {
   const changeRole = async () => {
     try {
       const { data } = await axios.post("/api/owner/change-role");
-      if (data?.success) {
-        await fetchUser(); // fetch updated role
-        toast.success(data?.message);
+      if (data.success) {
+        await fetchUser();
+        toast.success(data.message);
       } else {
-        toast.error(data?.message);
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -82,16 +101,18 @@ export const AppProvider = ({ children }) => {
 
       const { data } = await axios.post("/api/owner/update-image", formData);
 
-      if (data?.success) {
+      if (data.success) {
         await fetchUser();
-        toast.success(data?.message);
+        toast.success(data.message);
         setImage(null);
       } else {
-        toast.error(data?.message || "Something went wrong!");
+        toast.error(data.message || "Something went wrong!");
         setImage(null);
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Network error. Please try again.");
+      toast.error(
+        error?.response?.data?.message || "Network error. Please try again."
+      );
       setImage(null);
       setSidebarPreview(previousPreview);
     } finally {
@@ -103,25 +124,33 @@ export const AppProvider = ({ children }) => {
     return user?.image || assets.user_profile;
   }, [user?.image]);
 
+  // ✅ Set token + user
+  const login = (token, user) => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    setToken(token);
+    setUser(user);
+    axios.defaults.headers.common["Authorization"] = token;
+  };
+
+  // ✅ Clear everything on logout
   const logout = () => {
     localStorage.removeItem("token");
-    setToken(null);
+    localStorage.removeItem("user");
     setUser(null);
-    setIsOwner(false);
-    axios.defaults.headers.common["Authorization"] = "";
-    toast.success("You have been logged out.");
+    delete axios.defaults.headers.common["Authorization"];
+    toast.success("Logout Successfully...");
     navigate("/");
   };
 
-  // ✅ Fetch user and cars when token is available
+  // ✅ Load token and user on mount
   useEffect(() => {
+    const token = localStorage.getItem("token");
     if (token) {
-      axios.defaults.headers.common["Authorization"] = `${token}`;
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchUser();
     }
-
-    fetchCars(); // always fetch cars regardless of login status
-  }, [token, fetchCars]);
+  }, []);
 
   const value = {
     navigate,
@@ -149,6 +178,7 @@ export const AppProvider = ({ children }) => {
     fetchCars,
     changeRole,
     logout,
+    login,
     loading,
     setLoading,
   };

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 
 const Dashboard = () => {
-  const { isOwner, currency, axios } = useAppContext();
+  const { isOwner, currency, token, axios } = useAppContext();
 
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +56,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (isOwner) {
+    if (isOwner && token) {
       fetchDashboardData();
     }
   }, [isOwner]);

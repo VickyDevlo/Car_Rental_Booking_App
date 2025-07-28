@@ -8,38 +8,45 @@ import { MyBookingSkeleton } from "../../components/shared/MyBookingSkeleton";
 import { TitleSkeleton } from "../../components/shared/TitleSkeleton";
 
 const MyBooking = () => {
-  const { currency, axios, user } = useAppContext();
+  const { currency, axios, user,token } = useAppContext();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchMyBookings = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get("/api/bookings/user");
-      if (data?.success) {
-        setBookings(data.bookings || []);
-      } else {
-        toast.error(data?.message || "Failed to fetch bookings");
-        setBookings([]);
-      }
-    } catch (error) {
-      toast.error(error.message || "An error occurred");
-      setBookings([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    const { data } = await axios.get("/api/bookings/user");
 
-  useEffect(() => {
-    if (user === undefined) return;
-
-    if (user) {
-      fetchMyBookings();
+    if (data?.success) {
+      setBookings(data.bookings || []);
     } else {
+      if (data?.message) toast.error(data.message);
       setBookings([]);
-      setLoading(false);
     }
-  }, [user]);
+  } catch (error) {
+    if (error.response?.status === 401) {
+      toast.error("Session expired. Please log in again.");
+    } else {
+      toast.error("An error occurred while fetching bookings");
+    }
+    setBookings([]);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+useEffect(() => {
+  if (!user || !token) {
+    setLoading(false); // Avoid showing skeletons or fetch
+    return;
+  }
+
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  fetchMyBookings();
+}, [user, token]);
+
+
 
   const showEmptyState = !loading && bookings.length === 0;
 

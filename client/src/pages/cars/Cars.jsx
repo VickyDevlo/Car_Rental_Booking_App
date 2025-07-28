@@ -9,12 +9,11 @@ import { motion } from "framer-motion";
 
 const Cars = () => {
   const [searchParams] = useSearchParams();
-  const pickupLocation =
-    searchParams.get("pickupLocation")?.toLowerCase() || "";
+  const pickupLocation = searchParams.get("pickupLocation")?.toLowerCase() || "";
   const pickupDate = searchParams.get("pickupDate");
   const returnDate = searchParams.get("returnDate");
 
-  const { cars, axios } = useAppContext();
+  const { cars, axios, fetchCars } = useAppContext();
 
   const [searchInput, setSearchInput] = useState("");
   const [filteredCars, setFilteredCars] = useState([]);
@@ -68,7 +67,15 @@ const Cars = () => {
     }
   };
 
+  // Initial fetch for cars
   useEffect(() => {
+    fetchCars();
+  }, [fetchCars]);
+
+  // Run search or default display once cars are loaded
+  useEffect(() => {
+    if (!cars.length) return;
+
     if (isSearchData) {
       searchCarAvailability();
     } else {
@@ -77,6 +84,7 @@ const Cars = () => {
     }
   }, [cars, isSearchData]);
 
+  // Apply search input filter
   useEffect(() => {
     if (!isSearchData && cars.length > 0) {
       applyFilter();
@@ -125,20 +133,22 @@ const Cars = () => {
         className="px-6 md:px-16 lg:px-24 xl:px-32 my-12"
       >
         {loading ? (
-          <div className="h-6 bg-gray-200 rounded mb-2 w-44 animate-pulse" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+            {Array(6)
+              .fill(0)
+              .map((_, i) => (
+                <CarCardSkeleton key={i} />
+              ))}
+          </div>
         ) : (
-          <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
-            Showing {filteredCars.length}{" "}
-            {filteredCars.length === 1 ? "Car" : "Cars"}
-          </p>
-        )}
+          <>
+            <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
+              Showing {filteredCars.length}{" "}
+              {filteredCars.length === 1 ? "Car" : "Cars"}
+            </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
-          {loading
-            ? Array(6)
-                .fill(0)
-                .map((_, i) => <CarCardSkeleton key={i} />)
-            : filteredCars.map((car, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+              {filteredCars.map((car, i) => (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -148,10 +158,12 @@ const Cars = () => {
                   <CarCard car={car} />
                 </motion.div>
               ))}
-        </div>
+            </div>
+          </>
+        )}
       </motion.div>
     </div>
-  );
+  );  
 };
 
 export default Cars;

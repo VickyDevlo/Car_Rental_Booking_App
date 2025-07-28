@@ -1,4 +1,12 @@
+import { useAppContext } from "../../context/AppContext";
+
 export const NavbarSkeleton = () => {
+  const { user, loading } = useAppContext();
+
+  // Until user is loaded, assume default skeleton length
+  const isOwner = user?.role === "owner";
+  const len = loading ? 3 : isOwner ? 2 : 3;
+
   return (
     <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 w-full">
       {/* Logo */}
@@ -6,7 +14,7 @@ export const NavbarSkeleton = () => {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex justify-end items-center gap-2 w-full">
-        {Array(3)
+        {Array(len)
           .fill(0)
           .map((_, i) => (
             <div
@@ -29,10 +37,9 @@ export const NavbarSkeleton = () => {
       <div className="sm:hidden">
         <div className="h-6 w-6 bg-gray-200 animate-pulse rounded" />
       </div>
+
       {/* Mobile Menu */}
-      <div
-        className={`sm:hidden px-6 pt-2 pb-4 transition-all`}
-      >
+      <div className={`sm:hidden px-6 pt-2 pb-4 transition-all`}>
         {Array(3)
           .fill(0)
           .map((_, i) => (
