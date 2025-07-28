@@ -13,12 +13,7 @@ const app = express();
 await connectDB();
 
 // middleware
-app.use(
-  cors({
-    origin: "https://car-rental-booking-app.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 // basic route
@@ -28,6 +23,7 @@ app.get("/", (_, res) => res.send("Server is running..."));
 app.use("/api/user", userRouter);
 app.use("/api/owner", ownerRouter);
 app.use("/api/bookings", bookingRouter);
+
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
