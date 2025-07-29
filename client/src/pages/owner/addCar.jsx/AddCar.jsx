@@ -3,9 +3,10 @@ import { Title } from "../../../components/owner/Title";
 import { assets } from "../../../assets/assets";
 import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
+import Loader from "../../../components/loader/Loader";
 
 const AddCar = () => {
-  const { currency, axios} = useAppContext();
+  const { currency, axios } = useAppContext();
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [car, setCar] = useState({
@@ -234,16 +235,15 @@ const AddCar = () => {
         </div>
         <button
           disabled={isDisabled}
-          className={`flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary
-        text-white rounded-md font-medium w-max
+          className={`flex items-center justify-center gap-2 px-4 py-2.5 mt-4 bg-primary-dull
+        text-white rounded-md font-medium w-30
         ${
           isDisabled || loading
-            ? "opacity-60 md:opacity-70 cursor-not-allowed"
+            ? "opacity-60 md:opacity-75 cursor-not-allowed"
             : "cursor-pointer"
         }`}
         >
-          {!loading && <img src={assets.tick_icon} alt="tick" />}
-          {loading ? "Listing" : "List Your Car"}
+          {loading ? <Loader className="w-5 h-5 border-4" /> : "List Your Car"}
         </button>
       </form>
     </div>

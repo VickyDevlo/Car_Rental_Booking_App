@@ -1,26 +1,20 @@
+
+import { Navigate, Outlet } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import { Outlet, useNavigate } from "react-router-dom";
-import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
 
-const OwnerRoute = () => {
+export const ProtectedOwnerRoute = () => {
   const { user } = useAppContext();
-  const navigate = useNavigate();
-  const [authorized, setAuthorized] = useState(null);
 
-  useEffect(() => {
-    if (user?.role === "user" || !user) {
-      toast.error("Please log in to continue.");
-      navigate("/");
-    } else {
-      navigate('/owner')
-    }
-  }, [user, navigate]);
+  const isOwner = user?.role === 'owner'
 
-  // Avoid rendering anything until authorization is verified
-  if (!authorized) return null;
+  if (!user) {
+    return <Navigate to="/" replace />;
+  }
+
+  if (!isOwner) {
+    return <Navigate to="/" replace />;
+  }
 
   return <Outlet />;
 };
-
-export default OwnerRoute;
+ 

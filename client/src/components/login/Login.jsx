@@ -21,9 +21,26 @@ const Login = () => {
   } = useAppContext();
   const [formData, setFormData] = useState(initialState);
   const [state, setState] = useState("login");
+  const [refocus, setRefocus] = useState(false);
 
   const nameRef = useRef();
   const emailRef = useRef();
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  const registerFormDisabled =
+    !formData.name?.trim() ||
+    !formData.email?.trim() ||
+    !isValidEmail(formData.email) ||
+    !formData.password?.trim();
+
+  const loginFormDisabled =
+    !formData.email?.trim() ||
+    !isValidEmail(formData.email) ||
+    !formData.password?.trim();
+
+  const isDisabled =
+    state === "register" ? registerFormDisabled : loginFormDisabled;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +60,6 @@ const Login = () => {
     }
 
     setLoading(true); // Start loading
-
     try {
       const { data } = await axios.post(`/api/user/${state}`, formData);
 
@@ -66,14 +82,12 @@ const Login = () => {
       } else {
         toast.error(data?.message);
         setFormData(initialState);
-        state === "register"
-          ? nameRef.current.focus()
-          : emailRef.current?.focus();
+        setRefocus(true);
       }
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setLoading(false); // Stop loading in both success/failure cases
+      setLoading(false);
     }
   };
 
@@ -83,7 +97,8 @@ const Login = () => {
     } else {
       emailRef.current?.focus();
     }
-  }, [state]);
+    setRefocus(false); // reset the flag
+  }, [state, refocus]);
 
   useEffect(() => {
     const handleEsc = (e) => {
@@ -96,23 +111,6 @@ const Login = () => {
       document.removeEventListener("keydown", handleEsc);
     };
   }, []);
-
-  const isValidEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
-
-  const registerFormDisabled =
-    !formData.name?.trim() ||
-    !formData.email?.trim() ||
-    !isValidEmail(formData.email) ||
-    !formData.password?.trim();
-
-  const loginFormDisabled =
-    !formData.email?.trim() ||
-    !isValidEmail(formData.email) ||
-    !formData.password?.trim();
-
-  const isDisabled =
-    state === "register" ? registerFormDisabled : loginFormDisabled;
 
   return (
     <div
@@ -145,6 +143,7 @@ const Login = () => {
               placeholder="Enter your name"
               className="border border-gray-200 rounded w-full p-2 mt-1 
               outline-primary/60 capitalize"
+              disabled={loading}
               required
             />
           </div>
@@ -163,6 +162,7 @@ const Login = () => {
             placeholder="Enter your email"
             className="border border-gray-200 rounded w-full p-2 mt-1
              outline-primary/60"
+            disabled={loading}
             required
           />
         </div>
@@ -179,6 +179,7 @@ const Login = () => {
             placeholder="Enter your password"
             className="border border-gray-200 rounded w-full p-2 mt-1
              outline-primary/60"
+            disabled={loading}
             required
           />
         </div>

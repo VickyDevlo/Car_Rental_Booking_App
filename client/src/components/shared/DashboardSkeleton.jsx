@@ -1,0 +1,51 @@
+export const DashboardSkeleton = () => {
+  return (
+    <>
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl animate-pulse">
+        {[...Array(4)].map((_, i) => (
+          <div
+            key={i}
+            className="flex items-center justify-between gap-2 p-4.5 rounded-md border border-borderColor w-full bg-light"
+          >
+            <div className="space-y-2 w-full">
+              <div className="w-24 h-3 bg-gray-200 rounded" />
+              <div className="w-9 h-9 bg-gray-300 rounded-full" />
+            </div>
+            <div className="w-10 h-10 bg-gray-200 rounded-full shrink-0" />
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-col md:flex-row gap-6 w-full animate-pulse">
+        <div className="p-4 md:p-6 border border-borderColor rounded-md max-w-lg w-full">
+          <div className="h-6 bg-gray-300 rounded mb-2 w-1/2" />
+          <div className="h-4 bg-gray-200 rounded mb-6 w-2/3" />
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-gray-200 rounded-full" />
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-32" />
+                  <div className="h-3 bg-gray-200 rounded w-24" />
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="h-4 bg-gray-200 rounded w-16" />
+                <div className="h-6 bg-gray-200 rounded-full w-20" />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="p-4 md:p-6 mb-6 border border-borderColor rounded-md w-full h-fit md:max-w-xs">
+          <div className="h-6 bg-gray-300 rounded mb-2 w-3/4" />
+          <div className="h-4 bg-gray-200 rounded mb-6 w-full" />
+          <div className="h-10 bg-gray-300 rounded w-2/3" />
+        </div>
+      </div>
+    </>
+  );
+};
