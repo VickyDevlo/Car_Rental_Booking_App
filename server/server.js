@@ -13,12 +13,7 @@ const app = express();
 await connectDB();
 
 // middleware
-app.use(
-   cors({
-    origin: "https://car-rental-booking-app.vercel.app", // ✅ Allow frontend domain
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 
 // basic route
