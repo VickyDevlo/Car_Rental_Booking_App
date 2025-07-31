@@ -72,12 +72,6 @@ const Login = () => {
         setToken(data?.token);
         localStorage.setItem("token", data?.token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-        if (data?.user?.role === "owner") {
-          navigate("/owner");
-        } else {
-          navigate("/");
-        }
-
         setShowLogin(false);
         fetchUser();
       } else {
