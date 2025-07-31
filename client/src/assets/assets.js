@@ -84,6 +84,12 @@ export const menuLinks = [
   { name: "My Bookings", path: "/my-bookings" },
 ];
 
+  export const initialState = {
+    name: "",
+    email: "",
+    password: "",
+  };
+
 export const ownerMenuLinks = [
   {
     name: "Dashboard",

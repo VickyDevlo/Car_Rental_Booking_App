@@ -3,13 +3,9 @@ import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import Loader from "../loader/Loader";
+import { initialState } from "../../assets/assets";
 
 const Login = () => {
-  const initialState = {
-    name: "",
-    email: "",
-    password: "",
-  };
   const {
     setShowLogin,
     axios,
@@ -73,10 +69,10 @@ const Login = () => {
 
         // ✅ Login success
         toast.success("Login successful!");
-        navigate("/");
         setToken(data?.token);
         localStorage.setItem("token", data?.token);
         axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
+        data?.user?.role === "owner" ? navigate("/owner") : navigate("/");
         setShowLogin(false);
         fetchUser();
       } else {
@@ -97,7 +93,7 @@ const Login = () => {
     } else {
       emailRef.current?.focus();
     }
-    setRefocus(false); // reset the flag
+    setRefocus(false);
   }, [state, refocus]);
 
   useEffect(() => {
