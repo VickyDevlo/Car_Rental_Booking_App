@@ -12,6 +12,7 @@ const Banner = () => {
   const handleClick = () => {
     if (isOwner) {
       navigate("/owner");
+      window.scrollTo(0, 0);
     } else {
       toast.error("You are not authorized to access the owner dashboard.");
     }
@@ -24,8 +25,10 @@ const Banner = () => {
       transition={{ duration: 0.6 }}
       className="px-2 md:px-16"
     >
-      <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 bg-gradient-to-r from-[#0558FE] to-[#A9CFFF] 
-      p-6 md:p-12 rounded-2xl max-w-6xl mx-3 md:mx-auto overflow-hidden">
+      <div
+        className="flex flex-col md:flex-row items-center md:items-start justify-between gap-4 bg-gradient-to-r from-[#0558FE] to-[#A9CFFF] 
+      p-6 md:p-12 rounded-2xl max-w-6xl mx-3 md:mx-auto overflow-hidden"
+      >
         {/* Text Section */}
         <div className="text-white">
           <h2 className="text-lg md:text-3xl font-bold text-center md:text-left">

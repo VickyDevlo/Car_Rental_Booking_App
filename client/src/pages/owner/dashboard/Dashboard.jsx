@@ -71,7 +71,7 @@ const Dashboard = () => {
       ) : (
         <TitleSkeleton />
       )}
-      {!loading ? (
+      {loading ? (
         <>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl">
             {dashboardCards &&

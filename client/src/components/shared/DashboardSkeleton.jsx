@@ -5,18 +5,18 @@ export const DashboardSkeleton = () => {
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="flex items-center justify-between gap-2 p-4.5 rounded-md border border-borderColor w-full bg-light"
+            className="flex items-center justify-between gap-2 p-4 rounded-md border border-borderColor bg-light"
           >
             <div className="space-y-2 w-full">
-              <div className="w-24 h-3 bg-gray-200 rounded" />
+              <div className="w-18 h-3 max-sm:w-30 bg-gray-200 rounded" />
               <div className="w-9 h-9 bg-gray-300 rounded-full" />
             </div>
-            <div className="w-10 h-10 bg-gray-200 rounded-full shrink-0" />
+            <div className="flex items-center justify-center rounded-full w-10 h-10 bg-gray-200 shrink-0" />
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 w-full animate-pulse">
+      <div className="flex items-start gap-6 flex-wrap mb-8 w-full animate-pulse">
         <div className="p-4 md:p-6 border border-borderColor rounded-md max-w-lg w-full">
           <div className="h-6 bg-gray-300 rounded mb-2 w-1/2" />
           <div className="h-4 bg-gray-200 rounded mb-6 w-2/3" />
