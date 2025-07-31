@@ -106,11 +106,11 @@ const Dashboard = () => {
               {data.recentBookings.map((booking, i) => (
                 <div key={i} className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
-                    <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
+                    <div className="hidden md:flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 overflow-hidden">
                       <img
-                        src={assets.listIconColored}
+                        src={booking?.car?.image}
                         alt="list_icon"
-                        className="h-5 w-5"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div>
