@@ -35,6 +35,8 @@ import testimonial_image_2 from "./testimonial_image_2.png";
 import main_car from "./main_car.png";
 import banner_car_image from "./banner_car_image.png";
 import upload_icon from "./upload_icon.svg";
+import { RiLockPasswordFill } from "react-icons/ri";
+import { BiLogOut } from "react-icons/bi";
 
 export const cityList = ["New York", "Los Angeles", "Houston", "Chicago"];
 
@@ -84,12 +86,23 @@ export const menuLinks = [
   { name: "My Bookings", path: "/my-bookings" },
 ];
 
-  export const initialState = {
-    name: "",
-    email: "",
-    password: "",
-  };
-
+export const initialState = {
+  name: "",
+  email: "",
+  password: "",
+};
+export const dropDownMenus = [
+  {
+    icon: RiLockPasswordFill,
+    label: "Change Password",
+    path: "/change-password",
+  },
+  {
+    icon: BiLogOut,
+    label: "Logout",
+    path: "/",
+  },
+];
 export const ownerMenuLinks = [
   {
     name: "Dashboard",

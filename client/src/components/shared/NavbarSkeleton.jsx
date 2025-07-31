@@ -1,6 +1,8 @@
 import { useLocation } from "react-router-dom";
+import { useAppContext } from "../../context/AppContext";
 
 export const NavbarSkeleton = () => {
+  const { user } = useAppContext();
   const location = useLocation();
 
   return (
@@ -29,9 +31,16 @@ export const NavbarSkeleton = () => {
         </div>
 
         {/* Buttons */}
-        <div className="hidden sm:flex items-center gap-4">
-          <div className="h-9 w-20 bg-gray-200 animate-pulse rounded" />
-        </div>
+        {!user && (
+          <div className="hidden sm:flex items-center gap-4">
+            <div className="h-9 w-20 bg-gray-200 animate-pulse rounded" />
+          </div>
+        )}
+        {user && (
+          <div className="hidden sm:flex items-center gap-4">
+            <div className="h-8 w-8 bg-gray-200 animate-pulse rounded-full" />
+          </div>
+        )}
 
         {/* Mobile Menu Icon */}
         <div className="sm:hidden">

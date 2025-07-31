@@ -4,13 +4,14 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { motion } from "motion/react";
 import { NavbarSkeleton } from "../shared/NavbarSkeleton";
+import UserDropdown from "../userDropDown/UserDropDown";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  const { setShowLogin, showLogin, user, token, logout } = useAppContext();
+  const { setShowLogin, showLogin, user, token } = useAppContext();
 
   const isOwner = user?.role === "owner";
 
@@ -50,7 +51,7 @@ const Navbar = () => {
 
             {/* Menu Items */}
             <div
-              className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-10 overflow-hidden ${
+              className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-10  ${
                 location.pathname === "/"
                   ? "max-sm:bg-light"
                   : "max-sm:bg-white"
@@ -102,24 +103,23 @@ const Navbar = () => {
                 />
                 <img src={assets.search_icon} alt="search" />
               </div>
+              {user && !isOwner && <UserDropdown />}
 
-              {/* Login / Logout Button */}
-              <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => {
-                    user ? logout() : setShowLogin(true);
-                    setOpen(false);
-                  }}
-                  className={`text-white text-sm font-medium px-6 py-1.5 ${
-                    user
-                      ? "bg-red-500 hover:bg-red-600"
-                      : "bg-primary hover:bg-primary-dull"
-                  } rounded-sm md:mr-1 cursor-pointer transition-all`}
-                >
-                  {user ? "Logout" : "Login"}
-                </motion.button>
-              </div>
+              {!user && (
+                <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
+                  <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      user ? logout() : setShowLogin(true);
+                      setOpen(false);
+                    }}
+                    className={`text-white text-sm font-medium px-6 py-1.5
+                     bg-primary hover:bg-primary-dull  rounded-sm md:mr-1 cursor-pointer transition-all`}
+                  >
+                    Login
+                  </motion.button>
+                </div>
+              )}
             </div>
 
             {/* Mobile Menu Toggle */}

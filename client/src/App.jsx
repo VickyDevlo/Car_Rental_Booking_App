@@ -6,16 +6,20 @@ import { useAppContext } from "./context/AppContext";
 
 function App() {
   const { showLogin } = useAppContext();
-  const isOwnerPath = useLocation().pathname.startsWith("/owner");
+  const location = useLocation();
+
+  const isOwnerPath = location.pathname.startsWith("/owner");
+  const isChangePassword = location.pathname === "/change-password";
+
+  const hideNavbar = isOwnerPath || isChangePassword;
 
   return (
     <>
       <Toaster />
       {showLogin && <Login />}
-      {!isOwnerPath && <Navbar />}
-
+      {!hideNavbar && <Navbar />}
       <Router />
-      {!isOwnerPath && <Footer />}
+      {!hideNavbar && <Footer />}
     </>
   );
 }
