@@ -49,38 +49,55 @@ const Login = () => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
-    // ✅ Validate password length if registering
     if (state === "register" && formData.password.trim().length < 8) {
       toast.error("Password must be at least 8 characters long.");
       return;
     }
 
-    setLoading(true); // Start loading
+    setLoading(true);
+
     try {
-      const { data } = await axios.post(`/api/user/${state}`, formData);
+      const response = await axios.post(`/api/user/${state}`, formData);
+      const data = response.data;
 
-      if (data?.success) {
-        if (state === "register") {
-          toast.success("Registration successful! Please log in.");
-          setState("login");
-          setFormData(initialState);
-          return;
-        }
-
-        // ✅ Login success
-        toast.success("Login successful!");
-        setToken(data?.token);
-        localStorage.setItem("token", data?.token);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-        setShowLogin(false);
-        fetchUser();
-      } else {
-        toast.error(data?.message);
+      if (!data?.success) {
+        toast.error(data?.message || "Something went wrong.");
         setFormData(initialState);
         setRefocus(true);
+        return;
+      }
+
+      if (state === "register") {
+        toast.success("Registration successful! Please log in.");
+        setState("login");
+        setFormData(initialState);
+        return;
+      }
+
+      // ✅ Login Success
+      const token = data.token;
+      const user = data.user;
+
+      setToken(token);
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      toast.success("Login successful!");
+
+      setShowLogin(false);
+
+      if (fetchUser) {
+        await fetchUser();
+      }
+      if (user?.role === "owner") {
+        navigate("/owner");
+      } else {
+        navigate("/");
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error?.response?.data?.message || error.message || "Login failed."
+      );
     } finally {
       setLoading(false);
     }

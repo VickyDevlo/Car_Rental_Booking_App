@@ -10,8 +10,7 @@ const Navbar = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  const { setShowLogin, showLogin, user, token, changeRole, logout } =
-    useAppContext();
+  const { setShowLogin, showLogin, user, token, logout } = useAppContext();
 
   const isOwner = user?.role === "owner";
 
@@ -29,20 +28,13 @@ const Navbar = () => {
     document.body.style.overflow = showLogin || open ? "hidden" : "auto";
   }, [showLogin, open]);
 
-
   return (
     <>
-      {loading ? (
+      {!loading ? (
         <div
-          className={`border-b border-borderColor relative transition-all ${location.pathname === "/" ? "bg-light" : "bg-white"
-            }`}
-        >
-          <NavbarSkeleton />
-        </div>
-      ) : (
-        <div
-          className={`border-b border-borderColor relative transition-all ${location.pathname === "/" ? "bg-light" : "bg-white"
-            }`}
+          className={`border-b border-borderColor relative transition-all ${
+            location.pathname === "/" ? "bg-light" : "bg-white"
+          }`}
         >
           <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600">
             {/* Logo */}
@@ -58,10 +50,11 @@ const Navbar = () => {
 
             {/* Menu Items */}
             <div
-              className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-10 overflow-hidden ${location.pathname === "/"
+              className={`max-sm:fixed right-0 max-sm:top-[54px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300 z-10 overflow-hidden ${
+                location.pathname === "/"
                   ? "max-sm:bg-light"
                   : "max-sm:bg-white"
-                } ${open ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"}`}
+              } ${open ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"}`}
             >
               {/* Filtered Nav Links */}
               {filteredMenuLinks.map((menu, i) => (
@@ -72,8 +65,9 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
                      max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                     ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
-                    }`
+                     ${
+                       isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
+                     }`
                   }
                 >
                   {menu.name}
@@ -88,10 +82,11 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
                        max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                       ${isActive
-                      ? "text-primary max-sm:bg-primary-dull/20"
-                      : ""
-                    }`
+                       ${
+                         isActive
+                           ? "text-primary max-sm:bg-primary-dull/20"
+                           : ""
+                       }`
                   }
                 >
                   Dashboard
@@ -116,10 +111,11 @@ const Navbar = () => {
                     user ? logout() : setShowLogin(true);
                     setOpen(false);
                   }}
-                  className={`text-white text-sm font-medium px-6 py-1.5 ${user
+                  className={`text-white text-sm font-medium px-6 py-1.5 ${
+                    user
                       ? "bg-red-500 hover:bg-red-600"
                       : "bg-primary hover:bg-primary-dull"
-                    } rounded-sm md:mr-1 cursor-pointer transition-all`}
+                  } rounded-sm md:mr-1 cursor-pointer transition-all`}
                 >
                   {user ? "Logout" : "Login"}
                 </motion.button>
@@ -139,6 +135,8 @@ const Navbar = () => {
             </button>
           </div>
         </div>
+      ) : (
+        <NavbarSkeleton />
       )}
     </>
   );
