@@ -32,7 +32,7 @@ const OwnerNavbar = () => {
               onError={(e) => (e.target.src = assets.user_profile)}
             />
             <p className="max-md:hidden text-sm md:text-base font-medium text-gray-500 capitalize truncate">
-              {user?.name || "Owner"}
+              {user?.role || "Owner"}
             </p>
           </>
         )}

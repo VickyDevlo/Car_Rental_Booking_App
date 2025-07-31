@@ -73,7 +73,7 @@ const Dashboard = () => {
       )}
       {!loading ? (
         <>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl w-full">
             {dashboardCards &&
               dashboardCards.map((card, i) => (
                 <div
@@ -114,17 +114,18 @@ const Dashboard = () => {
                       />
                     </div>
                     <div>
-                      <p className="text-sm font-semibold">
+                      <p className="text-sm text-gray-800 font-semibold max-sm:truncate max-sm:w-[80px]">
                         {booking.car.brand} {booking.car.model}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-gray-500">
                         {booking.createdAt.split("T")[0]}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 font-medium">
-                    <p className="text-sm text-gray-500">
-                      {currency} {booking.price}
+                    <p className="text-sm whitespace-nowrap text-gray-700">
+                      {currency}
+                      {booking.price}
                     </p>
                     <p
                       className={`px-3 py-0.5 border border-borderColor rounded-full text-sm ${
