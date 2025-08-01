@@ -3,7 +3,7 @@ import { BiUser } from "react-icons/bi";
 import { dropDownMenus } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 
-const UserDropdown = () => {
+const UserDropdown = ({ menuClose }) => {
   const { navigate, logout, user } = useAppContext();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -35,18 +35,11 @@ const UserDropdown = () => {
         className="flex items-center justify-center w-9 h-9 rounded-full
          bg-primary/20 font-semibold text-md shadow-md cursor-pointer capitalize"
       >
-        {user ? (
-          userIcon
-        ) : (
-          <BiUser className="text-xl text-gray-600" />
-        )}
+        {user ? userIcon : <BiUser className="text-xl text-gray-600" />}
       </button>
 
       {isOpen && (
-        <div
-          className="absolute max-sm:left-0 -right-20 top-12 w-58 bg-white border
-         border-gray-200 rounded-md shadow-lg z-50"
-        >
+        <div className="absolute max-sm:left-0 -right-20 top-12 w-58 backdrop-blur-sm border border-gray-200 rounded-md shadow-lg z-50">
           <ul className="py-1 text-sm text-gray-700">
             {dropDownMenus.map((menu) => (
               <li key={menu.label}>
@@ -58,6 +51,7 @@ const UserDropdown = () => {
                       navigate(menu.path);
                     }
                     setIsOpen(false);
+                    menuClose(false);
                   }}
                   className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-100 text-base font-medium transition-all
                    duration-200 cursor-pointer"

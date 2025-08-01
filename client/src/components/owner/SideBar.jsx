@@ -8,7 +8,7 @@ const SideBar = () => {
     useAppContext();
   const location = useLocation();
 
-  const sidebarPreview = image ? URL.createObjectURL(image) : displayImage;
+  const userProfile = image ? URL.createObjectURL(image) : displayImage;
   const isUserReady = user?.name && displayImage;
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const SideBar = () => {
               className="relative cursor-pointer w-20 h-20 sm:w-24 sm:h-24"
             >
               <img
-                src={sidebarPreview}
+                src={userProfile}
                 alt="user_image"
                 className="w-full h-full rounded-full object-cover aspect-square"
                 onError={(e) => (e.target.src = assets.user_profile)}

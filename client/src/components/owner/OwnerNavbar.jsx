@@ -53,7 +53,7 @@ const OwnerNavbar = () => {
               onError={(e) => (e.target.src = assets.user_profile)}
             />
             <p className="max-md:hidden text-sm md:text-base font-medium text-gray-500 capitalize truncate">
-              {user?.role || "Owner"}
+              {user?.role|| "Owner"}
             </p>
           </div>
         )}
@@ -61,8 +61,8 @@ const OwnerNavbar = () => {
         {/* Dropdown */}
         {showDropdown && (
           <div
-            className="absolute max-sm:left-0 -right-6 top-10 w-58
-           bg-white border border-gray-200 rounded-md shadow-lg z-50"
+            className="absolute max-sm:-left-45 -right-6 top-10 w-58
+            backdrop-blur-md border border-gray-200 rounded-md shadow-lg z-50"
           >
             <button
               onClick={() => {

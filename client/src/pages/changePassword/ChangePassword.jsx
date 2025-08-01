@@ -55,7 +55,7 @@ const ChangePassword = () => {
         setShowLogin(true);
 
         toast.dismiss();
-        toast("🔐 Login again to continue.");
+        toast("🔐 Password updated login again .");
       } else {
         toast.error(data.message || "Failed to update password.");
         if (data.message === "User not found.") {

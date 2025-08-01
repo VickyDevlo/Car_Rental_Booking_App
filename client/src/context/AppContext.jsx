@@ -33,6 +33,7 @@ export const AppProvider = ({ children }) => {
   const [image, setImage] = useState(null);
   const [sidebarPreview, setSidebarPreview] = useState(assets.user_profile);
 
+ 
   // ✅ Update isOwner when user changes
   useEffect(() => {
     setIsOwner(user?.role === "owner");

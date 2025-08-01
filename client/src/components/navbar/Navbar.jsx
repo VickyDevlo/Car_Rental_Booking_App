@@ -103,7 +103,7 @@ const Navbar = () => {
                 />
                 <img src={assets.search_icon} alt="search" />
               </div>
-              {user && !isOwner && <UserDropdown />}
+              {user && !isOwner && <UserDropdown menuClose={setOpen}/>}
 
               {!user && (
                 <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
