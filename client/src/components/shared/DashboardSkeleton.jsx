@@ -1,14 +1,14 @@
 export const DashboardSkeleton = () => {
   return (
     <>
-      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl animate-pulse">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 max-w-3xl w-full animate-pulse">
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="flex items-center justify-between gap-2 p-4 rounded-md border border-borderColor bg-light"
+            className="flex items-center justify-between gap-2 px-4 py-3 rounded-md border border-borderColor bg-light"
           >
-            <div className="space-y-2 w-full">
-              <div className="w-18 h-3 max-sm:w-30 bg-gray-200 rounded" />
+            <div className="space-y-2">
+              <div className="w-18 h-2 max-sm:w-30 bg-gray-200 rounded" />
               <div className="w-9 h-9 bg-gray-300 rounded-full" />
             </div>
             <div className="flex items-center justify-center rounded-full w-10 h-10 bg-gray-200 shrink-0" />
@@ -44,9 +44,9 @@ export const DashboardSkeleton = () => {
         </div>
 
         <div className="p-4 md:p-6 mb-6 border border-borderColor rounded-md w-full h-fit md:max-w-xs">
-          <div className="h-6 bg-gray-300 rounded mb-2 w-3/4" />
-          <div className="h-4 bg-gray-200 rounded mb-6 w-full" />
-          <div className="h-10 bg-gray-300 rounded w-2/3" />
+          <div className="h-6 bg-gray-300 rounded mb-2 w-40" />
+          <div className="h-4 bg-gray-200 rounded mb-6 w-53" />
+          <div className="h-10 bg-gray-300 rounded w-20" />
         </div>
       </div>
     </>
