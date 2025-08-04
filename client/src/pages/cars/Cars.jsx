@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { assets } from "../../assets/assets";
 import { CarCard, Title } from "../../components";
 import { CarCardSkeleton } from "../../components/shared/CardSkeleton";
@@ -13,22 +13,56 @@ const Cars = () => {
   const pickupDate = searchParams.get("pickupDate");
   const returnDate = searchParams.get("returnDate");
 
-  const { cars, axios, fetchCars } = useAppContext();
+  const { cars, fetchCars, axios } = useAppContext();
 
   const [searchInput, setSearchInput] = useState("");
   const [filteredCars, setFilteredCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasSearched, setHasSearched] = useState(false);
+  const [debouncedInput, setDebouncedInput] = useState("");
 
   const isSearchData = pickupLocation && pickupDate && returnDate;
 
-  const applyFilter = () => {
-    const input = searchInput.trim().toLowerCase();
-    if (!input) {
-      setFilteredCars(cars);
-      return;
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedInput(searchInput.trim().toLowerCase());
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchInput]);
+
+  // Fetch cars initially
+  useEffect(() => {
+    fetchCars();
+  }, [fetchCars]);
+
+  // Search car availability only once after cars are loaded
+  useEffect(() => {
+    if (cars.length > 0 && isSearchData && !hasSearched) {
+      setHasSearched(true); // Prevent multiple calls
+      searchCarAvailability();
     }
 
-    const filtered = cars.filter((car) => {
+    if (cars.length > 0 && !isSearchData) {
+      setFilteredCars(cars);
+      setLoading(false);
+    }
+  }, [cars.length, isSearchData]);
+
+  // Reset flags when new search params come
+  useEffect(() => {
+    if (isSearchData) {
+      setSearchInput("");
+      setHasSearched(false); // Reset search flag on new query
+    }
+  }, [pickupLocation, pickupDate, returnDate]);
+
+  // Local filtering
+  const filtered = useMemo(() => {
+    if (!debouncedInput || isSearchData) return filteredCars;
+
+    return cars.filter((car) => {
       const fields = [
         car.brand,
         car.model,
@@ -37,11 +71,18 @@ const Cars = () => {
         car.fuelType,
         car.location,
       ];
-      return fields.some((field) => field.toLowerCase().includes(input));
+      return fields.some((field) =>
+        field.toLowerCase().includes(debouncedInput)
+      );
     });
+  }, [debouncedInput, cars, filteredCars, isSearchData]);
 
-    setFilteredCars(filtered);
-  };
+  // Apply filtered locally
+  useEffect(() => {
+    if (!isSearchData && cars.length) {
+      setFilteredCars(filtered);
+    }
+  }, [filtered, isSearchData, cars.length]);
 
   const searchCarAvailability = async () => {
     try {
@@ -54,9 +95,6 @@ const Cars = () => {
 
       if (data?.success) {
         setFilteredCars(data.availableCars);
-        if (data.availableCars.length === 0) {
-          toast("No cars available");
-        }
       } else {
         toast.error("Something went wrong");
       }
@@ -66,31 +104,6 @@ const Cars = () => {
       setLoading(false);
     }
   };
-
-  // Initial fetch for cars
-  useEffect(() => {
-    fetchCars();
-  }, [fetchCars]);
-
-  // Run search or default display once cars are loaded
-  useEffect(() => {
-    if (!cars.length) return;
-
-    if (isSearchData) {
-      searchCarAvailability();
-    } else {
-      setFilteredCars(cars);
-      setLoading(false);
-    }
-  }, [cars, isSearchData]);
-
-  // Apply search input filter
-  useEffect(() => {
-    if (!isSearchData && cars.length > 0) {
-      applyFilter();
-    }
-  }, [searchInput, cars, isSearchData]);
-  
 
   return (
     <div className="mt-8 md:mt-12">
@@ -117,6 +130,7 @@ const Cars = () => {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="Search by make, model or features..."
+            aria-label="Search cars"
             className="text-gray-600 w-full h-full font-medium focus:outline-none max-md:placeholder:text-sm capitalize truncate"
           />
           <img
@@ -144,27 +158,44 @@ const Cars = () => {
         ) : (
           <>
             <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
-              Showing {filteredCars.length}{" "}
-              {filteredCars.length === 1 ? "Car" : "Cars"}
+              Showing {filtered.length} {filtered.length === 1 ? "Car" : "Cars"}
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
-              {filteredCars.map((car, i) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 * i }}
-                  key={car._id || i}
+            {filtered.length ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+                {filtered.map((car, i) => (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 * i }}
+                    key={car._id || i}
+                  >
+                    <CarCard car={car} />
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 1 }}
+                className="mt-5 md:mt-12 px-6 py-16 text-center w-full bg-primary/10 rounded-md text-primary"
+              >
+                <h1
+                  className="text-xl md:text-5xl font-semibold uppercase"
+                  style={{
+                    textShadow: "1px 1px 2px rgba(114, 141, 240, 0.6)",
+                  }}
                 >
-                  <CarCard car={car} />
-                </motion.div>
-              ))}
-            </div>
+                  Sorry No Cars Available
+                </h1>
+              </motion.div>
+            )}
           </>
         )}
       </motion.div>
     </div>
-  );  
+  );
 };
 
 export default Cars;
