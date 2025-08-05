@@ -9,16 +9,15 @@ const FeatureSection = () => {
   const { navigate, cars, fetchCars } = useAppContext();
   const [loading, setLoading] = useState(true);
 
- useEffect(() => {
-  const loadCars = async () => {
-    setLoading(true);
-    await fetchCars();
-    setLoading(false);
-  };
+  useEffect(() => {
+    const loadCars = async () => {
+      setLoading(true);
+      await fetchCars();
+      setLoading(false);
+    };
 
-  loadCars();
-}, [fetchCars]);
-
+    loadCars();
+  }, [fetchCars]);
 
   return (
     <motion.div
@@ -42,7 +41,8 @@ const FeatureSection = () => {
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 w-full"
+        // className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 w-full"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto"
       >
         {loading ? (
           <FeatureSectionSkeleton />
