@@ -9,7 +9,8 @@ import { motion } from "framer-motion";
 
 const Cars = () => {
   const [searchParams] = useSearchParams();
-  const pickupLocation = searchParams.get("pickupLocation")?.toLowerCase() || "";
+  const pickupLocation =
+    searchParams.get("pickupLocation")?.toLowerCase() || "";
   const pickupDate = searchParams.get("pickupDate");
   const returnDate = searchParams.get("returnDate");
 
@@ -90,7 +91,6 @@ const Cars = () => {
       applyFilter();
     }
   }, [searchInput, cars, isSearchData]);
-  
 
   return (
     <div className="mt-8 md:mt-12">
@@ -143,28 +143,44 @@ const Cars = () => {
           </div>
         ) : (
           <>
-            <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
-              Showing {filteredCars.length}{" "}
-              {filteredCars.length === 1 ? "Car" : "Cars"}
-            </p>
+            {filteredCars && filteredCars.length > 0 ? (
+              <>
+                <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
+                  Showing {filteredCars.length}{" "}
+                  {filteredCars.length === 1 ? "Car" : "Cars"}
+                </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
-              {filteredCars.map((car, i) => (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 * i }}
-                  key={car._id || i}
-                >
-                  <CarCard car={car} />
-                </motion.div>
-              ))}
-            </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+                  {filteredCars.map((car, i) => (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.1 * i }}
+                      key={car._id || i}
+                    >
+                      <CarCard car={car} />
+                    </motion.div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.4 }}
+                className="px-6 py-16 flex flex-col items-center justify-center text-center border rounded-lg bg-red-200 border-red-200
+                 text-red-500"
+              >
+                <h1 className="text-xl md:text-3xl font-semibold uppercase">
+                  Sorry... No Cars Available
+                </h1>
+              </motion.div>
+            )}
           </>
         )}
       </motion.div>
     </div>
-  );  
+  );
 };
 
 export default Cars;

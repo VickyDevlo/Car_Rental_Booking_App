@@ -10,10 +10,19 @@ const CarCard = ({ car }) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const onKeyDownHandler = (e) => {
+    const { key } = e;
+    if (key === "Enter") {
+      handleNavigation();
+    }
+  };
+
   return (
-    <button
+    <div
+      role="button"
+      tabIndex={0}
       onClick={handleNavigation}
-      type="button"
+      onKeyDown={onKeyDownHandler}
       aria-label={`View details for ${car?.brand || "Car"} ${car?.model || ""}`}
       className="group rounded-2xl overflow-hidden cursor-pointer shadow-md 
         hover:shadow-xl transition-shadow duration-300 bg-white
@@ -98,7 +107,7 @@ const CarCard = ({ car }) => {
           </div>
         </div>
       </div>
-    </button>
+    </div>
   );
 };
 
