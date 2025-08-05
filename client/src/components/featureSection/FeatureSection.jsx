@@ -9,6 +9,11 @@ const FeatureSection = () => {
   const { navigate, cars, fetchCars } = useAppContext();
   const [loading, setLoading] = useState(true);
 
+  const navigateCars = () => {
+    navigate("/cars");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   useEffect(() => {
     const loadCars = async () => {
       setLoading(true);
@@ -41,8 +46,7 @@ const FeatureSection = () => {
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, delay: 0.5 }}
-        // className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 w-full"
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-16 xl:px-20 max-w-7xl mx-auto"
       >
         {loading ? (
           <FeatureSectionSkeleton />
@@ -66,10 +70,7 @@ const FeatureSection = () => {
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.6 }}
           whileTap={{ scale: 0.95 }}
-          onClick={() => {
-            navigate("/cars");
-            scrollTo(0, 0);
-          }}
+          onClick={navigateCars}
           className="flex items-center justify-center gap-2 px-6 py-2 border border-borderColor hover:bg-gray-50 rounded-md mt-16 capitalize cursor-pointer"
         >
           Explore all cars
