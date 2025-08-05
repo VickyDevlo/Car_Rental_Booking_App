@@ -39,6 +39,7 @@ const CarDetails = () => {
       if (data?.success) {
         toast.success(data?.message);
         navigate("/my-bookings");
+        window.scrollTo({ top: 0, behavior: "smooth" });
         setPickupDate("");
         setReturnDate("");
       } else {

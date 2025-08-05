@@ -53,31 +53,27 @@ const OwnerNavbar = () => {
               onError={(e) => (e.target.src = assets.user_profile)}
             />
             <p className="max-md:hidden text-sm md:text-base font-medium text-gray-500 capitalize truncate">
-              {user?.role|| "Owner"}
+              {user?.role || "Owner"}
             </p>
           </div>
         )}
 
         {/* Dropdown */}
         {showDropdown && (
-          <div
-            className="absolute max-sm:-left-45 -right-6 top-10 w-58
-            backdrop-blur-md border border-gray-200 rounded-md shadow-lg z-50"
-          >
+          <div className="absolute max-sm:-left-45 -right-6 top-10 w-58 bg-gray-100 border border-gray-200 rounded-md shadow-lg z-50">
             <button
               onClick={() => {
                 setShowDropdown(false);
                 navigate("/change-password");
               }}
-              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-100 text-base font-medium transition-all
-                   duration-200 cursor-pointer"
+              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-base font-medium transition-all duration-200 cursor-pointer"
             >
               <RiLockPasswordFill size={18} />
               Change Password
             </button>
             <button
               onClick={() => logout()}
-              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-100 text-base font-medium transition-all
+              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-base font-medium transition-all
                    duration-200 cursor-pointer"
             >
               <BiLogOut size={18} />

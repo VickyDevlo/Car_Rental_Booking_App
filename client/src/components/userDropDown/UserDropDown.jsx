@@ -39,7 +39,7 @@ const UserDropdown = ({ menuClose }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute max-sm:left-0 -right-20 top-12 w-58 backdrop-blur-sm border border-gray-200 rounded-md shadow-lg z-50">
+        <div className="absolute max-sm:left-0 -right-20 top-12 w-58 bg-gray-200 border border-gray-200 rounded-md shadow-lg z-50">
           <ul className="py-1 text-sm text-gray-700">
             {dropDownMenus.map((menu) => (
               <li key={menu.label}>
