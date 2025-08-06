@@ -165,9 +165,7 @@ const CarDetails = () => {
                     alt={text}
                     className="h-5 mb-2"
                   />
-                  <span className="truncate w-full text-center text-sm">
-                    {text}
-                  </span>
+                  <span className="text-center text-sm">{text}</span>
                 </div>
               ))}
             </div>
@@ -177,7 +175,7 @@ const CarDetails = () => {
             </div>
             <div>
               <h1 className="text-xl font-semibold mb-3">Features</h1>
-              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <ul className="grid grid-cols-2 gap-2">
                 {[
                   "360 Camera",
                   "Bluetooth",
@@ -187,7 +185,8 @@ const CarDetails = () => {
                 ].map((item) => (
                   <li
                     key={item}
-                    className="flex items-center text-gray-500 font-medium capitalize"
+                    className="flex items-center text-gray-500 font-medium 
+                    capitalize"
                   >
                     <img
                       src={assets.check_icon}
