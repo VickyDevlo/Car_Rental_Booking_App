@@ -2,10 +2,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import Loader from "../../components/loader/Loader";
-import { BiUser } from "react-icons/bi";
 import { assets } from "../../assets/assets";
+import { BiUser } from "react-icons/bi";
 import { TiTick } from "react-icons/ti";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ChangePassword = () => {
   const {
@@ -176,12 +176,12 @@ const ChangePassword = () => {
             Confirm Password
           </label>
           <div
-            className={`flex items-center rounded p-1 mt-1 border focus-within:ring-2 transition-all ${
+            className={`flex items-center rounded p-1 mt-1 border border-gray-200 focus-within:ring-2 transition-all ${
               isMatch
-                ? "border-green-600 focus-within:ring-green-600"
+                ? "focus-within:ring-green-600"
                 : hasConfirm
-                ? "border-red-600 focus-within:ring-red-600"
-                : "border-gray-200 focus-within:ring-primary/60"
+                ? "focus-within:ring-red-600"
+                : "focus-within:ring-primary/60"
             }`}
           >
             <input
@@ -194,7 +194,19 @@ const ChangePassword = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full p-1 focus:outline-none"
             />
-            {isMatch && <TiTick size={25} className="text-green-600" />}
+            {isMatch && (
+              <AnimatePresence>
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.3 }}
+                  className="ml-2"
+                >
+                  <TiTick size={25} className="text-green-600" />
+                </motion.div>
+              </AnimatePresence>
+            )}
           </div>
         </div>
 
