@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import Loader from "../loader/Loader";
 import { initialState } from "../../assets/assets";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 const Login = () => {
   const {
@@ -18,6 +19,7 @@ const Login = () => {
   const [formData, setFormData] = useState(initialState);
   const [state, setState] = useState("login");
   const [refocus, setRefocus] = useState(false);
+  const [isPassword, setIsPassword] = useState(true);
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -144,56 +146,77 @@ const Login = () => {
         {state === "register" && (
           <div className="w-full">
             <label htmlFor="name">Name</label>
-            <input
-              type="text"
-              autoComplete="off"
-              name="name"
-              id="name"
-              value={formData.name}
-              ref={nameRef}
-              onChange={handleChange}
-              placeholder="Enter your name"
-              className="border border-gray-200 rounded w-full p-2 mt-1 
-              outline-primary/60 capitalize"
-              disabled={loading}
-              required
-            />
+            <div
+              className="flex items-center rounded p-2 mt-1 border-2
+    border-gray-200 focus-within:border-2 focus-within:border-primary/60"
+            >
+              <input
+                type="text"
+                autoComplete="off"
+                name="name"
+                id="name"
+                value={formData.name}
+                ref={nameRef}
+                onChange={handleChange}
+                placeholder="Enter your name"
+                className="w-full capitalize focus:outline-none"
+                disabled={loading}
+                required
+              />
+            </div>
           </div>
         )}
 
         <div className="w-full">
           <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            autoComplete="off"
-            name="email"
-            id="email"
-            ref={emailRef}
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter your email"
-            className="border border-gray-200 rounded w-full p-2 mt-1
-             outline-primary/60"
-            disabled={loading}
-            required
-          />
+          <div
+            className="flex items-center rounded p-2 mt-1 border-2
+                border-gray-200 focus-within:border-2
+                 focus-within:border-primary/60"
+          >
+            <input
+              type="email"
+              autoComplete="off"
+              name="email"
+              id="email"
+              ref={emailRef}
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              className="w-full focus:outline-none"
+              disabled={loading}
+              required
+            />
+          </div>
         </div>
 
         <div className="w-full">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            autoComplete="off"
-            name="password"
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter your password"
-            className="border border-gray-200 rounded w-full p-2 mt-1
-             outline-primary/60"
-            disabled={loading}
-            required
-          />
+          <div
+            className="flex items-center rounded p-2 mt-1 border-2
+                border-gray-200 focus-within:border-2
+                focus-within:border-primary/60"
+          >
+            <input
+              type={isPassword ? "password" : "text"}
+              autoComplete="off"
+              name="password"
+              id="password"
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+              className="w-full focus:outline-none"
+              disabled={loading}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setIsPassword(!isPassword)}
+              className="cursor-pointer shrink-0"
+            >
+              {isPassword ? <IoMdEyeOff size={18} /> : <IoMdEye size={18} />}
+            </button>
+          </div>
         </div>
 
         {state === "register" ? (
@@ -220,7 +243,7 @@ const Login = () => {
                 setState("register");
                 setFormData(initialState);
               }}
-              className="text-primary cursor-pointer"
+              className="text-primary cursor-pointer focus:outline-1"
             >
               click here
             </span>
