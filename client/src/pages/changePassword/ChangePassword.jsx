@@ -221,7 +221,10 @@ const ChangePassword = () => {
           }`}
         >
           {loading ? (
-            <Loader className="h-5 w-5 border-2 mx-auto" />
+            <p className="flex items-center justify-center gap-2">
+              <Loader className="h-5 w-5 border-2 mx-auto" />
+              Updating
+            </p>
           ) : (
             "Update Password"
           )}

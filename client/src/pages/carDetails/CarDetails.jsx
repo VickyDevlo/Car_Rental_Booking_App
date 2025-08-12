@@ -242,7 +242,7 @@ const CarDetails = () => {
           <button
             type="submit"
             disabled={isDisabled || formLoading}
-            className={`text-white bg-primary w-full py-3 font-medium 
+            className={`text-white bg-primary w-full py-2 font-medium 
               rounded-xl capitalize hover:bg-primary-dull 
               transition-all ${
                 isDisabled || formLoading
@@ -250,7 +250,14 @@ const CarDetails = () => {
                   : "cursor-pointer"
               }`}
           >
-            {formLoading ? <Loader className="h-5 w-5 border-2" /> : "book now"}
+            {formLoading ? (
+              <p className="flex items-center justify-center gap-2">
+                <Loader className="h-6 w-6 border-2" />
+                Booking...
+              </p>
+            ) : (
+              "book now"
+            )}
           </button>
           <p className="text-xs text-center capitalize text-gray-500 font-medium">
             no credit card required to reserve
