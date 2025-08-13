@@ -127,7 +127,7 @@ const HeroSection = () => {
           <img
             src={assets.search_icon}
             alt="search"
-            className="md:brightness-200 w-5 h-5 shrink-0"
+            className="brightness-200 w-5 h-5 shrink-0"
           />
           Search
         </motion.button>
