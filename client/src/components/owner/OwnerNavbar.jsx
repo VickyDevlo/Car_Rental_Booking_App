@@ -5,11 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { OwnerProfileSkeleton } from "../shared/OwnerProfileSkeleton";
 import { RiLockPasswordFill } from "react-icons/ri";
 import { BiLogOut } from "react-icons/bi";
+import { Dialog } from "../shared/Dialog";
+import UserDropdown from "../userDropDown/UserDropDown";
 
 const OwnerNavbar = () => {
   const { user, displayImage, logout, navigate } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const dropdownRef = useRef(null);
 
@@ -32,6 +36,10 @@ const OwnerNavbar = () => {
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "auto";
+  }, [open]);
+
   return (
     <div className="flex items-center justify-between px-6 md:px-10 py-4 border-b border-borderColor relative transition-all">
       <Link to="/">
@@ -44,7 +52,7 @@ const OwnerNavbar = () => {
         ) : (
           <div
             className="flex items-center gap-3 cursor-pointer"
-            onClick={() => setShowDropdown((prev) => !prev)}
+            onClick={() => setIsOpen((prev) => !prev)}
           >
             <img
               src={displayImage}
@@ -59,29 +67,35 @@ const OwnerNavbar = () => {
         )}
 
         {/* Dropdown */}
-        {showDropdown && (
-          <div className="absolute max-sm:-left-45 -right-6 top-10 w-58 bg-gray-100 border border-gray-200 rounded-md shadow-lg z-50">
-            <button
-              onClick={() => {
-                setShowDropdown(false);
-                navigate("/change-password");
-              }}
-              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-base font-medium transition-all duration-200 cursor-pointer"
-            >
-              <RiLockPasswordFill size={18} />
-              Change Password
-            </button>
-            <button
-              onClick={() => logout()}
-              className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-base font-medium transition-all
-                   duration-200 cursor-pointer"
-            >
-              <BiLogOut size={18} />
-              Logout
-            </button>
-          </div>
-        )}
+        <div className="absolute top-2 right-3 max-sm:top-10 max-sm:right-48">
+          <UserDropdown isOpen={isOpen} setIsOpen={setIsOpen} />
+        </div>
       </div>
+      <Dialog isOpen={open} onClose={() => setOpen(false)}>
+        <h2 className="text-lg font-semibold">Confirm Logout</h2>
+        <p className="text-sm text-gray-600 mb-6">
+          Are you sure you want to logout?
+        </p>
+        <div className="flex justify-end gap-3">
+          <button
+            className="px-4 py-2 rounded-md border border-gray-300
+             hover:bg-gray-100 cursor-pointer font-medium"
+            onClick={() => setOpen(false)}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-4 py-2 rounded-md bg-red-500 text-white
+             hover:bg-red-600 cursor-pointer font-medium"
+            onClick={() => {
+              logout();
+              setOpen(false);
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      </Dialog>
     </div>
   );
 };
