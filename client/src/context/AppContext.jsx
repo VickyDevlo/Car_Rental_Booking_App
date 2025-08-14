@@ -33,7 +33,6 @@ export const AppProvider = ({ children }) => {
   const [image, setImage] = useState(null);
   const [sidebarPreview, setSidebarPreview] = useState(assets.user_profile);
 
- 
   // ✅ Update isOwner when user changes
   useEffect(() => {
     setIsOwner(user?.role === "owner");
@@ -144,6 +143,16 @@ export const AppProvider = ({ children }) => {
     navigate("/");
   };
 
+  const userIcon = user?.name
+    ? user.name.trim().split(" ").length > 1
+      ? user.name
+          .trim()
+          .split(" ")
+          .map((word) => word[0].toUpperCase())
+          .join("")
+      : user.name.trim()[0].toUpperCase()
+    : "";
+
   // ✅ Load token and user on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -180,6 +189,7 @@ export const AppProvider = ({ children }) => {
     changeRole,
     logout,
     login,
+    userIcon,
     loading,
     setLoading,
   };

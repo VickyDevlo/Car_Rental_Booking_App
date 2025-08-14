@@ -44,9 +44,17 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    let newValue = value;
+
+    // Only allow letters and spaces for "name" field
+    if (name === "name") {
+      newValue = value.replace(/[^a-zA-Z\s]/g, "");
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: newValue,
     }));
   };
 

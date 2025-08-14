@@ -17,6 +17,7 @@ const ChangePassword = () => {
     setLoading,
     logout,
     navigate,
+    userIcon,
   } = useAppContext();
 
   const [currPassword, setCurrPassword] = useState("");
@@ -124,7 +125,9 @@ const ChangePassword = () => {
               className="w-20 h-20 md:w-30 md:h-30 rounded-full object-cover"
             />
           ) : (
-            <BiUser className="bg-light rounded-full p-2 text-gray-800 size-30 md:size-40" />
+            <div className="bg-primary/20 max-sm:w-22 max-sm:h-22 w-25 h-25 rounded-full flex items-center justify-center max-sm:text-2xl text-5xl font-semibold shadow-md capitalize">
+              {userIcon}
+            </div>
           )}
         </div>
 

@@ -19,6 +19,20 @@ const UserDropdown = ({ isOpen, setIsOpen, setMenuOpen }) => {
   };
 
   useEffect(() => {
+    const handleEnterKey = (e) => {
+      if (openModal && (e.key === "Enter" || e.keyCode === 13)) {
+        e.preventDefault();
+        handleLogout();
+      }
+    };
+
+    document.addEventListener("keydown", handleEnterKey);
+    return () => {
+      document.removeEventListener("keydown", handleEnterKey);
+    };
+  }, [openModal]);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
