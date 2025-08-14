@@ -48,7 +48,7 @@ const UserDropdown = ({ isOpen, setIsOpen, setMenuOpen }) => {
   return (
     <div ref={dropdownRef}>
       {isOpen && (
-        <div className="absolute max-sm:-right-50 -right-6 max-sm:top-0 top-8 w-58 bg-gray-100 border border-gray-200 rounded-md shadow-lg">
+        <div className="absolute max-sm:-right-50 -right-6 max-sm:top-0 top-8 w-58 bg-gray-100 border border-gray-200 rounded-md shadow-lg z-50">
           <button
             onClick={() => {
               navigate("/change-password");
