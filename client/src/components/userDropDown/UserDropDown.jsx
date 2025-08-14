@@ -34,6 +34,7 @@ const UserDropdown = ({ isOpen, setIsOpen, setMenuOpen }) => {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
+      if (openModal) return;
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -43,7 +44,7 @@ const UserDropdown = ({ isOpen, setIsOpen, setMenuOpen }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [openModal]);
 
   return (
     <div ref={dropdownRef}>
@@ -61,10 +62,6 @@ const UserDropdown = ({ isOpen, setIsOpen, setMenuOpen }) => {
           <button
             onClick={() => {
               setOpenModal(true);
-              setIsOpen(false);
-              if (setMenuOpen) {
-                setMenuOpen(false);
-              }
             }}
             className="w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 text-base font-medium transition-all duration-200 cursor-pointer"
           >

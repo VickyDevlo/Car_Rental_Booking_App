@@ -34,7 +34,7 @@ export const Dialog = ({ isOpen, onClose, children, className }) => {
             transition={{ duration: 0.3 }}
             className={`${className} p-8 py-9 w-80 sm:w-[352px] 
             rounded-lg shadow-xl border border-gray-200 bg-white`}
-            onClick={(e) => e.stopPropagation()}
+             onClick={(e) => e.stopPropagation()}
           >
             {children}
           </motion.div>

@@ -35,9 +35,8 @@ const Navbar = () => {
     <>
       {!loading ? (
         <div
-          className={`border-b border-borderColor relative z-10 transition-all ${
-            location.pathname === "/" ? "bg-light" : "bg-white"
-          }`}
+          className={`border-b border-borderColor relative z-10 transition-all ${location.pathname === "/" ? "bg-light" : "bg-white"
+            }`}
         >
           <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600">
             {/* Logo */}
@@ -53,13 +52,11 @@ const Navbar = () => {
 
             {/* Menu Items */}
             <div
-              className={`max-sm:fixed z-30 right-0 max-sm:top-[50px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300  ${
-                location.pathname === "/"
+              className={`max-sm:fixed z-30 right-0 max-sm:top-[50px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300  ${location.pathname === "/"
                   ? "max-sm:bg-light"
                   : "max-sm:bg-white"
-              } ${
-                menuOpen ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"
-              }`}
+                } ${menuOpen ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"
+                }`}
             >
               {/* Filtered Nav Links */}
               {filteredMenuLinks.map((menu, i) => (
@@ -70,9 +67,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
                      max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                     ${
-                       isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
-                     }`
+                     ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
+                    }`
                   }
                 >
                   {menu.name}
@@ -87,11 +83,10 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
                        max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                       ${
-                         isActive
-                           ? "text-primary max-sm:bg-primary-dull/20"
-                           : ""
-                       }`
+                       ${isActive
+                      ? "text-primary max-sm:bg-primary-dull/20"
+                      : ""
+                    }`
                   }
                 >
                   Dashboard
@@ -107,29 +102,29 @@ const Navbar = () => {
                 />
                 <img src={assets.search_icon} alt="search" />
               </div>
-              <div className="relative">
+              <>
                 {user?.role === "user" && (
-                  <button
-                    onClick={() => setIsOpen(!isOpen)}
-                    className="flex items-center justify-center w-9 h-9 rounded-full
-         bg-primary/20 font-semibold text-md shadow-md cursor-pointer capitalize"
-                  >
-                    {user ? (
-                      userIcon
-                    ) : (
-                      <BiUser className="text-xl text-gray-600" />
-                    )}
-                  </button>
-                )}
+                  <div className="relative">
+                    <button
+                      onClick={() => setIsOpen(!isOpen)}
+                      className="flex items-center justify-center w-8 h-8 
+                      text-sm rounded-full bg-primary/20 font-semibold shadow-md cursor-pointer capitalize"
+                    >
+                      {userIcon || <BiUser className="text-gray-600" />}
+                    </button>
 
-                <div className="absolute max-sm:top-12 top-5 right-0">
-                  <UserDropdown
-                    isOpen={isOpen}
-                    setIsOpen={setIsOpen}
-                    setMenuOpen={setMenuOpen}
-                  />
-                </div>
-              </div>
+                    {isOpen && (
+                      <div className="absolute max-sm:top-12 top-5 right-0 z-50">
+                        <UserDropdown
+                          isOpen={isOpen}
+                          setIsOpen={setIsOpen}
+                          setMenuOpen={setMenuOpen}
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
 
               {!user && (
                 <div className="flex max-sm:flex-col items-start sm:items-center gap-4 max-sm:w-full">
