@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { assets, menuLinks } from "../../assets/assets";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { useAppContext } from "../../context/AppContext";
 import { motion } from "motion/react";
 import { NavbarSkeleton } from "../shared/NavbarSkeleton";
 import UserDropdown from "../userDropDown/UserDropDown";
 import { BiUser } from "react-icons/bi";
+import { HomeLogo } from "../shared/HomeLogo";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,28 +36,26 @@ const Navbar = () => {
     <>
       {!loading ? (
         <div
-          className={`border-b border-borderColor relative z-10 transition-all ${location.pathname === "/" ? "bg-light" : "bg-white"
-            }`}
+          className={`border-b border-borderColor relative transition-all z-10 ${
+            location.pathname === "/" ? "bg-light" : "bg-white"
+          }`}
         >
-          <div className="container mx-auto flex items-center justify-between gap-2 px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600">
-            {/* Logo */}
-            <Link to="/">
-              <motion.img
-                whileHover={{ scale: 1.05 }}
-                src={assets.logo}
-                onClick={() => setMenuOpen(false)}
-                alt="logo"
-                className="h-8 shrink-0 md:ml-1"
-              />
-            </Link>
+          <div
+            className="container mx-auto flex items-center justify-between gap-2
+            px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600"
+          >
+            {/* logo */}
+            <HomeLogo onClick={() => setMenuOpen(false)} />
 
             {/* Menu Items */}
             <div
-              className={`max-sm:fixed z-30 right-0 max-sm:top-[50px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300  ${location.pathname === "/"
+              className={`max-sm:fixed z-30 right-0 max-sm:top-[50px] max-sm:h-screen max-sm:w-full flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:p-2 transition-all duration-300  ${
+                location.pathname === "/"
                   ? "max-sm:bg-light"
                   : "max-sm:bg-white"
-                } ${menuOpen ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"
-                }`}
+              } ${
+                menuOpen ? "max-sm:-translate-x-0" : "max-sm:-translate-x-full"
+              }`}
             >
               {/* Filtered Nav Links */}
               {filteredMenuLinks.map((menu, i) => (
@@ -67,8 +66,9 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
                      max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                     ${isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
-                    }`
+                     ${
+                       isActive ? "text-primary max-sm:bg-primary-dull/20" : ""
+                     }`
                   }
                 >
                   {menu.name}
@@ -83,34 +83,30 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `font-medium max-sm:w-full max-sm:p-2 md:ml-1 whitespace-nowrap
                        max-sm:hover:bg-primary-dull/20 transition-all duration-200 rounded
-                       ${isActive
-                      ? "text-primary max-sm:bg-primary-dull/20"
-                      : ""
-                    }`
+                       ${
+                         isActive
+                           ? "text-primary max-sm:bg-primary-dull/20"
+                           : ""
+                       }`
                   }
                 >
                   Dashboard
                 </NavLink>
               )}
 
-              {/* Search Input */}
-              <div className="hidden lg:flex items-center gap-2 text-sm border border-borderColor px-3 rounded-full max-w-56">
-                <input
-                  type="text"
-                  placeholder="Search products"
-                  className="bg-transparent w-full py-1.5 placeholder-gray-500 outline-none"
-                />
-                <img src={assets.search_icon} alt="search" />
-              </div>
               <>
                 {user?.role === "user" && (
                   <div className="relative">
                     <button
                       onClick={() => setIsOpen(!isOpen)}
-                      className="flex items-center justify-center w-8 h-8 
-                      text-sm rounded-full bg-primary/20 font-semibold shadow-md cursor-pointer capitalize"
+                      className="flex items-center justify-center w-8 h-8 cursor-pointer rounded-full bg-primary/20 shadow-md hover:bg-primary/30 transition-colors text-gray-700
+                       font-semibold capitalize"
                     >
-                      {userIcon || <BiUser className="text-gray-600" />}
+                      {userIcon ? (
+                        <span className="text-sm">{userIcon}</span>
+                      ) : (
+                        <BiUser className="text-lg" />
+                      )}
                     </button>
 
                     {isOpen && (
@@ -135,7 +131,8 @@ const Navbar = () => {
                       setMenuOpen(false);
                     }}
                     className={`text-white text-sm font-medium px-6 py-1.5
-                     bg-primary hover:bg-primary-dull  rounded-sm md:mr-1 cursor-pointer transition-all`}
+                     bg-primary hover:bg-primary-dull  rounded-sm md:mr-1 
+                     cursor-pointer transition-all`}
                   >
                     Login
                   </motion.button>

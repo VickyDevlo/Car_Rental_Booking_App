@@ -47,7 +47,7 @@ const Banner = () => {
             className="mt-4 px-6 py-2 max-sm:flex text-center justify-center max-sm:w-full bg-white text-primary rounded-lg text-sm cursor-pointer
              hover:bg-slate-100 transition-all"
           >
-            {isOwner ? "List your car" : "Dashboard"}
+            Dashboard
           </motion.button>
         </div>
 
