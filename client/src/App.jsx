@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Router } from "./components/Router";
 import { Toaster } from "react-hot-toast";
 import { useAppContext } from "./context/AppContext";
+import { PageUP } from "./components/shared/PageUp";
 
 function App() {
   const { showLogin } = useAppContext();
@@ -16,6 +17,7 @@ function App() {
   return (
     <>
       <Toaster />
+      <PageUP />
       {showLogin && <Login />}
       {!hideNavbar && <Navbar />}
       <Router />
