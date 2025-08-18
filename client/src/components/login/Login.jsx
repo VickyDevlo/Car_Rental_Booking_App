@@ -215,8 +215,13 @@ const Login = () => {
             />
             <button
               type="button"
-              onClick={() => setIsPassword(!isPassword)}
-              className="cursor-pointer shrink-0"
+              disabled={isDisabled || loading}
+              onClick={() => setIsPassword((prev) => !prev)}
+              className={`shrink-0 ${
+                isDisabled || loading
+                  ? "opacity-30 cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
             >
               {isPassword ? <IoMdEyeOff size={18} /> : <IoMdEye size={18} />}
             </button>
@@ -241,7 +246,7 @@ const Login = () => {
           </p>
         ) : (
           <p>
-            Create an account?{" "}
+            Create an account?&nbsp;
             <span
               onClick={() => {
                 setState("register");

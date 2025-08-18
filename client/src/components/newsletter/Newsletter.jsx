@@ -20,6 +20,7 @@ const Newsletter = () => {
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.4 }}
+        onSubmit={(e) => e.preventDefault()}
         className="flex items-center justify-between max-w-2xl mt-8 w-full md:h-13 h-12"
       >
         <input
