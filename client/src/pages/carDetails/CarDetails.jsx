@@ -6,7 +6,7 @@ import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import { CarDetailsSkeleton } from "../../components/shared/CarDetailsSkeleton";
-import { formatCurrency } from "../../utils/FormatCurrency";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const CarDetails = () => {
   const {

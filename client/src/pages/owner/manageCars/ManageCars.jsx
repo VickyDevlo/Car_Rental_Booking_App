@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { NotAvailableMsg } from "../../../components/shared/NotAvailableMsg";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 import { ManageCarsSkeleton } from "../../../components/shared/ManageCarsSkeleton";
-import { formatCurrency } from "../../../utils/FormatCurrency";
+import { formatCurrency } from "../../../utils/formatCurrency";
 import { Dialog } from "../../../components/shared/Dialog";
 
 const ManageCars = () => {

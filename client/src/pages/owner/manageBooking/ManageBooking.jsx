@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import { NotAvailableMsg } from "../../../components/shared/NotAvailableMsg";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 import { ManageBookingSkeleton } from "../../../components/shared/ManageBookingSkeleton";
-import { formatCurrency } from "../../../utils/FormatCurrency";
+import { formatCurrency } from "../../../utils/formatCurrency";
 
 const ManageBooking = () => {
   const { currency, axios, token, isOwner } = useAppContext();

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import { MyBookingSkeleton } from "../../components/shared/MyBookingSkeleton";
 import { TitleSkeleton } from "../../components/shared/TitleSkeleton";
-import { formatCurrency } from "../../utils/FormatCurrency";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const MyBooking = () => {
   const { currency, axios, user, token } = useAppContext();

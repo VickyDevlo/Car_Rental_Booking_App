@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
-import { formatCurrency } from "../../utils/FormatCurrency";
+import { formatCurrency } from "../../utils/formatCurrency";
 
 const CarCard = ({ car }) => {
   const navigate = useNavigate();

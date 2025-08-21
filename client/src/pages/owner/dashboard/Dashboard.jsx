@@ -5,7 +5,7 @@ import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 import { DashboardSkeleton } from "../../../components/shared/DashboardSkeleton";
-import { formatCurrency } from "../../../utils/FormatCurrency";
+import { formatCurrency } from "../../../utils/formatCurrency";
 
 const Dashboard = () => {
   const { isOwner, currency, token, axios } = useAppContext();
