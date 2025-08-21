@@ -6,6 +6,7 @@ import { useAppContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import { CarDetailsSkeleton } from "../../components/shared/CarDetailsSkeleton";
+import { formatCurrency } from "../../utils/FormatCurrency";
 
 const CarDetails = () => {
   const {
@@ -209,7 +210,10 @@ const CarDetails = () => {
           className="sticky top-10 text-gray-500 p-6 space-y-6 rounded-xl shadow-lg h-max"
         >
           <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
-            {currency} {car?.pricePerDay}
+            {formatCurrency(
+              car?.pricePerDay,
+              currency === "$" ? "USD" : currency
+            )}
             <span className="text-base text-gray-400 font-normal capitalize">
               per day
             </span>

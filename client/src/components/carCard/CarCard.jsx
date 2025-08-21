@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { assets } from "../../assets/assets";
+import { formatCurrency } from "../../utils/FormatCurrency";
 
 const CarCard = ({ car }) => {
   const navigate = useNavigate();
@@ -52,7 +53,10 @@ const CarCard = ({ car }) => {
          text-xs px-3 py-1 rounded-full shadow-sm"
         >
           <span className="font-semibold">
-            {currency} {car?.pricePerDay ?? "N/A"}
+            {formatCurrency(
+              car?.pricePerDay,
+              currency === "$" ? "USD" : currency
+            )}
           </span>
           <span className="text-white text-xs"> / day</span>
         </div>

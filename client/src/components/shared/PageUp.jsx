@@ -42,8 +42,7 @@ export const PageUP = () => {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="bg-primary/80 w-10 h-10 md:w-12 md:h-12 rounded-full fixed 
           bottom-5 right-5 z-50 cursor-pointer hover:bg-primary/70 
-          focus:outline-none focus:ring-2 focus:ring-primary/50 
-          transition-all duration-300"
+          focus:outline-none transition-all duration-300"
         >
           <motion.div
             className="flex items-center justify-center h-full"

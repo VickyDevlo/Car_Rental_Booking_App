@@ -6,12 +6,16 @@ import toast from "react-hot-toast";
 import { NotAvailableMsg } from "../../../components/shared/NotAvailableMsg";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 import { ManageCarsSkeleton } from "../../../components/shared/ManageCarsSkeleton";
+import { formatCurrency } from "../../../utils/FormatCurrency";
+import { Dialog } from "../../../components/shared/Dialog";
 
 const ManageCars = () => {
   const { currency, isOwner, token, axios } = useAppContext();
 
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedCarId, setSelectedCarId] = useState(null);
 
   const fetchOwnerCars = async () => {
     setLoading(true);
@@ -28,13 +32,12 @@ const ManageCars = () => {
       setLoading(false);
     }
   };
+
   const toggleAvailability = async (carId) => {
     try {
       const { data } = await axios.post("/api/owner/toggle-car", { carId });
       if (data?.success) {
         toast.success(data?.message);
-
-        // Update only the toggled car in the local state
         setCars((prevCars) =>
           prevCars.map((car) =>
             car._id === carId ? { ...car, isAvailable: !car.isAvailable } : car
@@ -50,19 +53,12 @@ const ManageCars = () => {
 
   const deleteCar = async (carId) => {
     try {
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete the car?"
-      );
-
-      if (!confirmDelete) return;
-
       const { data } = await axios.post("/api/owner/delete-car", { carId });
-
       if (data?.success) {
         toast.success(data?.message);
-
-        // ✅ Remove the deleted car from local state
         setCars((prevCars) => prevCars.filter((car) => car._id !== carId));
+        setOpenModal(false);
+        setSelectedCarId(null);
       } else {
         toast.error(data?.message);
       }
@@ -72,12 +68,11 @@ const ManageCars = () => {
   };
 
   useEffect(() => {
-    // ✅ Only fetch dashboard when token and isOwner are set
     if (token && isOwner) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchOwnerCars();
     }
-  }, [token, isOwner]); // 🔁 Refetch if either updates
+  }, [token, isOwner]);
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 w-full">
@@ -89,6 +84,7 @@ const ManageCars = () => {
       ) : (
         <TitleSkeleton />
       )}
+
       {!cars.length && !loading ? (
         <NotAvailableMsg message="No Cars Available" />
       ) : (
@@ -108,8 +104,8 @@ const ManageCars = () => {
               </thead>
               <tbody>
                 {cars &&
-                  cars.map((car, i) => (
-                    <tr key={i} className="border-t border-borderColor">
+                  cars.map((car) => (
+                    <tr key={car._id} className="border-t border-borderColor">
                       <td className="flex items-center gap-2 p-3">
                         <img
                           src={car?.image}
@@ -129,8 +125,10 @@ const ManageCars = () => {
                         {car?.category}
                       </td>
                       <td className="p-3 font-medium">
-                        {currency}
-                        {car?.pricePerDay}/day
+                        {formatCurrency(
+                          car?.pricePerDay,
+                          currency === "$" ? "USD" : currency
+                        )}
                       </td>
                       <td className="p-3 font-medium">
                         <span
@@ -157,7 +155,10 @@ const ManageCars = () => {
                         />
                         <img
                           src={assets.delete_icon}
-                          onClick={() => deleteCar(car._id)}
+                          onClick={() => {
+                            setSelectedCarId(car._id);
+                            setOpenModal(true);
+                          }}
                           alt="delete_btn"
                           className="cursor-pointer bg-red-200 hover:bg-red-100 rounded-full transition-all"
                         />
@@ -167,6 +168,30 @@ const ManageCars = () => {
               </tbody>
             </table>
           )}
+
+          <Dialog isOpen={openModal} onClose={() => setOpenModal(false)}>
+            <h2 className="text-lg font-semibold text-gray-800">
+              Confirm Delete
+            </h2>
+            <p className="text-sm text-gray-600 mb-5 ml-2">
+              Are you sure you want to delete this car?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setOpenModal(false)}
+                className="px-4 py-1.5 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 transition-all cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteCar(selectedCarId)}
+                className="px-4 py-1.5 rounded bg-red-500 hover:bg-red-600 
+            text-white transition-all cursor-pointer"
+              >
+                Delete
+              </button>
+            </div>
+          </Dialog>
         </div>
       )}
     </div>

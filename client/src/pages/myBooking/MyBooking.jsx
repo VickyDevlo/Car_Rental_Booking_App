@@ -6,47 +6,45 @@ import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import { MyBookingSkeleton } from "../../components/shared/MyBookingSkeleton";
 import { TitleSkeleton } from "../../components/shared/TitleSkeleton";
+import { formatCurrency } from "../../utils/FormatCurrency";
 
 const MyBooking = () => {
-  const { currency, axios, user,token } = useAppContext();
+  const { currency, axios, user, token } = useAppContext();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchMyBookings = async () => {
-  setLoading(true);
-  try {
-    const { data } = await axios.get("/api/bookings/user");
+    setLoading(true);
+    try {
+      const { data } = await axios.get("/api/bookings/user");
 
-    if (data?.success) {
-      setBookings(data.bookings || []);
-    } else {
-      if (data?.message) toast.error(data.message);
+      if (data?.success) {
+        setBookings(data.bookings || []);
+      } else {
+        if (data?.message) toast.error(data.message);
+        setBookings([]);
+      }
+    } catch (error) {
+      if (error.response?.status === 401) {
+        toast.error("Session expired. Please log in again.");
+      } else {
+        toast.error("An error occurred while fetching bookings");
+      }
       setBookings([]);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    if (error.response?.status === 401) {
-      toast.error("Session expired. Please log in again.");
-    } else {
-      toast.error("An error occurred while fetching bookings");
+  };
+
+  useEffect(() => {
+    if (!user || !token) {
+      setLoading(false); // Avoid showing skeletons or fetch
+      return;
     }
-    setBookings([]);
-  } finally {
-    setLoading(false);
-  }
-};
 
-
-useEffect(() => {
-  if (!user || !token) {
-    setLoading(false); // Avoid showing skeletons or fetch
-    return;
-  }
-
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  fetchMyBookings();
-}, [user, token]);
-
-
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    fetchMyBookings();
+  }, [user, token]);
 
   const showEmptyState = !loading && bookings.length === 0;
 
@@ -138,8 +136,10 @@ useEffect(() => {
               <div className="text-sm text-gray-500 font-medium text-right">
                 <p>Total Price</p>
                 <h1 className="text-2xl font-semibold text-primary">
-                  {currency}
-                  {booking?.price}
+                  {formatCurrency(
+                   booking?.price,
+                    currency === "$" ? "USD" : currency
+                  )}
                 </h1>
                 <p>
                   Booking on :

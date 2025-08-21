@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { NotAvailableMsg } from "../../../components/shared/NotAvailableMsg";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 import { ManageBookingSkeleton } from "../../../components/shared/ManageBookingSkeleton";
+import { formatCurrency } from "../../../utils/FormatCurrency";
 
 const ManageBooking = () => {
   const { currency, axios, token, isOwner } = useAppContext();
@@ -109,8 +110,10 @@ const ManageBooking = () => {
                     {booking?.returnDate.split("T")[0]}
                   </td>
                   <td className="p-3">
-                    {currency}
-                    {booking?.price}
+                    {formatCurrency(
+                      booking?.price,
+                      currency === "$" ? "USD" : currency
+                    )}
                   </td>
                   <td className="p-3 max-md:hidden">
                     <span className="bg-gray-100 px-3 py-1 rounded-full text-xs">

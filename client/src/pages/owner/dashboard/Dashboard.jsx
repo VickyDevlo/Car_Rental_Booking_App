@@ -5,6 +5,7 @@ import { useAppContext } from "../../../context/AppContext";
 import toast from "react-hot-toast";
 import { TitleSkeleton } from "../../../components/shared/TitleSkeleton";
 import { DashboardSkeleton } from "../../../components/shared/DashboardSkeleton";
+import { formatCurrency } from "../../../utils/FormatCurrency";
 
 const Dashboard = () => {
   const { isOwner, currency, token, axios } = useAppContext();
@@ -124,8 +125,10 @@ const Dashboard = () => {
                   </div>
                   <div className="flex items-center gap-2 font-medium">
                     <p className="text-sm whitespace-nowrap text-gray-700">
-                      {currency}
-                      {booking.price}
+                      {formatCurrency(
+                        booking.price,
+                        currency === "$" ? "USD" : currency
+                      )}
                     </p>
                     <p
                       className={`px-3 py-0.5 border border-borderColor rounded-full text-sm ${
@@ -145,8 +148,10 @@ const Dashboard = () => {
               <h1 className="text-lg font-semibold">Monthly Revenue</h1>
               <p className="text-gray-500">Revenue for current month</p>
               <p className="text-2xl md:text-3xl mt-6 font-semibold text-primary">
-                {currency}
-                {data?.monthlyRevenue}
+                {formatCurrency(
+                  data?.monthlyRevenue,
+                  currency === "$" ? "USD" : currency
+                )}
               </p>
             </div>
           </div>

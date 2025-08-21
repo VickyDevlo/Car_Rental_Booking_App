@@ -40,7 +40,7 @@ const OwnerNavbar = () => {
 
   return (
     <div className="border-b border-borderColor relative transition-all">
-      <div className="container mx-auto flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4">
+      <div className="container mx-auto flex items-center justify-between px-6 md:px-4 max-sm:py-2 py-4">
         {/* logo */}
         <HomeLogo />
         <div className="relative" ref={dropdownRef}>
