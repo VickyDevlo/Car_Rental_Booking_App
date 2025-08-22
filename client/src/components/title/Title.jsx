@@ -1,8 +1,9 @@
 const Title = ({ title, subTitle, align }) => {
   return (
     <div
-      className={`flex flex-col items-center justify-center text-center
-    ${align === "left" && "md:items-start md:text-left"} `}
+      className={`flex flex-col text-center ${
+        align === "left" && "md:items-start text-left"
+      } `}
     >
       <h1 className="font-semibold text-2xl md:text-4xl text-gray-800">
         {title}

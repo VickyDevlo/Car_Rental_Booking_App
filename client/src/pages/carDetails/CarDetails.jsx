@@ -247,7 +247,7 @@ const CarDetails = () => {
             type="submit"
             disabled={isDisabled || formLoading}
             className={`text-white bg-primary w-full py-2 font-medium 
-              rounded-xl capitalize hover:bg-primary-dull 
+              rounded-full capitalize hover:bg-primary-dull 
               transition-all ${
                 isDisabled || formLoading
                   ? "opacity-30 cursor-not-allowed"
@@ -255,10 +255,10 @@ const CarDetails = () => {
               }`}
           >
             {formLoading ? (
-              <p className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <Loader className="h-6 w-6 border-2" />
                 Booking...
-              </p>
+              </div>
             ) : (
               "book now"
             )}
