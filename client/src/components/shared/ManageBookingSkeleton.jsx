@@ -37,8 +37,8 @@ export const ManageBookingSkeleton = () => {
               <td className="p-3 max-md:hidden">
                 <div className="w-16 h-4 bg-gray-200 rounded" />
               </td>
-              <td className="p-3">
-                <div className="w-20 h-6 bg-gray-200 rounded" />
+              <td className="md:p-3">
+                <div className="w-16 h-6 bg-gray-200 rounded" />
               </td>
             </tr>
           ))}

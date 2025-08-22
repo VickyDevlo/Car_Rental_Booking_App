@@ -33,7 +33,7 @@ export const DashboardSkeleton = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <div className="h-4 bg-gray-200 rounded w-[50px]" />
+                <div className="max-sm:hidden h-4 bg-gray-200 rounded w-[50px]" />
                 <div
                   className="h-6 bg-gray-200 rounded-full w-[70px] 
                 sm:w-[100px]"
@@ -43,9 +43,9 @@ export const DashboardSkeleton = () => {
           ))}
         </div>
 
-        <div className="p-4 md:p-6 mb-6 border border-borderColor rounded-md w-full h-fit md:max-w-xs">
+        <div className="p-4 md:p-6 mb-6 border border-borderColor rounded-md h-fit md:max-w-xs w-full">
           <div className="h-6 bg-gray-300 rounded mb-2 w-40" />
-          <div className="h-4 bg-gray-200 rounded mb-6 w-53" />
+          <div className="h-4 bg-gray-200 rounded mb-6 w-42" />
           <div className="h-10 bg-gray-300 rounded w-20" />
         </div>
       </div>

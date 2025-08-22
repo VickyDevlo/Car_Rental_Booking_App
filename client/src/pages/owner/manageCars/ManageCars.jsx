@@ -92,8 +92,11 @@ const ManageCars = () => {
           {loading ? (
             <ManageCarsSkeleton />
           ) : (
-            <table className="w-full border-collapse text-left text-sm text-gray-600">
-              <thead className="text-gray-500">
+            <table
+              className="max-md:table-fixed w-full border-collapse text-left text-sm
+             text-gray-600"
+            >
+              <thead className=" text-gray-500">
                 <tr>
                   <th className="p-3 font-medium">Car</th>
                   <th className="p-3 font-medium max-md:hidden">Category</th>
@@ -130,9 +133,9 @@ const ManageCars = () => {
                           currency === "$" ? "USD" : currency
                         )}
                       </td>
-                      <td className="p-3 font-medium">
+                      <td className="md:p-3 font-medium">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs ${
+                          className={`px-2 md:px-3 py-1 rounded-full text-xs ${
                             car?.isAvailable
                               ? "bg-green-100 text-green-500"
                               : "bg-red-100 text-red-500"

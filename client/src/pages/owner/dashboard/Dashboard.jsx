@@ -103,7 +103,7 @@ const Dashboard = () => {
               <h1 className="text-lg font-semibold text-gray-800">
                 Recent Bookings
               </h1>
-              <p className="text-gray-500">Latest customer bookings</p>
+              <p className="text-gray-500">Latest Customers Bookings</p>
               {data.recentBookings.map((booking, i) => (
                 <div key={i} className="flex items-center justify-between mt-4">
                   <div className="flex items-center gap-2">
@@ -124,7 +124,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="flex items-center gap-2 font-medium">
-                    <p className="text-sm whitespace-nowrap text-gray-700">
+                    <p className="max-sm:hidden text-sm whitespace-nowrap text-gray-700">
                       {formatCurrency(
                         booking.price,
                         currency === "$" ? "USD" : currency

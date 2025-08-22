@@ -55,12 +55,11 @@ const ManageBooking = () => {
   };
 
   useEffect(() => {
-    // ✅ Only fetch dashboard when token and isOwner are set
     if (token && isOwner) {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       fetchOwnerBookings();
     }
-  }, [token, isOwner]); // 🔁 Refetch if either updates
+  }, [token, isOwner]);
 
   return (
     <div className="px-4 pt-3 md:pt-10 md:px-10 w-full">
@@ -79,7 +78,7 @@ const ManageBooking = () => {
         <NotAvailableMsg message="No Bookings Available" />
       ) : bookings.length > 0 ? (
         <div className="max-w-3xl w-full rounded-md overflow-hidden border border-borderColor my-6">
-          <table className="w-full border-collapse text-left text-sm text-gray-600">
+          <table className="w-full max-md:table-fixed border-collapse text-left text-sm text-gray-600">
             <thead className="text-gray-500">
               <tr>
                 <th className="p-3 font-medium">Car</th>
@@ -95,11 +94,11 @@ const ManageBooking = () => {
                   key={i}
                   className="border-t border-borderColor text-gray-500"
                 >
-                  <td className="p-3 flex items-center gap-3">
+                  <td className="p-3 md:flex items-center gap-2">
                     <img
                       src={booking?.car?.image}
                       alt="car_image"
-                      className="md:w-12 md:h-12 aspect-square rounded-md object-cover"
+                      className="w-12 md:w-12 md:h-12 aspect-square rounded-md object-cover"
                     />
                     <p className="font-medium max-md:hidden">
                       {booking?.car?.brand} {booking?.car?.model}
@@ -109,7 +108,7 @@ const ManageBooking = () => {
                     {booking?.pickupDate.split("T")[0]} to{" "}
                     {booking?.returnDate.split("T")[0]}
                   </td>
-                  <td className="p-3">
+                  <td className="max-md:text-xs p-3">
                     {formatCurrency(
                       booking?.price,
                       currency === "$" ? "USD" : currency
@@ -120,7 +119,7 @@ const ManageBooking = () => {
                       Offline
                     </span>
                   </td>
-                  <td className="p-3">
+                  <td className="md:p-3">
                     {booking?.status === "pending" ? (
                       <select
                         value={booking?.status}
@@ -135,7 +134,7 @@ const ManageBooking = () => {
                       </select>
                     ) : (
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
+                        className={`px-1 md:px-3 py-1 rounded-full text-xs font-semibold capitalize ${
                           booking?.status === "confirmed"
                             ? "bg-green-100 text-green-500"
                             : "bg-red-100 text-red-500"
