@@ -47,7 +47,7 @@ const CarDetails = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-      toast.error("Not Authorized");
+    toast.error("Access denied. Please log in or register to continue.");
     } finally {
       setFormLoading(false);
     }
