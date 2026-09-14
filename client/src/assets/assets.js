@@ -7,6 +7,7 @@ import menu_icon from "./menu_icon.svg";
 import search_icon from "./search_icon.svg";
 import close_icon from "./close_icon.svg";
 import users_icon from "./users_icon.svg";
+import user_profile from "./user_profile.png";
 import car_icon from "./car_icon.svg";
 import location_icon from "./location_icon.svg";
 import fuel_icon from "./fuel_icon.svg";
@@ -50,6 +51,7 @@ export const assets = {
   search_icon,
   close_icon,
   users_icon,
+  user_profile,
   edit_icon,
   car_icon,
   location_icon,
@@ -153,3 +155,12 @@ export const testimonials = [
       "Fantastic experience! From start to finish, the team was professional, responsive, and genuinely cared about delivering great results.",
   },
 ];
+
+export const initialDashboardData = {
+  totalCars: 0,
+  totalBookings: 0,
+  pendingBookings: 0,
+  completedBookings: 0,
+  recentBookings: [],
+  monthlyRevenue: "",
+};

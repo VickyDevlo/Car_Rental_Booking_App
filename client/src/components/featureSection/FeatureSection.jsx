@@ -51,7 +51,7 @@ const FeatureSection = () => {
         {loading ? (
           <FeatureSectionSkeleton />
         ) : (
-          cars?.slice(0, 6).map((carData) => (
+          cars?.slice(0, 3)?.map((carData) => (
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
