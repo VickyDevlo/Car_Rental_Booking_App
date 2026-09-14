@@ -124,7 +124,7 @@ export const getUserBookings = async (req, res) => {
 export const getOwnerBookings = async (req, res) => {
   try {
     if (req.user.role !== "owner") {
-      res.json({
+     return res.json({
         success: false,
         message: "Not authorized",
       });
@@ -135,13 +135,13 @@ export const getOwnerBookings = async (req, res) => {
       .select("-user.password")
       .sort({ createdAt: -1 });
 
-    res.json({
+    return res.json({
       success: true,
       bookings,
     });
   } catch (error) {
     console.log(error.message);
-    res.json({
+    return res.json({
       success: false,
       message: error.message,
     });

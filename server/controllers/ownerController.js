@@ -186,7 +186,7 @@ export const getDashboardData = async (req, res) => {
       monthlyRevenue,
     };
 
-    res.json({
+    return res.json({
       success: true,
       dashboardData,
     });
