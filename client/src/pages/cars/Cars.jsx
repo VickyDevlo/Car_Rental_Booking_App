@@ -145,12 +145,12 @@ const Cars = () => {
           <>
             {filteredCars && filteredCars.length > 0 ? (
               <>
-                <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
-                  Showing {filteredCars.length}{" "}
+                {/* <p className="font-medium text-gray-400 xl:px-20 max-w-7xl mx-auto">
+                  Available {filteredCars.length}{" "}
                   {filteredCars.length === 1 ? "Car" : "Cars"}
-                </p>
+                </p> */}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-20 max-w-7xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-4 xl:px-16 max-w-7xl mx-auto">
                   {filteredCars.map((car, i) => (
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}

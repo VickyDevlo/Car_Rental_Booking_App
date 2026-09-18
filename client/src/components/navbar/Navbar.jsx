@@ -41,8 +41,8 @@ const Navbar = () => {
           }`}
         >
           <div
-            className="container mx-auto flex items-center justify-between gap-2
-            px-6 md:px-16 lg:px-24 xl:px-32 max-sm:py-2 py-4 text-gray-600"
+            className="mx-auto flex items-center justify-between gap-2
+            px-6 md:px-16 lg:px-20 max-sm:py-2 py-4 text-gray-600"
           >
             {/* logo */}
             <HomeLogo onClick={() => setMenuOpen(false)} />

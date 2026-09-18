@@ -7,7 +7,7 @@ const CarCard = ({ car }) => {
   const currency = import.meta.env.VITE_CURRENCY || "₹";
 
   const handleNavigation = () => {
-    navigate(`/car-details/${car?._id}`);
+    navigate(`/cars/${car?._id}`);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -42,7 +42,7 @@ const CarCard = ({ car }) => {
         {car?.isAvailable && (
           <p
             className="absolute top-3 left-3 bg-primary/90 text-white
-           text-xs px-3 py-1 rounded-full shadow-sm"
+           text-xs px-3 py-1 rounded-full shadow-sm uppercase"
           >
             Available Now
           </p>
@@ -55,10 +55,10 @@ const CarCard = ({ car }) => {
           <span className="font-semibold">
             {formatCurrency(
               car?.pricePerDay,
-              currency === "$" ? "USD" : currency
+              currency === "$" ? "USD" : currency,
             )}
           </span>
-          <span className="text-white text-xs"> / day</span>
+          <span className="text-white text-xs uppercase"> - day</span>
         </div>
       </div>
 

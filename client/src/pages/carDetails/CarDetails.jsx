@@ -47,7 +47,7 @@ const CarDetails = () => {
         toast.error(data?.message);
       }
     } catch (error) {
-    toast.error("Access denied. Please log in or register to continue.");
+      toast.error("Access denied. Please log in or register to continue.");
     } finally {
       setFormLoading(false);
     }
@@ -101,7 +101,7 @@ const CarDetails = () => {
       <button
         onClick={() => {
           navigate("/cars");
-          scrollTo(0, 0);
+          window.scrollTo({ top: 0, behavior: "smooth" });
         }}
         className="flex items-center gap-2 mb-6 text-gray-500 cursor-pointer"
       >
@@ -212,7 +212,7 @@ const CarDetails = () => {
           <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
             {formatCurrency(
               car?.pricePerDay,
-              currency === "$" ? "USD" : currency
+              currency === "$" ? "USD" : currency,
             )}
             <span className="text-base text-gray-400 font-normal capitalize">
               per day

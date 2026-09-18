@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { assets, menuLinks } from "../../assets/assets";
 import { useAppContext } from "../../context/AppContext";
 import { motion } from "motion/react";
@@ -10,15 +11,16 @@ const Footer = () => {
       initial={{ y: 30, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="text-gray-500 px-6 md:px-16 lg:px-24 xl:px-32 text-sm bg-light"
+      className="text-gray-500 px-6 sm:px-10 md:px-16 lg:px-20 text-sm bg-light"
     >
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.2 }}
-        className="container mx-auto flex flex-wrap justify-between items-start gap-8 md:gap-8 p-6"
+        className="mx-auto flex flex-col md:flex-row flex-wrap justify-between items-start gap-10 md:gap-8 py-10 md:py-4"
       >
-        <div>
+        {/* Brand block */}
+        <div className="w-full md:w-auto md:max-w-xs">
           <motion.img
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -31,7 +33,7 @@ const Footer = () => {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="max-w-80 mt-3"
+            className="max-w-xs sm:max-w-80 mt-3"
           >
             Premium car rental service with a wide selection of luxury and
             everyday vehicles for all your driving needs.
@@ -68,13 +70,15 @@ const Footer = () => {
             </a>
           </motion.div>
         </div>
+
+        {/* Links block */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex justify-between flex-wrap gap-8 w-1/2"
+          className="w-full md:w-auto flex flex-wrap sm:flex-nowrap justify-between gap-8 md:gap-10 lg:gap-16 xl:w-1/2"
         >
-          <div>
+          <div className="min-w-[45%] sm:min-w-0">
             <h2 className="text-base font-medium uppercase text-gray-800">
               Quick Links
             </h2>
@@ -82,37 +86,46 @@ const Footer = () => {
               {menuLinks.map((menu, i) => (
                 <li
                   key={i}
-                  onClick={() => {
-                    navigate(menu.path);
-                    scrollTo(0, 0);
-                  }}
-                  className="cursor-pointer"
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: "smooth" })
+                  }
+                  className="cursor-pointer hover:text-gray-800 transition"
                 >
-                  {menu.name}
+                  <Link to={menu.path}>{menu.name}</Link>
                 </li>
               ))}
             </ul>
           </div>
-          <div>
+
+          <div className="min-w-[45%] sm:min-w-0">
             <h2 className="text-base font-medium uppercase text-gray-800">
               Resources
             </h2>
             <ul className="mt-3 flex flex-col gap-1.5 text-sm">
               <li>
-                <a href="#">Help Center</a>
+                <a href="#" className="hover:text-gray-800 transition">
+                  Help Center
+                </a>
               </li>
               <li>
-                <a href="#">Terms of Services</a>
+                <a href="#" className="hover:text-gray-800 transition">
+                  Terms of Services
+                </a>
               </li>
               <li>
-                <a href="#">Privacy Policy</a>
+                <a href="#" className="hover:text-gray-800 transition">
+                  Privacy Policy
+                </a>
               </li>
               <li>
-                <a href="#">Insurance</a>
+                <a href="#" className="hover:text-gray-800 transition">
+                  Insurance
+                </a>
               </li>
             </ul>
           </div>
-          <div>
+
+          <div className="min-w-[45%] sm:min-w-0">
             <h2 className="text-base font-medium uppercase text-gray-800">
               Contact
             </h2>
@@ -120,19 +133,21 @@ const Footer = () => {
               <li>1234 Luxury Drive</li>
               <li>San Francisco, CA 94107</li>
               <li>+1 234 567890</li>
-              <li>info@example.com</li>
+              <li className="break-all">info@example.com</li>
             </ul>
           </div>
         </motion.div>
       </motion.div>
+
       <hr className="border-gray-300" />
+
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.6 }}
-        className="flex items-center justify-center font-semibold py-5"
+        className="flex items-center justify-center text-center font-semibold py-5 px-4 uppercase"
       >
-        <p>© {new Date().getFullYear()} Car Rental. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} Car Rental App. All rights reserved.</p>
       </motion.div>
     </motion.footer>
   );
