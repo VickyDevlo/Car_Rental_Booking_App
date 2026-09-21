@@ -298,14 +298,10 @@ const HeroSection = () => {
         <div className="relative w-full max-w-3xl">
           <div
             aria-hidden="true"
-            className="absolute inset-x-4 bottom-0 top-10 rounded-[50%] bg-white/70 md:inset-x-10"
-          />
-          <div
-            aria-hidden="true"
             className="absolute bottom-3 left-1/2 h-4 w-3/5 -translate-x-1/2 rounded-full bg-black/25 blur-xl"
           />
           <motion.img
-            initial={from({ opacity: 0, x: -80 })}
+            initial={from({ opacity: 0, x: 80 })}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
             src={assets.main_car}
