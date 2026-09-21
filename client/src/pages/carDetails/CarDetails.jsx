@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import { motion } from "motion/react";
 import { CarDetailsSkeleton } from "../../components/shared/CarDetailsSkeleton";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { DateField, toInputDate, countDays } from "../../shared/DateField";
 
 const CarDetails = () => {
   const {
@@ -20,12 +21,24 @@ const CarDetails = () => {
     navigate,
   } = useAppContext();
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = toInputDate(new Date());
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
 
   const { id } = useParams();
+
+  const days = countDays(pickupDate, returnDate);
+  const formatPrice = (amount) =>
+    formatCurrency(amount, currency === "$" ? "USD" : currency);
+  const total = (car?.pricePerDay || 0) * days;
+
+  const handlePickupChange = (e) => {
+    const value = e.target.value;
+    setPickupDate(value);
+    // Never leave a return date that is earlier than the new pickup date
+    if (returnDate && returnDate < value) setReturnDate("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -202,70 +215,95 @@ const CarDetails = () => {
           </motion.div>
         </motion.div>
 
+        {/* Booking card */}
         <motion.form
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           onSubmit={handleSubmit}
-          className="sticky top-10 text-gray-500 p-6 space-y-6 rounded-xl shadow-lg h-max"
+          className="h-max space-y-2 rounded-2xl border border-borderColor bg-white p-6 shadow-[0_20px_50px_-12px_rgba(15,23,42,0.18)] lg:sticky lg:top-10"
         >
-          <p className="flex items-center justify-between text-2xl text-gray-800 font-semibold">
-            {formatCurrency(
-              car?.pricePerDay,
-              currency === "$" ? "USD" : currency,
-            )}
-            <span className="text-base text-gray-400 font-normal capitalize">
-              per day
-            </span>
-          </p>
-          <hr className="border border-borderColor my-6" />
-          <div className="flex flex-col gap-2">
-            <label htmlFor="pickup-date">Pickup Date</label>
-            <input
-              type="date"
+          {/* Price */}
+          <div>
+            <p className="text-sm font-medium text-gray-500">Price</p>
+            <p className="mt-1 flex items-baseline gap-1.5">
+              <span className="text-2xl font-bold tracking-tight text-gray-900">
+                {formatPrice(car?.pricePerDay)}
+              </span>
+              <span className="text-xs text-gray-500">/ day</span>
+            </p>
+          </div>
+
+          {/* Dates */}
+          <div className="space-y-2 border-t border-borderColor pt-6 text-gray-600">
+            <p className="text-sm font-semibold text-gray-900">
+              Select your rental dates
+            </p>
+
+            <DateField
+              variant="form"
               id="pickup-date"
+              label="Pickup Date"
+              placeholder="Add pickup date"
               min={today}
               value={pickupDate}
-              onChange={(e) => setPickupDate(e.target.value)}
-              className="px-3 py-2 border border-borderColor rounded-lg w-full focus:outline-none"
-              required
+              onChange={handlePickupChange}
             />
-          </div>
-          <div className="flex flex-col gap-2">
-            <label htmlFor="return-date">Return Date</label>
-            <input
-              type="date"
+
+            <DateField
+              variant="form"
               id="return-date"
-              min={pickupDate}
+              label="Return Date"
+              placeholder="Add return date"
+              min={pickupDate || today}
               value={returnDate}
               onChange={(e) => setReturnDate(e.target.value)}
-              className="px-3 py-2 border border-borderColor rounded-lg w-full focus:outline-none"
-              required
             />
           </div>
-          <button
-            type="submit"
-            disabled={isDisabled || formLoading}
-            className={`text-white bg-primary w-full py-2 font-medium 
-              rounded-full capitalize hover:bg-primary-dull 
-              transition-all ${
-                isDisabled || formLoading
-                  ? "opacity-30 cursor-not-allowed"
-                  : "cursor-pointer"
-              }`}
-          >
-            {formLoading ? (
-              <div className="flex items-center justify-center gap-2">
-                <Loader className="h-6 w-6 border-2" />
-                Booking...
+
+          {/* Price summary (fixed structure so the card doesn't jump) */}
+          <div className="rounded-xl bg-light p-4 text-sm" aria-live="polite">
+            {days > 0 ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between border-t border-borderColor pt-3">
+                  <span className="font-semibold text-gray-900">
+                    Estimated total
+                  </span>
+                  <span className="text-lg font-bold text-gray-900">
+                    {formatPrice(total)}
+                  </span>
+                </div>
               </div>
             ) : (
-              "book now"
+              <p className="text-center text-gray-500">
+                Pick your dates to see the total
+              </p>
             )}
-          </button>
-          <p className="text-xs text-center capitalize text-gray-500 font-medium">
-            no credit card required to reserve
-          </p>
+          </div>
+
+          {/* CTA */}
+          <div className="space-y-3">
+            <motion.button
+              whileTap={isDisabled || formLoading ? undefined : { scale: 0.98 }}
+              type="submit"
+              disabled={isDisabled || formLoading}
+              className="w-full cursor-pointer rounded-xl bg-primary py-3.5 text-base font-semibold text-white transition-colors enabled:hover:bg-primary-dull disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {formLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <Loader className="h-6 w-6 border-2" />
+                  Booking...
+                </div>
+              ) : (
+                "Book now"
+              )}
+            </motion.button>
+
+            <p className="flex items-center justify-center gap-2 text-xs font-medium text-gray-500">
+              <img src={assets.check_icon} alt="" className="h-3.5" />
+              No credit card required to reserve
+            </p>
+          </div>
         </motion.form>
       </div>
     </div>
