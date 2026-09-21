@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 
 const Testimonial = () => {
   return (
-    <div className="container mx-auto py-28 px-6 md:px-16 lg:px-24 xl:px-44">
+    <div className="container flex flex-col items-center mx-auto py-28 px-6 md:px-16 lg:px-24 xl:px-44">
       <Title
         title="What Our Customers Say"
         subTitle="Discover why discerning travelers choose StayVenture for their luxury accommodations around the world."
